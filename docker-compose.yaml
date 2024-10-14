@@ -1,0 +1,70 @@
+networks:
+  mybridge:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.20.0.0/16
+          gateway: 172.20.0.1
+
+services:
+  wss-userdb:
+    build:
+      context: ./userdb
+      dockerfile: Dockerfile
+    container_name: wss-userdb
+    networks:
+      mybridge:
+        ipv4_address: 172.20.0.4
+    ports:
+      - "3308:3306"
+    volumes:
+      - ./userdb/data:/var/lib/mysql
+    restart: always
+
+  wss-datadb:
+    build:
+      context: ./datadb
+      dockerfile: Dockerfile
+    container_name: wss-datadb
+    networks:
+      mybridge:
+        ipv4_address: 172.20.0.5
+    ports:
+      - "3307:3306"
+    volumes:
+      - ./datadb/data:/var/lib/mysql
+    restart: always
+
+  wss-back:
+    build:
+      context: ./back
+      dockerfile: Dockerfile
+    container_name: wss-back
+    depends_on:
+      - wss-userdb
+      - wss-datadb
+    networks:
+      mybridge:
+        ipv4_address: 172.20.0.3
+    ports:
+      - "8080:8080"
+    restart: always
+
+  wss-front:
+    build:
+      context: ./front
+      dockerfile: Dockerfile
+    container_name: wss-front
+    depends_on:
+      - wss-back
+    networks:
+      mybridge:
+        ipv4_address: 172.20.0.2
+    ports:
+      - "80:80"
+    restart: always
+
+volumes:
+  userdb_data:
+  datadb_data:
