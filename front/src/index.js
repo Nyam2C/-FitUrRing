@@ -2,20 +2,21 @@ import React, { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
 
 function App() {
-    const [message, setMessage] = useState('');
+    const [currentTime, setCurrentTime] = useState('');
 
     useEffect(() => {
-        // 백엔드 서버로 요청을 보냅니다.
-        fetch('http://localhost:8080/')
-            .then(response => response.text())
-            .then(data => setMessage(data))
-            .catch(error => console.error('Error fetching data:', error));
+        const intervalId = setInterval(() => {
+            const now = new Date();
+            setCurrentTime(now.toLocaleTimeString());
+        }, 1000);
+
+        return () => clearInterval(intervalId); // 컴포넌트가 언마운트될 때 인터벌을 정리합니다.
     }, []);
 
     return (
         <div>
             <h1>Hello from the frontend!</h1>
-            <p>Message from backend: {message}</p>
+            <p>Current Time: {currentTime}</p>
         </div>
     );
 }

@@ -49,6 +49,8 @@ services:
         ipv4_address: 172.20.0.3
     ports:
       - "8080:8080"
+    volumes:
+      - ./back/src:/workspace/src
     restart: always
 
   wss-front:
@@ -63,6 +65,9 @@ services:
         ipv4_address: 172.20.0.2
     ports:
       - "80:80"
+    volumes:
+      - ./front/src:/workspace/src
+      - ./front/public:/workspace/public
     restart: always
 
 volumes:
