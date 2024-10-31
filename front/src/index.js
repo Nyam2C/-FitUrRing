@@ -1,24 +1,21 @@
 import React, { useEffect, useState } from 'react';
-import ReactDOM from 'react-dom';
 
-function App() {
-    const [currentTime, setCurrentTime] = useState('');
+function BackendRequest() {
+    const [message, setMessage] = useState('');
 
     useEffect(() => {
-        const intervalId = setInterval(() => {
-            const now = new Date();
-            setCurrentTime(now.toLocaleTimeString());
-        }, 1000);
-
-        return () => clearInterval(intervalId); // 컴포넌트가 언마운트될 때 인터벌을 정리합니다.
+        fetch('http://172.20.0.3:8080/uptime')
+            .then(response => response.text())
+            .then(data => setMessage(data))
+            .catch(error => console.error('Error fetching data:', error));
     }, []);
 
     return (
         <div>
-            <h1>Hello from the frontend!</h1>
-            <p>Current Time: {currentTime}</p>
+            <h2>Backend Message:</h2>
+            <p>{message}</p>
         </div>
     );
 }
 
-ReactDOM.render(<App />, document.getElementById('root'));
+export default BackendRequest;
