@@ -4,13 +4,8 @@ stages:
 
 variables:
   DOCKER_DRIVER: overlay2
-  DOCKER_TLS_CERTDIR: ""
 
 image: docker:latest
-
-services:
-  - name: docker:dind
-    command: ["--tls=false", "--host=tcp://0.0.0.0:2375", "--host=unix:///var/run/docker.sock"]
 
 before_script:
   - apk add --no-cache docker-cli docker-compose
@@ -19,7 +14,6 @@ before_script:
 test:
   stage: test
   script:
-    - export DOCKER_HOST=tcp://localhost:2375
     - docker-compose -f docker-compose.yaml up -d
   only:
     - develop
