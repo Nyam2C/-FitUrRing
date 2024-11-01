@@ -9,7 +9,8 @@ variables:
 image: docker:latest
 
 services:
-  - docker:dind
+  - name: docker:dind
+    command: ["--tls=false", "--host=tcp://0.0.0.0:2375", "--host=unix:///var/run/docker.sock"]
 
 before_script:
   - apk add --no-cache docker-cli docker-compose # Docker CLI와 Docker Compose 설치
@@ -18,8 +19,7 @@ before_script:
 test_front:
   stage: test
   script:
-    - export DOCKER_HOST=tcp://docker:2375 # Docker 데몬에 연결
-    - docker info
+    - export DOCKER_HOST=tcp://localhost:2375 # Docker 데몬에 연결
     - docker-compose -f docker-compose.yaml up -d wss-front
     - docker-compose -f docker-compose.yaml exec wss-front npm test
   only:
@@ -29,8 +29,7 @@ test_front:
 test_back:
   stage: test
   script:
-    - export DOCKER_HOST=tcp://docker:2375 # Docker 데몬에 연결
-    - docker info
+    - export DOCKER_HOST=tcp://localhost:2375 # Docker 데몬에 연결
     - docker-compose -f docker-compose.yaml up -d wss-back
     - docker-compose -f docker-compose.yaml exec wss-back npm test
   only:
@@ -40,8 +39,7 @@ test_back:
 test_db:
   stage: test
   script:
-    - export DOCKER_HOST=tcp://docker:2375 # Docker 데몬에 연결
-    - docker info
+    - export DOCKER_HOST=tcp://localhost:2375 # Docker 데몬에 연결
     - docker-compose -f docker-compose.yaml up -d wss-userdb wss-datadb
     - docker-compose -f docker-compose.yaml exec wss-userdb mysqlcheck --all-databases
     - docker-compose -f docker-compose.yaml exec wss-datadb mysqlcheck --all-databases
@@ -52,8 +50,7 @@ test_db:
 deploy:
   stage: deploy
   script:
-    - export DOCKER_HOST=tcp://docker:2375 # Docker 데몬에 연결
-    - docker info
+    - export DOCKER_HOST=tcp://localhost:2375 # Docker 데몬에 연결
     - docker-compose -f docker-compose.yaml up -d
   only:
     - master
