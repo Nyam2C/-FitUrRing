@@ -19,10 +19,6 @@ test:
   stage: test
   script:
     - docker-compose -f docker-compose.yaml up -d
-    - docker-compose -f docker-compose.yaml exec wss-front npm start
-    - docker-compose -f docker-compose.yaml exec wss-back npm start
-    - docker-compose -f docker-compose.yaml exec wss-userdb mysqlcheck --all-databases
-    - docker-compose -f docker-compose.yaml exec wss-datadb mysqlcheck --all-databases
   only:
     - develop
     - master
@@ -30,6 +26,12 @@ test:
 deploy:
   stage: deploy
   script:
-    - docker-compose -f docker-compose.yaml up -d
+    - eval $(ssh-agent -s)
+    - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+    - ssh-keyscan -H $SSH_HOST >> ~/.ssh/known_hosts
+    - chmod 644 ~/.ssh/known_hosts
+    - ssh $SSH_USER@$SSH_HOST 'cd FitUrRing && ./deploy.sh'
   only:
     - master
