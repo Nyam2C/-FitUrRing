@@ -1,7 +1,9 @@
 image: docker:latest
 
 services:
-  - docker:dind
+  - name: docker:dind
+    command: ["--tls=false"]
+    privileged: true
 
 variables:
   DOCKER_DRIVER: overlay2
