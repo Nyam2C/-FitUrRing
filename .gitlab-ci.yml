@@ -19,7 +19,7 @@ before_script:
 test_front:
   stage: test
   script:
-    - docker-compose -f docker-compose.yml up -d wss-front
+    - docker-compose -f docker-compose.yaml up -d wss-front
   only:
     - develop
     - master
@@ -27,7 +27,7 @@ test_front:
 test_back:
   stage: test
   script:
-    - docker-compose -f docker-compose.yml up -d wss-back
+    - docker-compose -f docker-compose.yaml up -d wss-back
   only:
     - develop
     - master
@@ -35,9 +35,9 @@ test_back:
 test_db:
   stage: test
   script:
-    - docker-compose -f docker-compose.yml up -d wss-userdb wss-datadb
-    - docker-compose -f docker-compose.yml exec wss-userdb mysqlcheck --all-databases
-    - docker-compose -f docker-compose.yml exec wss-datadb mysqlcheck --all-databases
+    - docker-compose -f docker-compose.yaml up -d wss-userdb wss-datadb
+    - docker-compose -f docker-compose.yaml exec wss-userdb mysqlcheck --all-databases
+    - docker-compose -f docker-compose.yaml exec wss-datadb mysqlcheck --all-databases
   only:
     - develop
     - master
@@ -45,7 +45,7 @@ test_db:
 deploy:
   stage: deploy
   script:
-    - docker-compose -f docker-compose.yml up -d
+    - docker-compose -f docker-compose.yaml up -d
   only:
     - master
 
