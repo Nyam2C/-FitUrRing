@@ -20,8 +20,8 @@ test_front:
   stage: test
   script:
     - export DOCKER_HOST=tcp://localhost:2375 # Docker 데몬에 연결
-    - docker-compose -f docker-compose.yaml up -d wss-front
-    - docker-compose -f docker-compose.yaml exec wss-front npm test
+    - docker-compose -f docker-compose.yml up -d wss-front
+    - docker-compose -f docker-compose.yml exec wss-front npm test
   only:
     - develop
     - master
@@ -29,9 +29,10 @@ test_front:
 test_back:
   stage: test
   script:
+    - docker info
     - export DOCKER_HOST=tcp://localhost:2375 # Docker 데몬에 연결
-    - docker-compose -f docker-compose.yaml up -d wss-back
-    - docker-compose -f docker-compose.yaml exec wss-back npm test
+    - docker-compose -f docker-compose.yml up -d wss-back
+    - docker-compose -f docker-compose.yml exec wss-back npm test
   only:
     - develop
     - master
@@ -40,9 +41,9 @@ test_db:
   stage: test
   script:
     - export DOCKER_HOST=tcp://localhost:2375 # Docker 데몬에 연결
-    - docker-compose -f docker-compose.yaml up -d wss-userdb wss-datadb
-    - docker-compose -f docker-compose.yaml exec wss-userdb mysqlcheck --all-databases
-    - docker-compose -f docker-compose.yaml exec wss-datadb mysqlcheck --all-databases
+    - docker-compose -f docker-compose.yml up -d wss-userdb wss-datadb
+    - docker-compose -f docker-compose.yml exec wss-userdb mysqlcheck --all-databases
+    - docker-compose -f docker-compose.yml exec wss-datadb mysqlcheck --all-databases
   only:
     - develop
     - master
@@ -51,6 +52,6 @@ deploy:
   stage: deploy
   script:
     - export DOCKER_HOST=tcp://localhost:2375 # Docker 데몬에 연결
-    - docker-compose -f docker-compose.yaml up -d
+    - docker-compose -f docker-compose.yml up -d
   only:
     - master
