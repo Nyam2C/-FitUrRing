@@ -1,25 +1,58 @@
 stages:
+  - build
   - test
   - deploy
 
 variables:
   DOCKER_DRIVER: overlay2
-  DOCKER_TLS_CERTDIR: "" # TLS 인증서 디렉토리 비활성화
+  DOCKER_TLS_CERTDIR: ""
 
 image: docker:latest
 
 services:
-  - name: docker:dind
-    command: ["--tls=false", "--host=tcp://0.0.0.0:2375", "--host=unix:///var/run/docker.sock"]
+  - docker:dind
 
 before_script:
-  - apk add --no-cache docker-cli docker-compose # Docker CLI와 Docker Compose 설치
+  - apk add --no-cache docker-cli
   - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+
+build_front:
+  stage: build
+  script:
+    - docker build -t wss-front ./front
+  only:
+    - develop
+    - master
+
+build_back:
+  stage: build
+  script:
+    - docker build -t wss-back ./back
+  only:
+    - develop
+    - master
+
+build_userdb:
+  stage: build
+  script:
+    - docker build -t wss-userdb ./userdb
+  only:
+    - develop
+    - master
+
+build_datadb:
+  stage: build
+  script:
+    - docker build -t wss-datadb ./datadb
+  only:
+    - develop
+    - master
 
 test_front:
   stage: test
   script:
-    - docker-compose -f docker-compose.yaml up -d wss-front
+    - docker run -d --name wss-front wss-front
+    - docker exec wss-front npm start
   only:
     - develop
     - master
@@ -27,7 +60,8 @@ test_front:
 test_back:
   stage: test
   script:
-    - docker-compose -f docker-compose.yaml up -d wss-back
+    - docker run -d --name wss-back wss-back
+    - docker exec wss-back npm start
   only:
     - develop
     - master
@@ -35,9 +69,10 @@ test_back:
 test_db:
   stage: test
   script:
-    - docker-compose -f docker-compose.yaml up -d wss-userdb wss-datadb
-    - docker-compose -f docker-compose.yaml exec wss-userdb mysqlcheck --all-databases
-    - docker-compose -f docker-compose.yaml exec wss-datadb mysqlcheck --all-databases
+    - docker run -d --name wss-userdb wss-userdb
+    - docker run -d --name wss-datadb wss-datadb
+    - docker exec wss-userdb mysqlcheck --all-databases
+    - docker exec wss-datadb mysqlcheck --all-databases
   only:
     - develop
     - master
@@ -45,14 +80,9 @@ test_db:
 deploy:
   stage: deploy
   script:
-    - docker-compose -f docker-compose.yaml up -d
+    - docker run -d --name wss-front wss-front
+    - docker run -d --name wss-back wss-back
+    - docker run -d --name wss-userdb wss-userdb
+    - docker run -d --name wss-datadb wss-datadb
   only:
     - master
-
-test_docker:
-  stage: test
-  image: docker:latest
-  services:
-    - docker:dind
-  script:
-    - docker info
