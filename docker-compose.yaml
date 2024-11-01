@@ -50,7 +50,7 @@ services:
     ports:
       - "8080:8080"
     volumes:
-      - ./back/src:/workspace/src
+      - ./back/src:/app/src
     restart: always
 
   wss-front:
@@ -66,8 +66,8 @@ services:
     ports:
       - "80:80"
     volumes:
-      - ./front/src:/workspace/src
-      - ./front/public:/workspace/public
+      - ./front/src:/app/src
+      - ./front/public:/app/public
     restart: always
 
 volumes:

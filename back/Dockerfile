@@ -1,5 +1,5 @@
 FROM node:22.2.0-alpine
-WORKDIR /workspace
+WORKDIR /app
 COPY . .
 RUN npm install
 CMD npm run start

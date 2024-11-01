@@ -8,12 +8,8 @@ app.use(cors()); // 모든 요청에 대해 CORS 허용
 // 서버 시작 시간을 기록합니다.
 const serverStartTime = Date.now();
 
-app.get('/', (req, res) => {
-    res.send('Hello from the backend!');
-});
-
 // 업타임을 계산하여 반환하는 엔드포인트를 추가합니다.
-app.get('/uptime', (req, res) => {
+app.get('/api/uptime', (req, res) => {
     const uptime = Date.now() - serverStartTime;
     console.log(`Server uptime: ${Math.floor(uptime / 1000)} seconds`);
     res.send(`Server uptime: ${Math.floor(uptime / 1000)} seconds`);
