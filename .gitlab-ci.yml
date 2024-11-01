@@ -1,5 +1,4 @@
 stages:
-  - build
   - test
   - deploy
 
@@ -13,66 +12,18 @@ services:
   - docker:dind
 
 before_script:
-  - apk add --no-cache docker-cli
+  - apk add --no-cache docker-cli docker-compose
   - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
 
-build_front:
-  stage: build
-  script:
-    - docker build -t wss-front ./front
-  only:
-    - develop
-    - master
-
-build_back:
-  stage: build
-  script:
-    - docker build -t wss-back ./back
-  only:
-    - develop
-    - master
-
-build_userdb:
-  stage: build
-  script:
-    - docker build -t wss-userdb ./userdb
-  only:
-    - develop
-    - master
-
-build_datadb:
-  stage: build
-  script:
-    - docker build -t wss-datadb ./datadb
-  only:
-    - develop
-    - master
-
-test_front:
+test:
   stage: test
   script:
-    - docker run -d --name wss-front wss-front
-    - docker exec wss-front npm start
-  only:
-    - develop
-    - master
-
-test_back:
-  stage: test
-  script:
-    - docker run -d --name wss-back wss-back
-    - docker exec wss-back npm start
-  only:
-    - develop
-    - master
-
-test_db:
-  stage: test
-  script:
-    - docker run -d --name wss-userdb wss-userdb
-    - docker run -d --name wss-datadb wss-datadb
-    - docker exec wss-userdb mysqlcheck --all-databases
-    - docker exec wss-datadb mysqlcheck --all-databases
+    - export DOCKER_HOST=tcp://localhost:2375
+    - docker-compose -f docker-compose.yaml up -d
+    - docker-compose -f docker-compose.yaml exec wss-front npm test
+    - docker-compose -f docker-compose.yaml exec wss-back npm test
+    - docker-compose -f docker-compose.yaml exec wss-userdb mysqlcheck --all-databases
+    - docker-compose -f docker-compose.yaml exec wss-datadb mysqlcheck --all-databases
   only:
     - develop
     - master
@@ -80,9 +31,7 @@ test_db:
 deploy:
   stage: deploy
   script:
-    - docker run -d --name wss-front wss-front
-    - docker run -d --name wss-back wss-back
-    - docker run -d --name wss-userdb wss-userdb
-    - docker run -d --name wss-datadb wss-datadb
+    - export DOCKER_HOST=tcp://localhost:2375
+    - docker-compose -f docker-compose.yaml up -d
   only:
     - master
