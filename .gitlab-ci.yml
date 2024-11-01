@@ -1,24 +1,37 @@
-image: docker:latest
-
-services:
-  - docker:dind
-
-variables:
-  DOCKER_HOST: tcp://localhost:2375
-  DOCKER_DRIVER: overlay2
-
 stages:
-  - build
+  - test
   - deploy
 
-before_script:
-  - docker info
-  - apk add --no-cache docker-compose
+variables:
+  DOCKER_DRIVER: overlay2
 
-build:
-  stage: build
+before_script:
+  - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+
+test_front:
+  stage: test
   script:
-    - docker-compose -f docker-compose.yaml build
+    - docker-compose -f docker-compose.yaml up -d wss-front
+    - docker-compose -f docker-compose.yaml exec wss-front npm test
+  only:
+    - develop
+    - master
+
+test_back:
+  stage: test
+  script:
+    - docker-compose -f docker-compose.yaml up -d wss-back
+    - docker-compose -f docker-compose.yaml exec wss-back npm test
+  only:
+    - develop
+    - master
+
+test_db:
+  stage: test
+  script:
+    - docker-compose -f docker-compose.yaml up -d wss-userdb wss-datadb
+    - docker-compose -f docker-compose.yaml exec wss-userdb mysqlcheck --all-databases
+    - docker-compose -f docker-compose.yaml exec wss-datadb mysqlcheck --all-databases
   only:
     - develop
     - master
@@ -26,8 +39,6 @@ build:
 deploy:
   stage: deploy
   script:
-    - echo "Deploying to server"
-    - ./deploy.sh
+    - docker-compose -f docker-compose.yaml up -d
   only:
-    - develop
     - master
