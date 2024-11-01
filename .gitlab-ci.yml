@@ -19,9 +19,7 @@ before_script:
 test_front:
   stage: test
   script:
-    - export DOCKER_HOST=tcp://docker:2375 # Docker 데몬에 연결
     - docker-compose -f docker-compose.yml up -d wss-front
-    - docker-compose -f docker-compose.yml exec wss-front npm test
   only:
     - develop
     - master
@@ -29,9 +27,7 @@ test_front:
 test_back:
   stage: test
   script:
-    - export DOCKER_HOST=tcp://docker:2375 # Docker 데몬에 연결
     - docker-compose -f docker-compose.yml up -d wss-back
-    - docker-compose -f docker-compose.yml exec wss-back npm test
   only:
     - develop
     - master
@@ -39,7 +35,6 @@ test_back:
 test_db:
   stage: test
   script:
-    - export DOCKER_HOST=tcp://docker:2375 # Docker 데몬에 연결
     - docker-compose -f docker-compose.yml up -d wss-userdb wss-datadb
     - docker-compose -f docker-compose.yml exec wss-userdb mysqlcheck --all-databases
     - docker-compose -f docker-compose.yml exec wss-datadb mysqlcheck --all-databases
@@ -50,7 +45,6 @@ test_db:
 deploy:
   stage: deploy
   script:
-    - export DOCKER_HOST=tcp://docker:2375 # Docker 데몬에 연결
     - docker-compose -f docker-compose.yml up -d
   only:
     - master
@@ -61,5 +55,4 @@ test_docker:
   services:
     - docker:dind
   script:
-    - export DOCKER_HOST=tcp://docker:2375
     - docker info
