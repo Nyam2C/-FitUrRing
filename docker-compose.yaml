@@ -8,32 +8,21 @@ networks:
           gateway: 172.20.0.1
 
 services:
-  wss-userdb:
+  wss-db:
     build:
-      context: ./userdb
+      context: ./db
       dockerfile: Dockerfile
-    container_name: wss-userdb
+    env_file:
+      - .env
+    container_name: wss-db
     networks:
       mybridge:
         ipv4_address: 172.20.0.4
     ports:
-      - "3308:3306"
-    volumes:
-      - ./userdb/data:/var/lib/mysql
-    restart: always
-
-  wss-datadb:
-    build:
-      context: ./datadb
-      dockerfile: Dockerfile
-    container_name: wss-datadb
-    networks:
-      mybridge:
-        ipv4_address: 172.20.0.5
-    ports:
       - "3307:3306"
     volumes:
-      - ./datadb/data:/var/lib/mysql
+      - ./db/data:/var/lib/mysql
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
     restart: always
 
   wss-back:
@@ -42,8 +31,7 @@ services:
       dockerfile: Dockerfile
     container_name: wss-back
     depends_on:
-      - wss-userdb
-      - wss-datadb
+      - wss-db
     networks:
       mybridge:
         ipv4_address: 172.20.0.3
@@ -69,7 +57,3 @@ services:
       - ./front/src:/app/src
       - ./front/public:/app/public
     restart: always
-
-volumes:
-  userdb_data:
-  datadb_data:

@@ -54,3 +54,18 @@ Feat: Login Page added
 - 함수명은 camelCase 사용(fetchData, getUserInfo 등)
 
 - 이외 추가 사항은 추후 추가
+
+## git 충돌 방지
+### 로컬 레포지토리에서 작업중 변경 사항을 불러와야할 상황일때
+```sh
+git stash // 변경사항 임시저장
+git pull -a // 모든 브랜치 변경사항 가져오기
+git stash pop // 임시저장한 변경사항 복구
+```
+
+### A 브랜치에서 나온 B 브랜치 작업중 A 브랜치의 변경점을 B 브랜치로 바로 가져오고 싶을 때
+```sh
+git checkout B
+git pull -a
+git rebase A
+```
