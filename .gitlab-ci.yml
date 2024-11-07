@@ -17,7 +17,8 @@ test:
   script:
     - cd front/nginx/ssl
     - ls
-    - ./setup_ssl.sh
+    - chmod +x setup_ssl.sh
+    - bash setup_ssl.sh
     - cd ~
     - export DOCKER_HOST=unix:///var/run/docker.sock
     - docker-compose -f docker-compose.yaml up -d
