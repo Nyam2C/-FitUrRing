@@ -69,3 +69,10 @@ git checkout B
 git pull -a
 git rebase A
 ```
+
+### 로컬에서 작업 중 ssl 인증서 발급
+> ! 윈도우 작업시 wsl 환경에서 작업 필요
+```sh
+cd front/nginx/ssl
+./setup_ssl.sh
+```

@@ -53,7 +53,11 @@ services:
         ipv4_address: 172.20.0.2
     ports:
       - "80:80"
+      - "443:443"
     volumes:
       - ./front/src:/app/src
       - ./front/public:/app/public
+      - ./front/nginx/ssl:/etc/nginx/ssl
+    environment:
+      - SERVER_NAME=fiturring.kro.kr, localhost
     restart: always
