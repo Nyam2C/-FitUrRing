@@ -16,6 +16,7 @@ test:
   stage: test
   script:
     - cd front/nginx/ssl
+    - ls
     - ./setup_ssl.sh
     - cd ~
     - export DOCKER_HOST=unix:///var/run/docker.sock
