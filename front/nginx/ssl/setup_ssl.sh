@@ -40,9 +40,6 @@ generate_and_move_ssl_certificates() {
   echo "SSL 인증서 발급 중... 도메인: $domains"
   mkcert $domains
 
-  # SSL 디렉토리 생성
-  mkdir -p "$ssl_dir"
-
   # 인증서 파일 이름 변경 및 이동
   mv "localhost+1.pem" "fullchain.pem"
   mv "localhost+1-key.pem" "privkey.pem"
