@@ -10,7 +10,9 @@ image: docker:latest
 before_script:
   - apk update
   - apk add --no-cache curl nss
-  - curl -L https://dl.filippo.io/mkcert/latest?for=linux/amd64 | tar xz -C /usr/local/bin
+  - curl -Lo mkcert https://dl.filippo.io/mkcert/latest?for=linux/amd64
+  - chmod +x mkcert
+  - mv mkcert /usr/local/bin/
   - mkcert -install
   - apk add --no-cache docker-cli docker-compose
   - apk update
