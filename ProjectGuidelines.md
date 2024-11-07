@@ -74,5 +74,5 @@ git rebase A
 > ! 윈도우 작업시 wsl 환경에서 작업 필요
 ```sh
 cd front/nginx/ssl
-./setup_ssl.sh
+sudo ./setup_ssl.sh
 ```
