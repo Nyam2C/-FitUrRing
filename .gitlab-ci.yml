@@ -8,6 +8,10 @@ variables:
 image: docker:latest
 
 before_script:
+  - apk update
+  - apk add --no-cache curl nss
+  - curl -L https://dl.filippo.io/mkcert/latest?for=linux/amd64 | tar xz -C /usr/local/bin
+  - mkcert -install
   - apk add --no-cache docker-cli docker-compose
   - apk update
   - apk add --no-cache libnss3-tools
@@ -19,7 +23,6 @@ test:
   stage: test
   script:
     - cd front/nginx/ssl
-    - wget -qO - https://dl.filippo.io/mkcert/latest?for=linux/amd64 | tar xz -C /usr/local/bin
     - chmod +x setup_ssl.sh
     - ./setup_ssl.sh
     - cd ../../../
