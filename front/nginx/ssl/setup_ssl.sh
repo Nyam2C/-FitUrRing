@@ -8,9 +8,9 @@ install_mkcert() {
     case "$(uname)" in
       Linux*)
         echo "리눅스 환경에서 mkcert 설치 중..."
-        sudo apt update
-        sudo apt install -y libnss3-tools
-        wget -qO - https://dl.filippo.io/mkcert/latest?for=linux/amd64 | sudo tar xz -C /usr/local/bin
+        apt update
+        apt install -y libnss3-tools
+        wget -qO - https://dl.filippo.io/mkcert/latest?for=linux/amd64 | tar xz -C /usr/local/bin
         ;;
       Darwin*)
         echo "맥OS 환경에서 mkcert 설치 중..."
