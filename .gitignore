@@ -2,5 +2,4 @@ node_modules
 .vscode
 db/data
 .env
-front/nginx/ssl/fullchain.pem
-front/nginx/ssl/privkey.pem
+front/nginx/ssl/*.pem
