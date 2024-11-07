@@ -10,7 +10,9 @@ install_mkcert() {
         echo "리눅스 환경에서 mkcert 설치 중..."
         apt update
         apt install -y libnss3-tools
-        wget -qO - https://dl.filippo.io/mkcert/latest?for=linux/amd64 | tar xz -C /usr/local/bin
+        curl -L https://dl.filippo.io/mkcert/latest?for=linux/amd64 -o mkcert
+        chmod +x mkcert
+        mv mkcert /usr/local/bin/
         ;;
       Darwin*)
         echo "맥OS 환경에서 mkcert 설치 중..."
