@@ -15,8 +15,6 @@ before_script:
   - mv mkcert /usr/local/bin/
   - mkcert -install
   - apk add --no-cache docker-cli docker-compose
-  - apk update
-  - apk add --no-cache libnss3-tools
   - apk add --no-cache wget
   - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
   - echo -e "MYSQL_ROOT_PASSWORD=testdb123\nMYSQL_DATABASE=testdb" > .env
