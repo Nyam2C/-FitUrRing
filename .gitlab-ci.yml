@@ -15,11 +15,11 @@ before_script:
 test:
   stage: test
   script:
-    - export DOCKER_HOST=unix:///var/run/docker.sock
-    - docker-compose -f docker-compose.yaml up -d
     - cd front/nginx/ssl
     - ./setup_ssl.sh
     - cd ~
+    - export DOCKER_HOST=unix:///var/run/docker.sock
+    - docker-compose -f docker-compose.yaml up -d
   only:
     - develop
     - master
