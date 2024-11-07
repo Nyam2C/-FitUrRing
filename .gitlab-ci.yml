@@ -16,7 +16,6 @@ test:
   stage: test
   script:
     - cd front/nginx/ssl
-    - ls
     - chmod +x setup_ssl.sh
     - ./setup_ssl.sh
     - cd ~
