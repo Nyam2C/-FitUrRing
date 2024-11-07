@@ -1,23 +1,27 @@
-#!/bin/bash
+#!/bin/sh
 
 # mkcert 설치 확인 및 설치
 install_mkcert() {
-  if ! command -v mkcert &> /dev/null; then
+  if ! command -v mkcert >/dev/null 2>&1; then
     echo "mkcert가 설치되어 있지 않습니다. 설치를 시작합니다."
 
-    if [[ "$OSTYPE" == "linux-gnu"* ]]; then
-      echo "리눅스 환경에서 mkcert 설치 중..."
-      sudo apt update
-      sudo apt install -y libnss3-tools
-      wget -qO - https://dl.filippo.io/mkcert/latest?for=linux/amd64 | sudo tar xz -C /usr/local/bin
-    elif [[ "$OSTYPE" == "darwin"* ]]; then
-      echo "맥OS 환경에서 mkcert 설치 중..."
-      brew install mkcert
-      brew install nss # Firefox를 사용하는 경우 필요
-    else
-      echo "지원하지 않는 운영 체제입니다."
-      exit 1
-    fi
+    case "$(uname)" in
+      Linux*)
+        echo "리눅스 환경에서 mkcert 설치 중..."
+        sudo apt update
+        sudo apt install -y libnss3-tools
+        wget -qO - https://dl.filippo.io/mkcert/latest?for=linux/amd64 | sudo tar xz -C /usr/local/bin
+        ;;
+      Darwin*)
+        echo "맥OS 환경에서 mkcert 설치 중..."
+        brew install mkcert
+        brew install nss # Firefox를 사용하는 경우 필요
+        ;;
+      *)
+        echo "지원하지 않는 운영 체제입니다."
+        exit 1
+        ;;
+    esac
   else
     echo "mkcert가 이미 설치되어 있습니다."
   fi
@@ -31,10 +35,10 @@ install_local_ca() {
 
 # SSL 인증서 발급 및 이동
 generate_and_move_ssl_certificates() {
-  local domains=("localhost" "fiturring.kro.kr") # 필요한 도메인 추가
+  local domains="localhost fiturring.kro.kr" # 필요한 도메인 추가
 
-  echo "SSL 인증서 발급 중... 도메인: ${domains[*]}"
-  mkcert "${domains[@]}"
+  echo "SSL 인증서 발급 중... 도메인: $domains"
+  mkcert $domains
 
   # SSL 디렉토리 생성
   mkdir -p "$ssl_dir"
