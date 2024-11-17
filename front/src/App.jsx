@@ -16,11 +16,8 @@ function App(){
             <div className="App">
                 <Header userId={userId} />
                 <div>
-
                 </div>
             </div>
-
-
             <Routes>
                 <Route exact path="/"  element={<MainContent />} />
                 <Route path="/signin"  element={<SignIn />} />
