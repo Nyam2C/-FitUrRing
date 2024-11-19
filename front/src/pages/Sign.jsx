@@ -3,7 +3,7 @@ import './index.css';
 
 function SignInForm(){
     return (
-        <form id="signInForm">
+        <form id="signInForm" className="rightmove">
             <label id="title">Sign In</label>
             <input 
             id="id"
@@ -24,7 +24,7 @@ function SignInForm(){
 
 function SignUpForm(){
     return (
-        <form id="signUpForm">
+        <form id="signUpForm" className='leftmove'>
             <label id="title">Sign Up</label>
             <input required id="name" type="text" name="name" placeholder='성함'></input>
             <input required id="id" type="text" name="id" placeholder='ID'></input>
@@ -45,12 +45,16 @@ function SignUpForm(){
 }
 
 function AsideContent({ isActive, onShow, title, label }){
+    let move = '';
+    if (label === 'Sign In') move = 'rightmove';
+    else                move = 'leftmove';
+
     return (
         <>
             {isActive?(
                 null
             ) : (
-                <aside>
+                <aside id='aside' className={move}>
                     <h1 id="title">{title}</h1>
                     <button onClick={onShow}>
                         <span>{label}</span>
@@ -102,7 +106,7 @@ function Sign() {
             <AsideContent
                 isActive={activeIndex === 1}
                 onShow={() => setActiveIndex(1)}
-                title="Sign Up"
+                title="Workout now"
                 label="Sign Up"
             />
         </div>
