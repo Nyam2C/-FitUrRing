@@ -11,8 +11,12 @@ function Footer() {
                 <li> 9조 </li>
             </ul>
             <ul>
+                <li> 백엔드 </li>
                 <li> 문경호 </li>
                 <li> 김다인 </li>
+            </ul>
+            <ul>
+                <li> 프론트엔드 </li>
                 <li> 박태현 </li>
                 <li> 장지윤 </li>
             </ul>

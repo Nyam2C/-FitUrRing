@@ -5,7 +5,10 @@ body{
 }
 
 #main-content{
-  min-height: calc(100vh - 10rem - 10rem);
+  display: flex;
+  min-height: calc(100vh - 7rem - 10rem);
+  justify-content: center;
+  align-items: center;
 }
   
   
