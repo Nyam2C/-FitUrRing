@@ -73,19 +73,6 @@ git rebase A
 ### 로컬에서 작업 중 ssl 인증서 발급
 > ! 윈도우 작업시 wsl 환경에서 작업 필요
 ```sh
-./setup.sh
+cd front/nginx/ssl
+sudo ./setup_ssl.sh
 ```
-> 필요시 패키지 수동 설치 후 진행
-
-#### 참고사항
-* nginx가 설치되어 기본 포트랑 충돌시
-```sh
-netstat -tunlp | grep 80
-```
-> 80번 포트 사용중인 프로그램 종료 후 진행
-```sh
-sudo systemctl stop nginx
-```
-
-### .env 파일 수정 시
-이젠 setup.sh 실행시 .env.example 토대로 자동 생성되나 YOUTUBE_API_KEY 수정 필요
