@@ -3,7 +3,7 @@
     flex-wrap: wrap;
     align-items: center;
     justify-content: space-evenly;
-    margin: 3em;
+    height: 10rem;
 }
 
 .large{
@@ -11,12 +11,12 @@
 }
 
 .link:link{
-    color: black;
+    color: #FFFFFF;
     text-decoration: none;
 }
 
 .link:visited{
-    color: black;
+    color: #FFFFFF;
 }
 
 #footer{
@@ -24,8 +24,10 @@
     flex-direction: row;
     line-height: 1.8;
     justify-content: space-evenly;
-    background-color: rgb(209, 209, 209);
+    background-color: #242834;
     margin: 0;
+    color: #DFDFE4;
+    height: 10rem;
 }
 
 ul{

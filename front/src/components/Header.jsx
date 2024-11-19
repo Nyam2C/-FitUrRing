@@ -9,13 +9,13 @@ function MyPage(props){
         return (
             <span>
                 <Link class="link large" to='/mypage'>My Page</Link>
-                <Link class="link large" to='/signout'>Sign Out</Link>
+                <Link class="link large" to='/sign'>Sign Out</Link>
             </span>
         );
     }
     else{
         return (
-            <Link class="link large" to='/signin'>Sign in</Link>
+            <Link class="link large" to='/sign'>Sign in</Link>
         );
     }
 }
@@ -23,16 +23,17 @@ function MyPage(props){
 function Header(){
 
     return (
-            <div id="header">
-                <Link class="logo link large" to='/'> 
-                    <Logo width='25pt' height='30pt' fill='#0072CE'/>
-                    <span>Fiturring</span> 
-                </Link>
-                <Link class="link large" to='/workout'>Workout</Link>
-                <Link class="link large" to='/habitTracker'>Habit Tracker</Link>
-                <Link class="link large" to='/routine'>Routine</Link>
-                <MyPage />
-            </div>
+        <div id="header">
+            <Link class="logo link large" to='/'> 
+                <Logo width='25pt' height='30pt' fill='#0072CE'/>
+                <span>Fiturring</span> 
+            </Link>
+            <Link class="link large" to='/workout'>Workout</Link>
+            <Link class="link large" to='/habitTracker'>Habit Tracker</Link>
+            <Link class="link large" to='/routine'>Routine</Link>
+            <Link class="link large" to='diet'>Diet</Link>
+            <MyPage />
+        </div>
     );
 }
 
