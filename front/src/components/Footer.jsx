@@ -9,6 +9,8 @@ function Footer() {
             <ul>
                 <li> 웹시스템설계 </li>
                 <li> 9조 </li>
+            </ul>
+            <ul>
                 <li> 문경호 </li>
                 <li> 김다인 </li>
                 <li> 박태현 </li>
