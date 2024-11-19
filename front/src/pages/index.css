@@ -1,0 +1,52 @@
+#sign{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+aside{
+    display: flex;
+    flex-direction: column;
+    width: 30rem;
+    min-height: calc(100vh - 10rem - 10rem);
+    background-color: #B87EED;
+    align-items: center;
+    justify-content: center;
+  }
+
+#title{
+    font-size: 3em;
+    font-weight: 900;
+    padding: 0 0 1em 0 ;
+}
+
+.panel{
+    min-width: calc(100vw - 30rem);
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+    
+input{
+width: 40em;
+height: 3em;
+border:none;
+border-radius: 10em;
+background-color: lightgray;
+margin: 10px;
+}
+    
+button{
+    background-color: CFFF5E;
+    margin:20px;
+    color:black ;
+    border: none;
+    border-radius: 10em;
+    width: 10em;
+    height: 2.5em;
+    font-size:medium;
+}
+  
