@@ -20,15 +20,20 @@ services:
         ipv4_address: 172.20.0.4
     ports:
       - "27017:27017"
+    command: >
+      /bin/sh -c '
+      /docker-entrypoint-initdb.d/init.sh &&
+      exec mongod --bind_ip_all --replSet rs0'
     volumes:
       - ./db/data:/data/db
-      - ./db/init.js:/docker-entrypoint-initdb.d/init.js
     restart: always
 
   wss-back:
     build:
       context: ./back
       dockerfile: Dockerfile
+    env_file:
+      - .env
     container_name: wss-back
     depends_on:
       - wss-db
