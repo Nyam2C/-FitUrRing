@@ -26,4 +26,8 @@ else
 fi
 
 sudo rm -rf db/data
+
+sudo chmod -R 755 ssl
+sudo chmod 644 ssl/fullchain.pem
+sudo chmod 644 ssl/privkey.pem
 docker-compose up -d --build
