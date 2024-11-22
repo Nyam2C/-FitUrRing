@@ -112,7 +112,7 @@ function Calendar(props){
             </div>
             <div className="grid">
                 <Day 
-                mode={"list"}
+                mode={"ring"}
                 data={fullData}
                 onDetail={props.onDetail} />
             </div>
