@@ -70,3 +70,11 @@ button{
     font-size:medium;
 }
   
+.padding{
+    padding: 20px;
+}
+
+.withBar{
+    position: relative;
+    left: 7vw;
+}

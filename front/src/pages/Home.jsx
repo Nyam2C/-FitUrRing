@@ -1,8 +1,12 @@
 import react from 'react';
 
+import Ring from '../components/Ring';
+
 function Home(){
     return (
-        <h1>Home</h1>
+        <div>
+            <h1>Home</h1>
+        </div>
     );
 }
 

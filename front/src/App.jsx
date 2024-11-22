@@ -5,6 +5,7 @@ import Header from './components/Header';
 import Home from './pages/Home';
 import Footer from './components/Footer'
 import Sign from './pages/Sign';
+import HabitTracker from './pages/HabitTracker';
 
 import './App.css';
 
@@ -19,6 +20,7 @@ function App(){
                     <Routes>
                         <Route exact path="/"  element={<Home />} />
                         <Route path="/sign"  element={<Sign />} />
+                        <Route path="/habitTracker" element={<HabitTracker />} />
                     </Routes>
                 </div>
                 <Footer />

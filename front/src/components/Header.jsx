@@ -8,14 +8,14 @@ function MyPage(props){
     if (props.userId){
         return (
             <span>
-                <Link class="link large" to='/mypage'>My Page</Link>
-                <Link class="link large" to='/sign'>Sign Out</Link>
+                <Link className="link large" to='/mypage'>My Page</Link>
+                <Link className="link large" to='/sign'>Sign Out</Link>
             </span>
         );
     }
     else{
         return (
-            <Link class="link large" to='/sign'>Sign in</Link>
+            <Link className="link large" to='/sign'>Sign in</Link>
         );
     }
 }
@@ -24,14 +24,14 @@ function Header(){
 
     return (
         <div id="header">
-            <Link class="logo link large" to='/'> 
+            <Link className="logo link large" to='/'> 
                 <Logo width='25pt' height='30pt' fill='#0072CE'/>
                 <span>Fiturring</span> 
             </Link>
-            <Link class="link large" to='/workout'>Workout</Link>
-            <Link class="link large" to='/habitTracker'>Habit Tracker</Link>
-            <Link class="link large" to='/routine'>Routine</Link>
-            <Link class="link large" to='diet'>Diet</Link>
+            <Link className="link large" to='/workout'>Workout</Link>
+            <Link className="link large" to='/habitTracker'>Habit Tracker</Link>
+            <Link className="link large" to='/routine'>Routine</Link>
+            <Link className="link large" to='diet'>Diet</Link>
             <MyPage />
         </div>
     );
