@@ -58,6 +58,7 @@ const dateFormat = (date) => {
 
 function Calendar(props){
     const [today, setToday] = useState(new Date());
+    const [view, setView] = useState('ring');
 
     function onPrev(){
         const newMonth = today.getMonth() - 1;
@@ -66,6 +67,9 @@ function Calendar(props){
     function onNext(){
         const newMonth = today.getMonth() + 1;
         setToday(new Date(today.getFullYear(), newMonth));
+    }
+    function handleView(){
+        setView((prev) => ((prev==='ring')?'list':'ring'));
     }
 
     let startOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
@@ -100,7 +104,9 @@ function Calendar(props){
                 <h1 className="title">{dateFormat(today).slice(0,7)}</h1>
                 <button onClick={onNext}>next</button>
             </div>
-
+            <div className="flex-right">
+                <button onClick={handleView}>toggle</button>
+            </div>
             <div className="grid">
                     <div className="center">일</div>
                     <div className="center">월</div>
@@ -112,7 +118,7 @@ function Calendar(props){
             </div>
             <div className="grid">
                 <Day 
-                mode={"ring"}
+                mode={view}
                 data={fullData}
                 onDetail={props.onDetail} />
             </div>

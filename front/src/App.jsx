@@ -6,6 +6,7 @@ import Home from './pages/Home';
 import Footer from './components/Footer'
 import Sign from './pages/Sign';
 import HabitTracker from './pages/HabitTracker';
+import Goal from './pages/Goal';
 
 import './App.css';
 
@@ -21,6 +22,7 @@ function App(){
                         <Route exact path="/"  element={<Home />} />
                         <Route path="/sign"  element={<Sign />} />
                         <Route path="/habitTracker" element={<HabitTracker />} />
+                        <Route path="/habitTracker/Goal" element={<Goal />} />
                     </Routes>
                 </div>
                 <Footer />

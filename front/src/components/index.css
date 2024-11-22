@@ -95,3 +95,8 @@ ul{
     min-height: 100%;
     overflow: hidden;
 }
+
+.flex-right{
+    display: flex;
+    justify-content: flex-end;
+}

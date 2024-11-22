@@ -8,6 +8,10 @@ function HabitTracker(){
     function onDetail(){
 
     }
+    function userStatus(){
+        
+    }
+
     return (
         <div >
             <SideBar 
@@ -15,9 +19,9 @@ function HabitTracker(){
             <div className="withBar padding">
                 <Calendar />
             </div>
-            <SideBar
+            {/* <SideBar
             onDetail={onDetail}
-            side={"right"} />
+            side={"right"} /> */}
         </div>
     );
 }

@@ -19,8 +19,6 @@ function calculPercent(data, goal){
 function Ring({data, goal}){
     const percent = calculPercent(data, goal);
     const dasharray = [2*Math.PI*10];
-    console.log(percent);
-    console.log(dasharray);
 
     return (
         <div className="center">
