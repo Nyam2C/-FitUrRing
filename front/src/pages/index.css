@@ -69,12 +69,21 @@ button{
     height: 2.5em;
     font-size:medium;
 }
-  
+
+.shrink{
+    width: calc(100vw - 21vw); 
+}
+
 .padding{
     padding: 20px;
 }
 
-.withBar{
-    position: relative;
-    left: 7vw;
+.flex{
+    display: flex;
+    width: 100vw;
 }
+
+.flex-grow-main{
+    flex-grow: 15;
+}
+

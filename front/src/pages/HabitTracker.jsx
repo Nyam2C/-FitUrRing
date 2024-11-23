@@ -3,25 +3,34 @@ import Calendar from '../components/Calendar';
 import SideBar from '../components/SideBar';
 
 function HabitTracker(){
-    const [detail, setDetail] = useState();
+    const [detail, setDetail] = useState(false);
     
     function onDetail(){
-
+        setDetail(true);
+    }
+    function deleteDetail(){
+        setDetail(false);
     }
     function userStatus(){
         
     }
 
     return (
-        <div >
+        <div className="flex">
             <SideBar 
             side={"left"}/>
-            <div className="withBar padding">
-                <Calendar />
+
+            <div className={`flex-grow-main `}>
+                <Calendar 
+                onDetail={onDetail}
+                />
             </div>
-            {/* <SideBar
-            onDetail={onDetail}
-            side={"right"} /> */}
+
+            {detail && (
+            <SideBar
+            side={"right"} 
+            onDetail={deleteDetail}/>
+            )}
         </div>
     );
 }

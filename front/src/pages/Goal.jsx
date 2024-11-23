@@ -1,5 +1,7 @@
 import react, { useState } from 'react';
 
+import SideBar from '../components/SideBar';
+
 function Goal(){
     const [weight, setWeight] = useState();
     const [mon, setMon] = useState(false);
@@ -48,6 +50,9 @@ function Goal(){
 
     return (
         <div>
+            <SideBar 
+            side={"left"}/>
+
             <form id="GoalForm">
                 <label id="title">목표 설정</label>
                 <label>목표 체중</label>
@@ -65,7 +70,7 @@ function Goal(){
                 <label>일일 목표 운동 시간</label>
                 <input  id="DailyTime" type="text" name="DailyTime" placeholder={dailyTime}></input>
                 
-                <label>주간 목표 운동 시간</label>
+                <label>주간 목표 횟수</label>
                 <input  id="weeklyTime" type="text" name="weeklyTime" placeholder={weeklyTime}></input>
 
                 <button type="submit">저장</button>

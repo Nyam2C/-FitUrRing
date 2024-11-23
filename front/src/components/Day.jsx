@@ -70,32 +70,49 @@ function displayWhat(item, mode, goal){
 //     );
 // }
 
-function sumTotal(data){
-    //목표가 있으면 목표랑 비교하고 없으면 최대치랑 비교한 percentage반환
-    let total = 0;
+
+//필요없는 로직... goal(dailyTime)이 null이면 Ring에서 일일최고치를 goal로 설정해서 percent계산하면 됨..
+// function sumTotal(data){
+//     //목표가 있으면 목표랑 비교하고 없으면 최대치랑 비교한 percentage반환
+//     let total = 0;
+//     for (let i=0; i<data.length; i++){
+//         if (!data[i].exercises)    continue;
+//         for (let j=0; j<data[i].exercises.length; j++){
+//             let time = data[i].exercises[j].video_time;
+//             let min = parseInt(time.slice(0,time.indexOf(':')));
+//             let sec = parseInt(time.slice(time.indexOf(':')+1));
+//             total += (min*60+sec);
+//         }
+//     }
+//     return total;
+// }
+
+function getMax(data){
+    let max = 0;
     for (let i=0; i<data.length; i++){
-        if (!data[i].exercises)    continue;
+        if (!data[i].exercises) continue;
+        let total = 0;
         for (let j=0; j<data[i].exercises.length; j++){
             let time = data[i].exercises[j].video_time;
             let min = parseInt(time.slice(0,time.indexOf(':')));
             let sec = parseInt(time.slice(time.indexOf(':')+1));
             total += (min*60+sec);
         }
+        max = (max < total)? total : max;
     }
-    return total;
+    console.log(max);
+    return max;
 }
 
-function Day({data, mode}){
-    //total time이나 목표를 계속 가지고 있어야 한다... 
-    let goal = null;
-    if (mode === 'ring'){
-        goal = sumTotal(data);  
+function Day({data, mode, onDetail}){
+    //fetch
+    let goal = 1000;
+    if (mode === 'ring' && goal === null){
+        goal = getMax(data);  
     }
 
     function onShow(e){
-        //날짜 객체 누르면 오른쪽 사이드바 열리면서 달력 width는 좁아짐
-        //오른쪽 사이드바에는 그날 운동한 ExerciseBlock객체 리스트
-        console.log(e.target);
+        onDetail(true);
     }
 
     return (
