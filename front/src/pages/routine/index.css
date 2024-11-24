@@ -1,0 +1,263 @@
+#box {
+    /* Frame 55 */
+
+    /* Auto layout */
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 9.59264px;
+    gap: 9.59px;
+
+    position: relative;
+    width: 1253.76px;
+    height: 730px;
+
+    background: rgba(24, 24, 24, 0.0941176);
+
+}
+
+#left {
+    /* Frame 46 */
+
+    /* Auto layout */
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0px;
+    gap: 9.59px;
+
+    width: 969.82px;
+    height: 710.81px;
+
+
+    /* Inside auto layout */
+    flex: none;
+    order: 0;
+    flex-grow: 0;
+
+}
+
+#right {
+    /* Frame 45 */
+
+
+    /* Frame 45 */
+
+    /* Auto layout */
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0px;
+    gap: 9.59px;
+
+    width: 255.16px;
+    height: 710.81px;
+
+
+    /* Inside auto layout */
+    flex: none;
+    order: 1;
+    flex-grow: 0;
+
+}
+
+#up {
+
+    /* Frame 43 */
+
+    /* Auto layout */
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 0px;
+    gap: 9.59px;
+
+    width: 969.82px;
+    height: 218.71px;
+
+
+    /* Inside auto layout */
+    flex: none;
+    order: 0;
+    flex-grow: 0;
+
+    .now {
+        /* Frame 62 */
+
+        /* Auto layout */
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 0px;
+
+        width: 467.16px;
+        height: 218.71px;
+
+        background: #8C7DFF;
+        border-radius: 33.5742px;
+
+        /* Inside auto layout */
+        flex: none;
+        order: 0;
+        flex-grow: 0;
+
+    }
+
+    .rest {
+        /* Frame 41 */
+
+        /* Auto layout */
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 0px;
+
+        width: 241.73px;
+        height: 218.71px;
+
+        background: #B87EED;
+        border-radius: 33.5742px;
+
+    }
+
+    .timer {
+        /* Frame 40 */
+
+        /* Auto layout */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 0px;
+
+        width: 241.73px;
+        height: 218.71px;
+
+        background: #242834;
+        border-radius: 33.5742px;
+
+        /* Inside auto layout */
+        flex: none;
+        order: 2;
+        flex-grow: 0;
+
+    }
+}
+
+#down {
+    /* Frame 44 */
+
+    /* Auto layout */
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    padding: 0px;
+    gap: 9.59px;
+
+    width: 969.82px;
+    height: 482.51px;
+
+
+    /* Inside auto layout */
+    flex: none;
+    order: 1;
+    align-self: stretch;
+    flex-grow: 0;
+
+    .progress {
+        /* Frame 38 */
+
+        /* Auto layout */
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 0px;
+
+        width: 235.02px;
+        height: 480.59px;
+
+        background: #DFDFE4;
+        border-radius: 33.5742px;
+
+        /* Inside auto layout */
+        flex: none;
+        order: 0;
+        flex-grow: 0;
+
+
+    }
+
+    .video {
+        /* Frame 54 */
+
+        /* Auto layout */
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 0px;
+
+        width: 719.45px;
+        height: 482.51px;
+
+        background: #CFFF5E;
+        border-radius: 33.5742px;
+
+        /* Inside auto layout */
+        flex: none;
+        order: 1;
+        flex-grow: 0;
+
+    }
+
+}
+
+#list {
+    /* Frame 39 */
+
+    /* Auto layout */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 0px;
+
+    width: 255.16px;
+    height: 496.9px;
+
+    background: #B87EED;
+    border-radius: 33.5742px;
+
+    /* Inside auto layout */
+    flex: none;
+    order: 0;
+    align-self: stretch;
+    flex-grow: 0;
+
+}
+
+#start {
+    /* Frame 38 */
+
+    /* Auto layout */
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 0px;
+
+    width: 255.16px;
+    height: 204.32px;
+
+    background: #8C7DFF;
+    border-radius: 33.5742px;
+
+    /* Inside auto layout */
+    flex: none;
+    order: 1;
+    align-self: stretch;
+    flex-grow: 0;
+}

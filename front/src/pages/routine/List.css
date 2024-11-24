@@ -1,0 +1,167 @@
+.List-container {
+    /* Frame 39 */
+
+    /* Auto layout */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 30px 20px;
+
+    position: relative;
+    width: 255.16px;
+    height: 496.9px;
+
+}
+
+.list-head {
+
+    /* Frame 629435 */
+
+    /* Auto layout */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 0px;
+
+    width: 180px;
+    height: 49px;
+
+
+    /* Inside auto layout */
+    flex: none;
+    order: 0;
+    flex-grow: 0;
+}
+
+.list-head span {
+    /* routine */
+
+    width: 180px;
+    height: 39px;
+
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 30px;
+    line-height: 38px;
+    /* identical to box height, or 128% */
+    text-align: center;
+
+    color: #000000;
+
+
+    /* Inside auto layout */
+    flex: none;
+    order: 0;
+    align-self: stretch;
+    flex-grow: 0;
+}
+
+.division-line {
+    /* Line 2 */
+
+    width: 180px;
+    height: 0px;
+
+    border: 1px solid #DFDFE4;
+
+    /* Inside auto layout */
+    flex: none;
+    order: 1;
+    align-self: stretch;
+    flex-grow: 0;
+
+}
+
+.list-head ul {
+
+    /* Frame 629435 */
+
+    /* Auto layout */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: left;
+    padding: 0px;
+    gap: 5px;
+}
+
+.list-head li {
+    /* Auto layout */
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 0px 10px;
+
+    width: 200px;
+    height: 39px;
+
+    background: #DFDFE4;
+    border-radius: 15px;
+    cursor: pointer;
+
+
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 20px;
+
+    /* identical to box height, or 153% */
+    display: flex;
+    align-items: center;
+
+    color: #000000;
+
+
+    /* Inside auto layout */
+    flex: none;
+    order: 1;
+    flex-grow: 0;
+}
+
+.list-head li:hover {
+    background-color: #FFFFFF;
+}
+
+.pick {
+    /* Auto layout */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0px;
+    gap: 10px;
+
+    width: 180px;
+    height: 49px;
+
+
+    /* Inside auto layout */
+    flex: none;
+    order: 0;
+    flex-grow: 0;
+}
+
+.pick span {
+    /* routine */
+
+    width: 180px;
+    height: 39px;
+
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 30px;
+    line-height: 38px;
+    /* identical to box height, or 128% */
+    text-align: center;
+
+    color: #000000;
+
+
+    /* Inside auto layout */
+    flex: none;
+    order: 0;
+    align-self: stretch;
+    flex-grow: 0;
+}

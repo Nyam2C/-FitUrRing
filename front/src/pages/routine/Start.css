@@ -1,0 +1,105 @@
+#start_container {
+    /* Frame 63 */
+
+    /* Auto layout */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 0px;
+
+    width: 205px;
+    height: 135px;
+
+
+    /* Inside auto layout */
+    flex: none;
+    order: 0;
+    flex-grow: 0;
+}
+
+#date {
+
+    width: 210px;
+    height: 39px;
+
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 30px;
+    line-height: 38px;
+    /* identical to box height, or 128% */
+    text-align: center;
+
+    color: #181818;
+
+
+    /* Inside auto layout */
+    flex: none;
+    order: 0;
+    align-self: stretch;
+    flex-grow: 0;
+
+}
+
+.button {
+    /* Frame 64 */
+
+    /* Auto layout */
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    gap: 10px;
+
+    width: 177px;
+    height: 76px;
+
+    border-radius: 22px;
+    cursor: pointer;
+
+    /* Inside auto layout */
+    flex: none;
+    order: 1;
+    flex-grow: 0;
+}
+
+.stop-button {
+    background: #B87EED;
+}
+
+.start-button {
+    background: #242834;
+}
+
+.start-button:hover {
+    background-color: #333333;
+}
+
+.stop-button:hover {
+    background-color: #d9b5fc;
+}
+
+.text {
+
+    width: 92px;
+    height: 39px;
+
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 30px;
+    line-height: 38px;
+    /* identical to box height, or 128% */
+    text-align: center;
+
+    color: #DFDFE4;
+
+
+    /* Inside auto layout */
+    flex: none;
+    order: 0;
+    flex-grow: 0;
+
+}
