@@ -190,26 +190,18 @@
     }
 
     .video {
-        /* Frame 54 */
-
-        /* Auto layout */
+        /* 부모 컨테이너 스타일 수정 */
         display: flex;
         flex-direction: column;
-        justify-content: center;
+        justify-content: center; /* 스크롤 문제 해결 */
         align-items: center;
         padding: 0px;
-
+    
         width: 719.45px;
-        height: 482.51px;
-
+        height: 482.51px; /* 고정된 높이 */
         background: #CFFF5E;
         border-radius: 33.5742px;
-
-        /* Inside auto layout */
-        flex: none;
-        order: 1;
-        flex-grow: 0;
-
+    
     }
 
 }

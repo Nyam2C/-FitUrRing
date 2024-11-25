@@ -1,0 +1,66 @@
+.video-container {
+    /* Frame 53 */
+
+    /* Auto layout */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0px;
+    gap: 19.19px;
+
+    width: 690.71px;
+    height: 90%;
+    overflow-y: auto;
+    -ms-overflow-style: none;
+    box-sizing: border-box;
+
+}
+
+.video-container::-webkit-scrollbar {
+    display: none;
+}
+
+
+.video-info {
+    /* Frame 50 */
+
+    /* Auto layout */
+    display: flex;
+    align-items: center;
+    padding: 20px;
+    gap: 8.67px;
+
+    cursor: pointer;
+    color: #000000;
+    width: 650.71px;
+    height: 126.62px;
+
+    background: #DFDFE4;
+    border-radius: 33.5742px;
+
+}
+
+.video-info img {
+    width: 120px; /* 이미지 너비 */
+    height: 80px; /* 이미지 높이 */
+    border-radius: 16px; /* 둥근 모서리 적용 */
+    object-fit: cover; /* 이미지 비율 유지하며 크기 조정 */
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* 선택 사항: 그림자 추가 */
+}
+
+
+.rest-period {
+    /* Auto layout */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 9.59px;
+    padding: 10px;
+    width: 650.71px;
+    height: 60.04px;
+
+    background: #8C7DFF;
+    border-radius: 14.389px;
+
+
+}
