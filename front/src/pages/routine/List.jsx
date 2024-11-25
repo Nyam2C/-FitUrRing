@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "./List.css";
 
 
-function List(){
+function List() {
   const initialRoutines = [
     {
       id: 1,
@@ -91,7 +91,7 @@ function List(){
         </div>
       ) : (
         // 선택된 루틴 화면
-        <div className="pick">
+        <div className="list-head">
           <div>
             <span>{selectedRoutine.name}</span>
             <div className="division-line"></div>
@@ -99,7 +99,7 @@ function List(){
           <ul>
             {selectedRoutine.exercises.map((exercise, index) => (
               <li key={index}>
-                <span>{exercise}</span>
+                {exercise}
                 <button onClick={() => handleDeleteExercise(exercise)}>
                   X
                 </button>
@@ -109,9 +109,6 @@ function List(){
 
           {/* 운동 추가 */}
           <div>
-            <button onClick={handleAddExercise}>
-              추가
-            </button>
             <button onClick={handleBackClick}>
               뒤로가기
             </button>
