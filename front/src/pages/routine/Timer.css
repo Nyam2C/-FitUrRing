@@ -8,8 +8,9 @@
 }
 
 .time-text {
-    width: 105px;
+    width: 200px;
     height: 55px;
+    text-align: center;
 
     font-weight: 300;
     font-size: 40px;

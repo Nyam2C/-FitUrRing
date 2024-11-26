@@ -32,6 +32,20 @@
     background: #DFDFE4;
     border-radius: 33.5742px;
 
+    cursor: grab;
+    transition: transform 0.2s ease, background 0.2s ease;
+
+}
+
+.video-info:active {
+    cursor: grabbing;
+    background: #e0e0e0;
+}
+
+.video-info.dragging {
+    opacity: 0.6;
+    background: #e0f7fa;
+    transform: scale(1.05); /* 드래그 중인 항목 강조 */
 }
 
 .video-info img {

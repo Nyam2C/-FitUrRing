@@ -1,40 +1,91 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import "./Video.css";
 
-function Video({ routine, onVideoClick }) {
-    const handleVideoClick = (exercise) => {
-        // 운동 정보 클릭 시 새 탭에서 링크 열기
-        window.open(exercise.link, "_blank", "noopener,noreferrer");
-        // 운동 정보 클릭 시 해당 운동을 선택하도록 onVideoClick 호출
-        onVideoClick(exercise);
-    };
+function Video({ routine, onRoutineChange, onVideoClick }) {
+    const [exercises, setExercises] = useState(routine.exercises);
+    const [isDragging, setIsDragging] = useState(false);
+
     const restPeriod = 60;
 
+    useEffect(() => {
+        setExercises(routine.exercises);
+    }, [routine]);
+
+    const handleVideoClick = (exercise) => {
+        window.open(exercise.link, "_blank", "noopener,noreferrer");
+        onVideoClick(exercise);
+    };
+
+    const handleDragStart = () => {
+        setIsDragging(true);
+    };
+
+    const handleDragEnd = (result) => {
+        setIsDragging(false);
+
+        if (!result.destination) return;
+
+        const updatedExercises = Array.from(exercises);
+        const [movedItem] = updatedExercises.splice(result.source.index, 1);
+        updatedExercises.splice(result.destination.index, 0, movedItem);
+        setExercises(updatedExercises);
+        onRoutineChange(updatedExercises);
+    };
+
     return (
-        <div id="video-container">
-            {routine.exercises.map((exercise, index) => (
-                <React.Fragment key={index}>
-                    {/* 운동 정보 */}
+        <DragDropContext
+            onDragStart={handleDragStart}
+            onDragEnd={handleDragEnd}
+        >
+            <Droppable droppableId="video-list">
+                {(provided) => (
                     <div
-                        className="video-info"
-                        onClick={() => handleVideoClick(exercise)}
+                        id="video-container"
+                        ref={provided.innerRef}
+                        {...provided.droppableProps}
+                        style={{
+                            overflowY: "auto",
+                            maxHeight: "90%",
+                        }}
                     >
-                        {/* 썸네일 */}
-                        <img
-                            src={exercise.thumbnail}
-                            alt={exercise.title}
-                        />
-                        {/* 운동 정보 */}
-                        <div className="video-title">{exercise.title}</div>
+                        {exercises.map((exercise, index) => (
+                            <Draggable
+                                key={exercise.title}
+                                draggableId={exercise.title}
+                                index={index}
+                            >
+                                {(provided) => (
+                                    <React.Fragment>
+                                        <div
+                                            className="video-info"
+                                            ref={provided.innerRef}
+                                            {...provided.draggableProps}
+                                            {...provided.dragHandleProps}
+                                            onClick={() => handleVideoClick(exercise)}
+                                        >
+                                            <img src={exercise.thumbnail} alt={exercise.title} />
+                                            <div className="video-title">{exercise.title}</div>
+                                        </div>
+                                        {index < exercises.length - 1 && (
+                                            <div
+                                                className="rest-period"
+                                                style={{
+                                                    visibility: isDragging ? "hidden" : "visible",
+                                                }}
+                                            >
+                                                {restPeriod}초 - Rest Period
+                                            </div>
+                                        )}
+                                    </React.Fragment>
+                                )}
+                            </Draggable>
+                        ))}
+                        {provided.placeholder}
                     </div>
-                    {index < routine.exercises.length - 1 && (
-                        <div className="rest-period">
-                            {restPeriod}초 - Rest Period
-                        </div>
-                    )}
-                </React.Fragment>
-            ))}
-        </div>
+                )}
+            </Droppable>
+        </DragDropContext>
     );
 }
 

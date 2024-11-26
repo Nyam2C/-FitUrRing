@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./index.css";
 import Start from "./Start";
 import Timer from "./Timer";
@@ -12,6 +12,7 @@ function Routine() {
     const [currentIndex, setCurrentIndex] = useState(0);
     const [selectedRoutine, setSelectedRoutine] = useState(null);
     const [totalDuration, setTotalDuration] = useState(0);
+    const [restSeconds, setRestSeconds] = useState(0);
 
     const ButtonClick = () => {
         setIsActive((prev) => !prev);
@@ -33,6 +34,22 @@ function Routine() {
             alert("모든 운동이 완료되었습니다!");
         }
     };
+    useEffect(() => {
+        if (!selectedRoutine) return;
+
+        const totalExerciseTime = selectedRoutine.exercises.reduce(
+            (sum, exercise) => sum + exercise.duration,
+            0
+        );
+
+        const totalRestTime = restSeconds * (selectedRoutine.exercises.length - 1);
+
+        setTotalDuration(totalExerciseTime + totalRestTime); 
+    }, [restSeconds, selectedRoutine]);
+
+    const handleRoutineChange = (updatedExercises) => {
+        setSelectedRoutine({ ...selectedRoutine, exercises: updatedExercises });
+    };
 
     return (
         <div id="box">
@@ -47,8 +64,7 @@ function Routine() {
                         )}
                     </div>
                     <div id="rest">
-                        <Rest />
-                    </div>
+                        <Rest onRestChange={setRestSeconds} />                    </div>
                     <div id="timer">
                         <Timer duration={totalDuration} isActive={isActive} />
                     </div>
@@ -59,6 +75,7 @@ function Routine() {
                         {selectedRoutine && (
                             <Video
                                 routine={selectedRoutine}
+                                onRoutineChange={handleRoutineChange}
                                 onVideoClick={(video) =>
                                     setCurrentIndex(selectedRoutine.exercises.indexOf(video))
                                 }
