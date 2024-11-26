@@ -14,9 +14,13 @@ function Timer({ duration, isActive }) {
                 return prev - 1;
             });
         }, 1000);
-
         return () => clearInterval(timerInterval);
     }, [isActive]);
+
+    useEffect(() => {
+        setTimeLeft(duration);
+        setProgress(0);
+    }, [duration]);
 
     useEffect(() => {
         setProgress(((duration - timeLeft) / duration) * 100);
