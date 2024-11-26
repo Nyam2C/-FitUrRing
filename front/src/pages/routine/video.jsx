@@ -11,7 +11,7 @@ function Video({ routine, onVideoClick }) {
     const restPeriod = 60;
 
     return (
-        <div className="video-container">
+        <div id="video-container">
             {routine.exercises.map((exercise, index) => (
                 <React.Fragment key={index}>
                     {/* 운동 정보 */}

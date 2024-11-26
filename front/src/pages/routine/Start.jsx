@@ -12,13 +12,13 @@ function Start({ ButtonClick, isActive}) {
     };
 
     return (
-        <div id="start_container">
-            <div id="date">{getTodayDate()}</div>
+        <div id="start-container">
+            <div className="today">{getTodayDate()}</div>
             <button
-                className={`button ${isActive ? 'stop-button' : 'start-button'}`}
+                className={`${isActive ? 'stop-button' : 'start-button'}`}
                 onClick={ButtonClick}
             >
-                <span className='text'>{isActive ? 'STOP' : 'START'} </span>
+                <span>{isActive ? 'STOP' : 'START'} </span>
             </button>
         </div>
 

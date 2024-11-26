@@ -25,7 +25,7 @@ function Rest() {
     };
 
     return (
-        <div className="rest_container">
+        <div id="rest-container">
             <h1 className="comment">{getDisplayText(seconds)}</h1>
             <div>
                 <input

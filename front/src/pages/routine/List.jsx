@@ -70,8 +70,7 @@ function List() {
   };
 
   return (
-    <div className="List-container">
-      {/* 루틴 목록 화면 */}
+    <div id="list-container">
       {!selectedRoutine ? (
         <div className="list-head">
           <div>

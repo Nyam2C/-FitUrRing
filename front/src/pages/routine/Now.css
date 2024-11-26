@@ -1,8 +1,4 @@
 .now-container {
-
-    /* Frame 61 */
-
-    /* Auto layout */
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -12,18 +8,9 @@
 
     width: 412.48px;
     height: 191.92px;
-
-
-    /* Inside auto layout */
-    flex: none;
-    order: 0;
-    flex-grow: 0;
 }
 
 .now-thumbnail {
-    /* Frame 58 */
-
-    /* Auto layout */
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -32,14 +19,6 @@
 
     width: 412.48px;
     height: 146.83px;
-
-
-    /* Inside auto layout */
-    flex: none;
-    order: 0;
-    align-self: stretch;
-    flex-grow: 0;
-
 }
 
 .now-thumbnail img {

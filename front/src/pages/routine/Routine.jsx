@@ -57,20 +57,20 @@ function Routine() {
         <div id="box">
             <div id="left">
                 <div id="up">
-                    <div className='now'>
+                    <div id='now'>
                         <Now currentVideo={currentVideo} onNext={handleNext} />
                     </div>
-                    <div className='rest'>
+                    <div id='rest'>
                         <Rest />
                     </div>
-                    <div className='timer'>
+                    <div id='timer'>
                         <Timer duration={5} isActive={isActive} />
                     </div>
                 </div>
                 <div id="down">
-                    <div className='progress'>
+                    <div id='progress'>
                     </div>
-                    <div className='video'>
+                    <div id='video'>
                         <Video routine={routine} onVideoClick={(video) => setCurrentIndex(routine.exercises.indexOf(video))} />
                     </div>
                 </div>
