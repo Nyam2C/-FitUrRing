@@ -50,7 +50,7 @@ form {
     align-items: center;
   }
     
-input{
+#signForm{
     width: 42em;
     height: 3em;
     border:none;
@@ -69,4 +69,22 @@ button{
     height: 2.5em;
     font-size:medium;
 }
-  
+
+#workout{
+    display: grid;
+    grid-template-columns: 1fr 3fr 2fr;
+
+    /* display: flex;
+    flex-direction: row; */
+    width: 100vw;
+    min-height: calc(100vh - 7rem - 7rem);
+}
+
+#searchResults{
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+}
+
+#videoLists{
+    column-count: 3;
+}
