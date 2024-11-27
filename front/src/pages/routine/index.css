@@ -9,6 +9,7 @@
     height: 730px;
 
     background: rgba(24, 24, 24, 0.0941176);
+    animation: 0.2s ease-in-out loadEffect1;
 }
 
 #left {
@@ -103,7 +104,7 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    
+
     align-items: center;
 
     width: 719.45px;
@@ -151,4 +152,14 @@ input[type="number"]::-webkit-inner-spin-button,
 input[type="number"]::-webkit-outer-spin-button {
     -webkit-appearance: none;
     margin: 0;
+}
+
+@keyframes loadEffect1 {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
 }

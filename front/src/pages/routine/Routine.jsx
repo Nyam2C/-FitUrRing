@@ -24,7 +24,6 @@ function Routine() {
         const totalTime = routine.exercises.reduce((sum, exercise) => sum + exercise.duration, 0);
         setTotalDuration(totalTime);
         setCurrentIndex(0); // 루틴 선택 시 초기화
-        setIsActive(false); // 루틴 선택 시 타이머 초기화
     };
 
     const handleNext = () => {
@@ -44,7 +43,7 @@ function Routine() {
 
         const totalRestTime = restSeconds * (selectedRoutine.exercises.length - 1);
 
-        setTotalDuration(totalExerciseTime + totalRestTime); 
+        setTotalDuration(totalExerciseTime + totalRestTime);
     }, [restSeconds, selectedRoutine]);
 
     const handleRoutineChange = (updatedExercises) => {
@@ -64,7 +63,8 @@ function Routine() {
                         )}
                     </div>
                     <div id="rest">
-                        <Rest onRestChange={setRestSeconds} />                    </div>
+                        <Rest onRestChange={setRestSeconds} isActive={isActive} />
+                    </div>
                     <div id="timer">
                         <Timer duration={totalDuration} isActive={isActive} />
                     </div>
@@ -79,6 +79,7 @@ function Routine() {
                                 onVideoClick={(video) =>
                                     setCurrentIndex(selectedRoutine.exercises.indexOf(video))
                                 }
+                                isActive={isActive}
                             />
                         )}
                     </div>
@@ -86,10 +87,16 @@ function Routine() {
             </div>
             <div id="right">
                 <div id="list">
-                    <List onRoutineSelect={handleRoutineSelect} />
+                    <List onRoutineSelect={handleRoutineSelect}
+                        isActive={isActive}
+                    />
                 </div>
                 <div id="start">
-                    <Start ButtonClick={ButtonClick} isActive={isActive} />
+                    <Start
+                        ButtonClick={ButtonClick}
+                        isActive={isActive}
+                        hasRoutine={selectedRoutine !== null}
+                    />
                 </div>
             </div>
         </div>

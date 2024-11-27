@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import './Rest.css';
 
-function Rest({ onRestChange }) {
+function Rest({ onRestChange, isActive }) {
     const [seconds, setSeconds] = useState("");
     const [warning, setWaring] = useState(false);
 
     const getDisplayText = (seconds) => {
+        if (isActive) return "파이팅 해야지";
         if (warning) return "덜 쉬어봐요";
         if (seconds <= 0) return "";
         if (seconds >= 0 && seconds <= 60) return "파이팅 넘치네요";
@@ -16,13 +17,13 @@ function Rest({ onRestChange }) {
 
     const handleInputChange = (e) => {
         const value = e.target.value;
-        if (/^\d*$/.test(value)) {
+        if (/^\d*$/.test(value)&&!isActive) {
             const restValue = value === "0" ? "" : value;
             if (restValue <= 300 || value === "") {
                 setWaring(false);
                 setSeconds(value); // 값이 300 이하일 때만 업데이트
                 onRestChange(restValue || 0); // 부모에 변경 사항 전달
-            }else setWaring(true);
+            } else setWaring(true);
         }
     };
 

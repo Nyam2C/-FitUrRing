@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import "./Video.css";
 
-function Video({ routine, onRoutineChange, onVideoClick }) {
+function Video({ routine, onRoutineChange, onVideoClick, isActive }) {
     const [exercises, setExercises] = useState(routine.exercises);
     const [isDragging, setIsDragging] = useState(false);
 
@@ -38,7 +38,7 @@ function Video({ routine, onRoutineChange, onVideoClick }) {
             onDragStart={handleDragStart}
             onDragEnd={handleDragEnd}
         >
-            <Droppable droppableId="video-list">
+            <Droppable droppableId="video-list" isDropDisabled={isActive}>
                 {(provided) => (
                     <div
                         id="video-container"
@@ -54,6 +54,7 @@ function Video({ routine, onRoutineChange, onVideoClick }) {
                                 key={exercise.title}
                                 draggableId={exercise.title}
                                 index={index}
+                                isDragDisabled={isActive} // 드래그 비활성화 설정
                             >
                                 {(provided) => (
                                     <React.Fragment>

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./List.css";
 
-function List({ onRoutineSelect }) {
+function List({ onRoutineSelect, isActive }) {
   const initialRoutines = [
     {
       id: 1,
@@ -148,38 +148,40 @@ function List({ onRoutineSelect }) {
             <div className="division-line"></div>
           </div>
           <div id="list-content">
-          <ul>
-            {selectedRoutine.exercises.map((exercise, index) => (
-              <li key={index}>
-                <span
-                  style={{
-                    textDecoration: exercise.canceled ? "line-through" : "none",
-                  }}
-                >
-                  {truncateText(exercise.title, 10)}
-                </span>
-                <button onClick={() => toggleCancelExercise(exercise)}>
-                  {exercise.canceled ? "X" : "O"}
-                </button>
-              </li>
-            ))}
-          </ul>
-          <div className="list-foot">
-            <button
-              className="pick"
-              onClick={() =>
-                onRoutineSelect({
-                  ...selectedRoutine,
-                  exercises: selectedRoutine.exercises.filter(
-                    (exercise) => !exercise.canceled
-                  ),
-                })
-              }
-            >
-              선택
-            </button>
-            <button onClick={handleBackClick}>뒤로가기</button>
-          </div>
+            <ul>
+              {selectedRoutine.exercises.map((exercise, index) => (
+                <li key={index}>
+                  <span
+                    style={{
+                      textDecoration: exercise.canceled ? "line-through" : "none",
+                    }}
+                  >
+                    {truncateText(exercise.title, 10)}
+                  </span>
+                  <button onClick={() => toggleCancelExercise(exercise)}>
+                    {exercise.canceled ? "X" : "O"}
+                  </button>
+                </li>
+              ))}
+            </ul>
+            <div className="list-foot">
+              <button
+                className="pick"
+                onClick={() => {
+                  if (!isActive) {
+                    onRoutineSelect({
+                      ...selectedRoutine,
+                      exercises: selectedRoutine.exercises.filter(
+                        (exercise) => !exercise.canceled
+                      ),
+                    });
+                  }
+                }}
+              >
+                선택
+              </button>
+              <button onClick={handleBackClick}>뒤로가기</button>
+            </div>
           </div>
         </div>
       )
