@@ -1,6 +1,6 @@
 FROM mongo:latest
 
-COPY ./init.js.template /docker-entrypoint-initdb.d/init.js.template
-COPY ./init.sh /docker-entrypoint-initdb.d/init.sh
+COPY init-mongo.sh /docker-entrypoint-initdb.d/
+RUN chmod +x /docker-entrypoint-initdb.d/init-mongo.sh
 
-CMD ["mongod", "--auth"]
+EXPOSE 27017

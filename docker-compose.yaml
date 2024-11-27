@@ -12,8 +12,10 @@ services:
     build:
       context: ./db
       dockerfile: Dockerfile
-    env_file:
-      - .env
+    environment:
+      - MONGODB_DATABASE=${DB_NAME}
+      - MONGODB_INITDB_ROOT_PASSWORD=${DB_PASSWORD}
+      - MONGODB_INITDB_ROOT_USERNAME=${DB_USER}
     container_name: wss-db
     networks:
       mybridge:
@@ -26,6 +28,7 @@ services:
       exec mongod --bind_ip_all --replSet rs0'
     volumes:
       - ./db/data:/data/db
+      - ./db/init-mongo.sh:/docker-entrypoint-initdb.d/init-mongo.sh
     restart: always
 
   wss-back:
@@ -35,6 +38,8 @@ services:
     env_file:
       - .env
     container_name: wss-back
+    env_file:
+      - .env
     depends_on:
       - wss-db
     networks:
