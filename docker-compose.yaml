@@ -35,8 +35,6 @@ services:
     build:
       context: ./back
       dockerfile: Dockerfile
-    env_file:
-      - .env
     container_name: wss-back
     env_file:
       - .env
