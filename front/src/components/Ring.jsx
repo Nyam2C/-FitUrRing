@@ -3,9 +3,6 @@ import react, { useState } from 'react';
 import './index.css';
 
 function calculPercent(data, goal){
-    if (goal){
-        //초단위로 정제해야됨..        
-    }
     let total = 0;
     for (let i=0; i<data.exercises.length; i++){
             let time = data.exercises[i].video_time;
@@ -13,8 +10,7 @@ function calculPercent(data, goal){
             let sec = parseInt(time.slice(time.indexOf(':')+1));
             total += (min*60+sec);
         }
-    //const percent = total / (parseInt(goal.slice(0,goal.indexOf(':'))))*60 + parseInt(goal.slice(goal.indexOf(':')));
-    const percent = (total/goal).toFixed(2);
+    const percent = (total/goal >= 1)? 1 : (total/goal).toFixed(2);
     return percent;
 }
 

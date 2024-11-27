@@ -87,3 +87,12 @@ button{
     flex-grow: 15;
 }
 
+.circle{
+    width: 3em;
+}
+
+input::placeholder {
+    color: black;
+    font-size: large;
+    text-align: center;
+}

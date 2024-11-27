@@ -45,48 +45,6 @@ function displayWhat(item, mode, goal){
     );
 }
 
-// function RingMode(data){
-//     return (
-//         <>
-//         {data.map((item) => (
-//             <div onClick={onShow}>
-//                 {displayList[displayWhat(item)]}
-//             </div>
-//         ))}
-//         </>
-//     );
-// }
-
-
-// function ListMode(data){
-//     return (
-//         <>
-//         {data.map((item) => (
-//             <div onClick={onShow}>
-//                 {displayList[displayWhat(item)]}
-//             </div>
-//         ))}
-//         </>
-//     );
-// }
-
-
-//필요없는 로직... goal(dailyTime)이 null이면 Ring에서 일일최고치를 goal로 설정해서 percent계산하면 됨..
-// function sumTotal(data){
-//     //목표가 있으면 목표랑 비교하고 없으면 최대치랑 비교한 percentage반환
-//     let total = 0;
-//     for (let i=0; i<data.length; i++){
-//         if (!data[i].exercises)    continue;
-//         for (let j=0; j<data[i].exercises.length; j++){
-//             let time = data[i].exercises[j].video_time;
-//             let min = parseInt(time.slice(0,time.indexOf(':')));
-//             let sec = parseInt(time.slice(time.indexOf(':')+1));
-//             total += (min*60+sec);
-//         }
-//     }
-//     return total;
-// }
-
 function getMax(data){
     let max = 0;
     for (let i=0; i<data.length; i++){
@@ -105,8 +63,15 @@ function getMax(data){
 }
 
 function Day({data, mode, onDetail}){
-    //fetch
-    let goal = 1000;
+    //fetch goal
+    let goal = '5:00';
+    if (typeof goal === 'string'){
+        let total = 0;
+        let min = parseInt(goal.slice(0,goal.indexOf(':')));
+        let sec = parseInt(goal.slice(goal.indexOf(':')+1));
+        total += (min*60+sec);
+        goal = total;
+    }
     if (mode === 'ring' && goal === null){
         goal = getMax(data);  
     }

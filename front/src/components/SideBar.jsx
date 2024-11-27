@@ -15,9 +15,10 @@ const userData = {
 
 const data = 
     {
-        goal_weekly: 0,
-        goal_daily: [0, 0, 0, 0, 0, 0, 0],
+        goal_weekly: 3,
+        goal_daily: [0, 1, 0, 1, 0, 1, 0],
         goal_daily_time: '00:00',
+        goal_weight: null
     }
 
 const exerciseData = 
@@ -35,17 +36,53 @@ const exerciseData =
         },],
     };
 
+function refineGoals(data){
+    let result = '';
+    for (let i=0; i<7; i++){
+        if (data[i] === 1){
+            switch(i) {
+                case 1:  
+                    result += '월 '
+                break;
+                case 2:  
+                    result += '화 '
+                break;
+                case 3:  
+                    result += '수 '
+                break;
+                case 4:  
+                    result += '목 '
+                break;
+                case 5:  
+                    result += '금 '
+                break;
+                case 6:  
+                    result += '토 '
+                break;
+                case 0:  
+                    result += '일 '
+                break;
+                default:
+                    break;
+            }
+        }
+    }
+    return result;
+}
+
 function UserStatus({userData, data}){
     return (
         <div>
-            <div id="userInfo">
+            <div id="userInfo" className="infoList">
                 <div>{userData.user_name}</div>
                 <div>성별: {userData.user_gender}</div>
                 <div>나이: {userData.user_age}</div>
             </div>
-            <div className="card">
-                <div>주간 목표 시간: {data.goal_weekly}</div>
-                <div>목표 요일: {data.goal_daily}</div>
+            <div className="infoList">
+                <h3>목표</h3>
+                <div>목표 체중: {data.goal_weight}</div>
+                <div>주간 목표 횟수: {data.goal_weekly}</div>
+                <div>목표 요일: {refineGoals(data.goal_daily)}</div>
                 <div>일일 목표 시간: {data.goal_daily_time}</div>
             </div>
             <button>

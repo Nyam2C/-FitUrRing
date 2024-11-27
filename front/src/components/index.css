@@ -80,6 +80,13 @@ ul{
     left:0;
 }
 
+/* .absolute-left{
+    position: absolute;
+    left: 0;
+    top: 7em;
+    display: flex;
+} */
+
 .rightSide{
     right:0;
 }
@@ -92,7 +99,7 @@ ul{
     text-align: center;
     top: 7rem;
     background-color: #242834;
-    min-height: 100%;
+    min-height: calc(100vh - 7rem - 7rem);
     overflow: hidden;
 }
 
@@ -107,4 +114,10 @@ ul{
 
 .side{
     width: 15%;
+}
+
+.infoList{
+    line-height: 1.8;
+    background-color:#151515;
+    margin-bottom: 1em;
 }

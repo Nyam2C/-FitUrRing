@@ -1,8 +1,10 @@
-import react, { useState } from 'react';
+import react, { useState, useEffect } from 'react';
 
 import SideBar from '../components/SideBar';
+import { getGoal, addGoal } from '../api.js';
 
 function Goal(){
+    const [goal, setGoal] = useState([]);
     const [weight, setWeight] = useState();
     const [mon, setMon] = useState(false);
     const [tue, setTue] = useState(false);
@@ -12,66 +14,100 @@ function Goal(){
     const [sat, setSat] = useState(false);
     const [sun, setSun] = useState(false);
     const [dailyTime, setDailyTime] = useState();
-    const [weeklyTime, setWeeklyTime] = useState();
+    const [weeklyCount, setWeeklyCount] = useState(0);
+
+    useEffect(() => {
+        setWeeklyCount(mon+tue+wed+thu+fri+sat+sun);
+    }, [mon, tue, wed, thu, fri, sat, sun]);
+
+    useEffect(() => {
+        fetchGoals();
+    }, [])
+
+    const fetchGoals = async () => {
+        try{
+            const data = await getGoal();
+            setGoal(data);
+            setWeight(data.goal_weight);
+            setDailyTime(data.goal_daily_time);
+            setSun(data.goal_daily[0]);
+            setMon(data.goal_daily[1]);
+            setTue(data.goal_daily[2]);
+            setWed(data.goal_daily[3]);
+            setThu(data.goal_daily[4]);
+            setFri(data.goal_daily[5]);
+            setSat(data.goal_daily[6]);
+            setWeeklyCount(data.goal_weekly);
+            console.log(data);
+        } catch (error) {
+            console.error(error.message);
+        }
+    }
+
 
     function handleClick(e){
-        //월 화 수 목 금 토 일 버튼 -> 클릭하면 색 바뀜, 저장하면 해당 요일에 운동하겠다는 목표 설정
-        //달력에 목표한 요일만 색을 다르게 표시
         e.preventDefault();
-        e.target.style.backgroundColor = "#333333"; 
-    
+        console.log(e);
+
         const target = e.target.id;
         switch(target) {
             case 'Mon':  
-                (mon === false)?setMon(true):setMon(false);
+                setMon(prev => !prev);
                 break;      
             case 'Tue':  
-                (tue === false)?setTue(true):setTue(false);
+                setTue(prev => !prev);
                 break;
             case 'Wed':  
-                (wed === false)?setWed(true):setWed(false);
+                setWed(prev => !prev);
                 break;
             case 'Thu':  
-                (thu === false)?setThu(true):setThu(false);
+                setThu(prev => !prev);
                 break;
             case 'Fri':  
-                (fri === false)?setFri(true):setFri(false);
+                setFri(prev => !prev);
                 break;
             case 'Sat':  
-                (sat === false)?setSat(true):setSat(false);
+                setSat(prev => !prev);
                 break;
             case 'Sun':  
-                (sun === false)?setSun(true):setSun(false);
+                setSun(prev => !prev);
                 break;
             default:
-              break;
+                break;
           }
-    }
-
+        }
     return (
-        <div>
+        <div className='row flex'>
             <SideBar 
-            side={"left"}/>
+            side={"left"}
+            />
 
-            <form id="GoalForm">
+            <form id="GoalForm" className='flex-grow-main'>
                 <label id="title">목표 설정</label>
                 <label>목표 체중</label>
                 <input id="weight" type="number" name="weight" placeholder={weight}></input>
 
                 <div className="row">
-                    <button id="Sun" onClick={handleClick}> 일 </button>
-                    <button id="Mon" onClick={handleClick}> 월 </button>
-                    <button id="Tue" onClick={handleClick}> 화 </button>
-                    <button id="Wed" onClick={handleClick}> 수 </button>
-                    <button id="Thu" onClick={handleClick}> 목 </button>
-                    <button id="Fri" onClick={handleClick}> 금 </button>
-                    <button id="Sat" onClick={handleClick}> 토 </button>
+                    <button id="Sun" className="circle" onClick={handleClick} 
+                    style={{backgroundColor:(sun)?'#333333':null}}> 일 </button>
+                    <button id="Mon" className="circle" onClick={handleClick}
+                     style={{backgroundColor:(mon)?'#333333':null}}> 월 </button>
+                    <button id="Tue" className="circle" onClick={handleClick}
+                     style={{backgroundColor:(tue)?'#333333':null}}> 화 </button>
+                    <button id="Wed" className="circle" onClick={handleClick}
+                     style={{backgroundColor:(wed)?'#333333':null}}> 수 </button>
+                    <button id="Thu" className="circle" onClick={handleClick}
+                     style={{backgroundColor:(thu)?'#333333':null}}> 목 </button>
+                    <button id="Fri" className="circle" onClick={handleClick}
+                     style={{backgroundColor:(fri)?'#333333':null}}> 금 </button>
+                    <button id="Sat" className="circle" onClick={handleClick}
+                     style={{backgroundColor:(sat)?'#333333':null}}> 토 </button>
                 </div>
                 <label>일일 목표 운동 시간</label>
                 <input  id="DailyTime" type="text" name="DailyTime" placeholder={dailyTime}></input>
                 
                 <label>주간 목표 횟수</label>
-                <input  id="weeklyTime" type="text" name="weeklyTime" placeholder={weeklyTime}></input>
+                <input  id="weeklyCount" type="text" name="weeklyCount" placeholder={weeklyCount}></input>
 
                 <button type="submit">저장</button>
             </form>
