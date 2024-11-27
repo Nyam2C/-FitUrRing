@@ -27,7 +27,6 @@ function Goal(){
     const fetchGoals = async () => {
         try{
             const data = await getGoal();
-            setGoal(data);
             setWeight(data.goal_weight);
             setDailyTime(data.goal_daily_time);
             setSun(data.goal_daily[0]);
@@ -38,13 +37,21 @@ function Goal(){
             setFri(data.goal_daily[5]);
             setSat(data.goal_daily[6]);
             setWeeklyCount(data.goal_weekly);
-            console.log(data);
         } catch (error) {
             console.error(error.message);
         }
     }
-
-
+    function handleDTChange(e){
+        const newvalue = e.target.value;
+        if (newvalue.indexOf(":") === -1){
+            alert("분:초 단위로 입력해주세요");
+            return;
+        }
+        setDailyTime(e.target.value);
+    }
+    function handleWeightChange(e){
+        setWeight(e.target.value);
+    }
     function handleClick(e){
         e.preventDefault();
         console.log(e);
@@ -76,18 +83,28 @@ function Goal(){
                 break;
           }
         }
+    function handleSubmit(e){
+        e.preventDefault();
+        const data = {
+                goal_weekly: weeklyCount,
+                goal_daily: [sun, mon, tue, wed, thu, fri, sat],
+                goal_daily_time: dailyTime,
+                goal_weight: weight
+        }
+        addGoal(data);
+    }
     return (
         <div className='row flex'>
             <SideBar 
             side={"left"}
             />
 
-            <form id="GoalForm" className='flex-grow-main'>
+            <form id="GoalForm" className='flex-grow-main' onSubmit={handleSubmit}>
                 <label id="title">목표 설정</label>
                 <label>목표 체중</label>
-                <input id="weight" type="number" name="weight" placeholder={weight}></input>
+                <input id="weight" type="number" name="goal_weight" onChange={handleWeightChange} value={weight}></input>
 
-                <div className="row">
+                <div className="row" >
                     <button id="Sun" className="circle" onClick={handleClick} 
                     style={{backgroundColor:(sun)?'#333333':null}}> 일 </button>
                     <button id="Mon" className="circle" onClick={handleClick}
@@ -104,10 +121,10 @@ function Goal(){
                      style={{backgroundColor:(sat)?'#333333':null}}> 토 </button>
                 </div>
                 <label>일일 목표 운동 시간</label>
-                <input  id="DailyTime" type="text" name="DailyTime" placeholder={dailyTime}></input>
+                <input  id="DailyTime" type="text" name="goal_daily_time" onChange={handleDTChange} value={dailyTime}></input>
                 
                 <label>주간 목표 횟수</label>
-                <input  id="weeklyCount" type="text" name="weeklyCount" placeholder={weeklyCount}></input>
+                <input  id="weeklyCount" type="text" name="goal_weekly" value={weeklyCount}></input>
 
                 <button type="submit">저장</button>
             </form>

@@ -14,28 +14,37 @@ async function getGoal(){
             throw new Error('Network error', response.status);
         }
         const data = await response.json();
-        console.log(data);
         return data;
     } catch(err) {
         console.log(err.message);
     }
 };
 
-async function addGoal(data){
+async function addGoal(goalData){
+    // const body = {
+    //     goal_weekly: goalData.goal_weekly,
+    //     goal_daily: goalData.goal_daily,
+    //     goal_daily_time: goalData.goal_daily_time,
+    //     goal_weight: goalData.goal_weight
+    //     }
     try{
-        const response = await fetch(`/api/habitTracker/goal`,{
+        const uri = `/api/habitTracker/goal`
+        const response = await fetch(uri, {
             method: "PUT",
             headers: {
                 //JWT
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify(data),
-        });
-        const result = await response.json();
-        return result;
+            body: JSON.stringify(goalData)
+        });        
+        if (!response.ok){
+            throw new Error('Network error', response.status);
+        }
+        const res = await response.json();
+        console.log(res);
+        return res;
     } catch(err) {
         console.log(err);
-        return null;
     }
 }
 
