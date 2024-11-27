@@ -46,6 +46,56 @@ async function addGoal(goalData){
     } catch(err) {
         console.log(err);
     }
+};
+
+async function getUserData(){
+    try{
+        //const uri = `/api/user`
+        //const response = await fetch(uri, {
+        //     method: "GET",
+        //     headers: {
+        //         //JWT
+        //         "Content-Type": "application/json",
+        //     },
+        // });
+        const uri = '/dummy/User.json'
+        const response = await fetch(uri);
+
+        if (!response.ok){
+            throw new Error('Network error', response.status);
+        }
+        const data = await response.json();
+        return data;
+    } catch(err) {
+        console.log(err.message);
+    }
+};
+
+async function getMonthlyRecord(year, month) {
+    try{
+        //const uri = `/api//habitTracker/records`
+        //const response = await fetch(uri, {
+        //     method: "GET",
+        //     headers: {
+        //         //JWT
+        //         "Content-Type": "application/json",
+        //     },
+        //     body: {
+        //         "period": `${year}-${month}`
+        // }
+        // });
+        const uri = '/dummy/Exercise.json'
+        const response = await fetch(uri);
+
+        if (!response.ok){
+            throw new Error('Network error', response.status);
+        }
+        const data = await response.json();
+        return data;
+    } catch(err) {
+        console.log(err.message);
+    }
 }
 
-export {getGoal, addGoal};
+
+export {getGoal, addGoal, getUserData, getMonthlyRecord};

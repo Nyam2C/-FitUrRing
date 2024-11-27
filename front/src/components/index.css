@@ -121,3 +121,11 @@ ul{
     background-color:#151515;
     margin-bottom: 1em;
 }
+
+.doit{
+    background-color: #fffbb441;
+}
+
+#clickBlock{
+    width: 15em;
+}

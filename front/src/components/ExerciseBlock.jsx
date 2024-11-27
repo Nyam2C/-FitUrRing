@@ -3,11 +3,12 @@ import react from 'react';
 import './index.css';
 
 function Clickable({data}){
+    console.log(data);
     return (
         <>
         {data.exercises.map((item) => (
             <div>
-                <div className="block">
+                <div id="clickBlock" className="block">
                     {item.video_title}
                 </div>
             </div>

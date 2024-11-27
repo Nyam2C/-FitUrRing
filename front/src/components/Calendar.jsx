@@ -2,49 +2,9 @@ import react, { useState, useEffect } from 'react';
 
 import Day from './Day.jsx';
 import './index.css';
+import { getMonthlyRecord } from '../api.js';
 
-const period_start = '2024-10-01';
-const period_end = '2024-10-31;'
 
-    const data = [
-        { 
-            date:'2024-11-01',
-            exercises: [{
-                video_title: 'workout1',
-                video_tag: 'head',
-                video_time: '10:49'
-            },
-            {
-                video_title: 'workout6',
-                video_tag: 'neck',
-                video_time: '22:49'
-            },],
-        },
-    { 
-        date: '2024-11-08',
-        exercises: [{
-        video_title: 'workout2',
-        video_tag: 'neck',
-        video_time: '7:55'
-        },],
-    },
-    { 
-        date: '2024-11-11',
-        exercises: [{
-        video_title: 'workout1',
-        video_tag: 'head',
-        video_time: '10:49'
-        },],
-    },
-    { 
-        date: '2024-11-27',
-        exercises: [{
-        video_title: 'workout3',
-        video_tag: 'foot',
-        video_time: '20:04'
-        },],
-    },
-];
 
 const dateFormat = (date) => {
     let year = parseInt(date.getFullYear());
@@ -59,6 +19,20 @@ const dateFormat = (date) => {
 function Calendar(props){
     const [today, setToday] = useState(new Date());
     const [view, setView] = useState('ring');
+    const [records, setRecords] = useState({});
+
+    useEffect(() => {
+        fetchMonthlyRecords();
+    }, [])
+    const fetchMonthlyRecords = async () => {
+        try{
+            const data = await getMonthlyRecord();
+            setRecords(data);
+        } catch (error) {
+            console.error(error.message);
+        }
+    }
+
 
     function onPrev(){
         const newMonth = today.getMonth() - 1;
@@ -86,8 +60,8 @@ function Calendar(props){
             j++
             continue;   
         }
-        if (i < data.length && dateFormat(cur) === data[i].date){
-            fullData.push(data[i]);
+        if (i < records.length && dateFormat(cur) === records[i].date){
+            fullData.push(records[i]);
             i++
         }
         else{   

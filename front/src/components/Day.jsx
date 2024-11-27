@@ -1,23 +1,24 @@
-import react, { useState } from 'react';
+import react, { useState, useEffect } from 'react';
 
 import './index.css';
 import Ring from './Ring';
 import ExerciseBlock from './ExerciseBlock';
-import SideBar from './SideBar';
+import { getGoal } from '../api';
 
-function displayWhat(item, mode, goal){
+function displayWhat(item, mode, goal, doit){
+    console.log(item, doit);
     if (!item.date)             
         return <></>;
     else if (!item.exercises)
         return (
-            <div className="DateCell">
+            <div className={`DateCell ${doit}`}>
                 <span className="center">{item.date.substr(8,2)}</span>
             </div>
         );
     else if (item.date && item.exercises){
-        if (mode === 'ring')    
+        if (mode === 'ring')
             return (
-                <div className="DateCell">
+                <div className={`DateCell ${doit}`}>
                     <span className="center">{item.date.substr(8,2)}</span>
                     <Ring
                     data={item}
@@ -26,7 +27,7 @@ function displayWhat(item, mode, goal){
             );
         else if (mode === 'list')
             return (
-                <div className="DateCell">
+                <div className={`DateCell ${doit}`}>
                     <span className="center">{item.date.substr(8,2)}</span>
                     <ExerciseBlock
                     data={item} />
@@ -63,17 +64,37 @@ function getMax(data){
 }
 
 function Day({data, mode, onDetail}){
-    //fetch goal
-    let goal = '5:00';
-    if (typeof goal === 'string'){
-        let total = 0;
-        let min = parseInt(goal.slice(0,goal.indexOf(':')));
-        let sec = parseInt(goal.slice(goal.indexOf(':')+1));
-        total += (min*60+sec);
-        goal = total;
+    const [goal, setGoal] = useState({
+        goal_weekly: null,
+        goal_daily: [null, null, null, null, null, null, null],
+        goal_daily_time: '00:00',
+        goal_weight: null,}
+    );
+
+    useEffect(() => {
+        fetchGoals();
+    }, [])
+
+    const fetchGoals = async () => {
+        try{
+            const data = await getGoal();
+            setGoal(data);
+        } catch (error) {
+            console.error(error.message);
+        }
     }
-    if (mode === 'ring' && goal === null){
-        goal = getMax(data);  
+    const doit = (index) => ((goal.goal_daily[index%7]) ? 'doit' : null);
+
+    let goalTime = goal.goal_daily_time;
+    if (typeof goalTime === 'string'){
+        let total = 0;
+        let min = parseInt(goalTime.slice(0,goalTime.indexOf(':')));
+        let sec = parseInt(goalTime.slice(goalTime.indexOf(':')+1));
+        total += (min*60+sec);
+        goalTime = total;
+    }
+    if (mode === 'ring' && goalTime === null){
+        goalTime = getMax(data);  
     }
 
     function onShow(e){
@@ -82,51 +103,13 @@ function Day({data, mode, onDetail}){
 
     return (
         <>
-        {data.map((item) => (
+        {data.map((item, index) => (
             <div onClick={onShow}>
-                {displayWhat(item, mode, goal)}
+                {displayWhat(item, mode, goalTime, doit(index))}
             </div>
         ))}
         </>
     );
-
-
-    // return (
-    //     <>
-    //     {(mode === 'ring')?(
-    //        <RingMode 
-    //        data={data}/> 
-    //     ) : (
-    //         <ListMode 
-    //         data={data}/>
-    //     )} 
-    //     </>
-    // );
-
-
-    // return (
-    //     <>
-    //     {data.map((item) => (
-    //         <div onClick={onShow}> 
-    //             {(!item.date)?(
-    //                 <></>
-    //             ) : (
-    //                 (item.exercises)?(
-    //                     <div className="DateCell">
-    //                         <span className="center">{item.date.substr(8,2)}</span>
-    //                         <ExerciseBlock
-    //                         data={item} />
-    //                     </div>
-    //                     ) : (
-    //                     <div className="DateCell">
-    //                         <span className="center">{item.date.substr(8,2)}</span>
-    //                     </div>
-    //                     )
-    //                 )}
-    //         </div>
-    //     ))}
-    //     </>
-    // );
 }
 
 export default Day;

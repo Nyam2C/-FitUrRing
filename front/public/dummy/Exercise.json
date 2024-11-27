@@ -1,0 +1,47 @@
+[
+    {
+        "date": "2024-11-01",
+        "exercises": [
+            {
+                "video_title": "workout1",
+                "video_tag": "head",
+                "video_time": "10:49"
+            },
+            {
+                "video_title": "workout6",
+                "video_tag": "neck",
+                "video_time": "22:49"
+            }
+        ]
+    },
+    {
+        "date": "2024-11-08",
+        "exercises": [
+            {
+                "video_title": "workout2",
+                "video_tag": "neck",
+                "video_time": "7:55"
+            }
+        ]
+    },
+    {
+        "date": "2024-11-11",
+        "exercises": [
+            {
+                "video_title": "workout1",
+                "video_tag": "head",
+                "video_time": "10:49"
+            }
+        ]
+    },
+    {
+        "date": "2024-11-27",
+        "exercises": [
+            {
+                "video_title": "workout3",
+                "video_tag": "foot",
+                "video_time": "20:04"
+            }
+        ]
+    }
+]

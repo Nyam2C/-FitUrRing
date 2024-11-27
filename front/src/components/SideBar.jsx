@@ -1,25 +1,11 @@
-import react from 'react';
+import react, {useEffect, useState} from 'react';
 import {Link} from 'react-router-dom';
 
 import './index.css';
 import ExerciseBlock from './ExerciseBlock';
+import { getGoal, getUserData } from '../api';
 
-const userData = {
-    user_id: 'asdf',
-    user_name: '김ㅇㅇ',
-    user_gender: 0,
-    user_age: 10,
-    user_email: 'asdf@adf.com',
-    user_phone: '010-0000-0000',
-    }
 
-const data = 
-    {
-        goal_weekly: 3,
-        goal_daily: [0, 1, 0, 1, 0, 1, 0],
-        goal_daily_time: '00:00',
-        goal_weight: null
-    }
 
 const exerciseData = 
     { 
@@ -36,6 +22,8 @@ const exerciseData =
         },],
     };
 
+
+    
 function refineGoals(data){
     let result = '';
     for (let i=0; i<7; i++){
@@ -107,6 +95,42 @@ function DailyDetails({onShow}){
 }
 
 function SideBar({side, onDetail}){
+    const [goal, setGoal] = useState({
+        goal_weekly: null,
+        goal_daily: [null, null, null, null, null, null, null],
+        goal_daily_time: '00:00',
+        goal_weight: null,}
+    );
+    const [user, setUser] = useState({
+        user_id: null,
+        user_name: null,
+        user_gender: 0,
+        user_age: 0,
+        user_email: null
+    })
+
+    useEffect(() => {
+        fetchGoals();
+        fetchUser();
+    }, [])
+
+    const fetchGoals = async () => {
+        try{
+            const data = await getGoal();
+            setGoal(data);
+        } catch (error) {
+            console.error(error.message);
+        }
+    }
+    const fetchUser = async () => {
+        try{
+            const data = await getUserData();
+            setUser(data);
+        } catch (error) {
+            console.error(error.message);
+        }
+    }
+
     function onShow(){
         onDetail(false);
     }
@@ -120,8 +144,8 @@ function SideBar({side, onDetail}){
         ):(
         <div className="sidebar leftSide flex-grow-side">
             <UserStatus 
-            userData={userData}
-            data={data}
+            userData={user}
+            data={goal}
             />
         </div>
         )

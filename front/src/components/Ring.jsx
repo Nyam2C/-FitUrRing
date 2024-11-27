@@ -18,12 +18,13 @@ function calculPercent(data, goal){
 function Ring({data, goal}){
     const percent = calculPercent(data, goal);
     const dasharray = [2*Math.PI*10];
+    const achieved = (percent === 1)? '#CFFF5E' : '#B87EED';
 
     return (
         <div className="center">
             <svg width="10vh" heigth="10vh" viewBox="0 0 30 30">
                 <circle cx="15" cy="15" r="10" fill="none" 
-                        stroke='#CFFF5E' stroke-width="6" 
+                        stroke={achieved} stroke-width="6" 
                         strokeDasharray={dasharray}
                         strokeDashoffset={2*Math.PI*10 * (1-percent)}
                         stroke-linecap="round"
