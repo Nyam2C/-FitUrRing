@@ -12,27 +12,34 @@ function Routine() {
     const [currentIndex, setCurrentIndex] = useState(0);
     const [selectedRoutine, setSelectedRoutine] = useState(null);
     const [totalDuration, setTotalDuration] = useState(0);
-    const [restSeconds, setRestSeconds] = useState(0);
+    const [restSeconds, setRestSeconds] = useState(60); // 기본 휴식 시간 설정
+    const [isRest, setIsRest] = useState(false); // 휴식 상태 추가
 
     const ButtonClick = () => {
         setIsActive((prev) => !prev);
+        setCurrentIndex(0);
+        setIsRest(false);
     };
 
-    // 루틴 선택 처리
     const handleRoutineSelect = (routine) => {
         setSelectedRoutine(routine);
         const totalTime = routine.exercises.reduce((sum, exercise) => sum + exercise.duration, 0);
-        setTotalDuration(totalTime);
-        setCurrentIndex(0); // 루틴 선택 시 초기화
+        setTotalDuration(totalTime + restSeconds * (routine.exercises.length - 1));
+        setCurrentIndex(0);
+        setIsRest(false); // 초기화 시 휴식 상태 리셋
     };
 
     const handleNext = () => {
-        if (currentIndex < selectedRoutine.exercises.length - 1) {
+        if (isRest) {
+            setIsRest(false);
+        } else if (currentIndex < selectedRoutine.exercises.length - 1) {
+            setIsRest(true);
             setCurrentIndex(currentIndex + 1);
         } else {
             alert("모든 운동이 완료되었습니다!");
         }
     };
+
     useEffect(() => {
         if (!selectedRoutine) return;
 
@@ -58,7 +65,10 @@ function Routine() {
                         {selectedRoutine && (
                             <Now
                                 currentVideo={selectedRoutine.exercises[currentIndex]}
+                                isRest={isRest}
+                                restSeconds={restSeconds}
                                 onNext={handleNext}
+                                isActive={isActive}
                             />
                         )}
                     </div>
@@ -80,6 +90,9 @@ function Routine() {
                                     setCurrentIndex(selectedRoutine.exercises.indexOf(video))
                                 }
                                 isActive={isActive}
+                                currentIndex={currentIndex}
+                                isRest={isRest}
+                                restSeconds={restSeconds}
                             />
                         )}
                     </div>
@@ -87,9 +100,7 @@ function Routine() {
             </div>
             <div id="right">
                 <div id="list">
-                    <List onRoutineSelect={handleRoutineSelect}
-                        isActive={isActive}
-                    />
+                    <List onRoutineSelect={handleRoutineSelect} isActive={isActive} />
                 </div>
                 <div id="start">
                     <Start

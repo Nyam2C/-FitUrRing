@@ -99,6 +99,22 @@ function List({ onRoutineSelect, isActive }) {
         { title: "스트레칭 운동 10", thumbnail: "https://via.placeholder.com/150x100.png?text=Thumbnail10", link: "https://www.youtube.com/watch?v=example60", duration: 480, canceled: false },
       ],
     },
+    {
+      id: 7,
+      name: "등 루틴",
+      exercises: [
+        { title: "업그레이드를 위한 새로운 등운동 [ BACK DAY ]", thumbnail: "https://via.placeholder.com/150x100.png?text=Thumbnail1", link: "https://www.youtube.com/watch?v=f7wFbp9BnFs", duration: 300, canceled: false },
+        { title: "뚫고 나오는 등 만들고 싶으면 이거 봐", thumbnail: "https://via.placeholder.com/150x100.png?text=Thumbnail2", link: "https://www.youtube.com/watch?v=8SBBp65Sv3c", duration: 400, canceled: false },
+        { title: "Try This Back Exercise | Back & Hamstrings Workout", thumbnail: "https://via.placeholder.com/150x100.png?text=Thumbnail3", link: "https://www.youtube.com/watch?v=nRzAV-CYndA", duration: 350, canceled: false },
+        { title: "My Title Winning Back Training", thumbnail: "https://via.placeholder.com/150x100.png?text=Thumbnail4", link: "https://www.youtube.com/watch?v=5dp2FUN3mRQ", duration: 300, canceled: false },
+        { title: "Back and Delts Workout", thumbnail: "https://via.placeholder.com/150x100.png?text=Thumbnail5", link: "https://www.youtube.com/watch?v=DjfnFj-50b4", duration: 380, canceled: false },
+        { title: "INTENSE Back Workout | Mr. Olympia Derek Lunsford", thumbnail: "https://via.placeholder.com/150x100.png?text=Thumbnail6", link: "https://www.youtube.com/watch?v=HYngFKG5YbY&t=477s", duration: 420, canceled: false },
+        { title: "Mr. Olympia BACK WORKOUT", thumbnail: "https://via.placeholder.com/150x100.png?text=Thumbnail7", link: "https://www.youtube.com/watch?v=HqZOWPRyck8&t=134s", duration: 440, canceled: false },
+        { title: "등 운동 후 몽둥이질 당한 느낌이 나게 하는 방법들", thumbnail: "https://via.placeholder.com/150x100.png?text=Thumbnail8", link: "https://www.youtube.com/watch?v=OD1JMTLJp-A", duration: 450, canceled: false },
+        { title: "등 운동 하는 날 반드시 시청해야 할 영상 ( feat.등 운동 루틴 풀버전 ) 등 운동 하는 날 반드시 시청해야 할 영상 ( feat.등 운동 루틴 풀버전 ) 등 운동 하는 날 반드시 시청해야 할 영상 ( feat.등 운동 루틴 풀버전 ) 등 운동 하는 날 반드시 시청해야 할 영상 ( feat.등 운동 루틴 풀버전 ) 등 운동 하는 날 반드시 시청해야 할 영상 ( feat.등 운동 루틴 풀버전 ) 등 운동 하는 날 반드시 시청해야 할 영상 ( feat.등 운동 루틴 풀버전 ) 등 운동 하는 날 반드시 시청해야 할 영상 ( feat.등 운동 루틴 풀버전 ) ", thumbnail: "https://via.placeholder.com/150x100.png?text=Thumbnail9", link: "https://www.youtube.com/watch?v=naxGvgl9pKg&t=1102s", duration: 500, canceled: false },
+        { title: "요즘 유행하는 등 운동 루틴", thumbnail: "https://via.placeholder.com/150x100.png?text=Thumbnail10", link: "https://www.youtube.com/watch?v=XLCtwqECMrs&t=279s", duration: 480, canceled: false },
+      ],
+    },
   ];
 
   const [routines] = useState(initialRoutines);

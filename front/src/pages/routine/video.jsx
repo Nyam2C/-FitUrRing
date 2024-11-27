@@ -1,21 +1,34 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import "./Video.css";
 
-function Video({ routine, onRoutineChange, onVideoClick, isActive }) {
+function Video({
+    routine,
+    onRoutineChange,
+    onVideoClick,
+    isActive,
+    currentIndex,
+    isRest,
+    restSeconds,
+}) {
     const [exercises, setExercises] = useState(routine.exercises);
     const [isDragging, setIsDragging] = useState(false);
-
-    const restPeriod = 60;
+    const videoRefs = useRef([]);
 
     useEffect(() => {
         setExercises(routine.exercises);
     }, [routine]);
 
-    const handleVideoClick = (exercise) => {
-        window.open(exercise.link, "_blank", "noopener,noreferrer");
-        onVideoClick(exercise);
-    };
+    useEffect(() => {
+        const targetIndex = isRest ? currentIndex - 1 : currentIndex;
+        if (videoRefs.current[targetIndex]) {
+            videoRefs.current[targetIndex].scrollIntoView({
+                behavior: "smooth",
+                block: "center",
+            });
+        }
+
+    }, [currentIndex, isRest]);
 
     const handleDragStart = () => {
         setIsDragging(true);
@@ -33,54 +46,61 @@ function Video({ routine, onRoutineChange, onVideoClick, isActive }) {
         onRoutineChange(updatedExercises);
     };
 
+    const handleVideoClick = (exercise) => {
+        window.open(exercise.link, "_blank", "noopener,noreferrer");
+        onVideoClick(exercise);
+    };
+
     return (
-        <DragDropContext
-            onDragStart={handleDragStart}
-            onDragEnd={handleDragEnd}
-        >
+        <DragDropContext onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
             <Droppable droppableId="video-list" isDropDisabled={isActive}>
                 {(provided) => (
                     <div
                         id="video-container"
                         ref={provided.innerRef}
                         {...provided.droppableProps}
-                        style={{
-                            overflowY: "auto",
-                            maxHeight: "90%",
-                        }}
                     >
                         {exercises.map((exercise, index) => (
-                            <Draggable
-                                key={exercise.title}
-                                draggableId={exercise.title}
-                                index={index}
-                                isDragDisabled={isActive} // 드래그 비활성화 설정
-                            >
-                                {(provided) => (
-                                    <React.Fragment>
+                            <React.Fragment key={exercise.title}>
+                                <Draggable
+                                    draggableId={exercise.title}
+                                    index={index}
+                                    isDragDisabled={isActive}
+                                >
+                                    {(provided) => (
                                         <div
-                                            className="video-info"
-                                            ref={provided.innerRef}
+                                            ref={(el) => {
+                                                provided.innerRef(el);
+                                                videoRefs.current[index] = el;
+                                            }}
                                             {...provided.draggableProps}
                                             {...provided.dragHandleProps}
                                             onClick={() => handleVideoClick(exercise)}
+                                            className={`video-info ${currentIndex === index && !isRest
+                                                ? "highlighted"
+                                                : ""
+                                                }`}
                                         >
                                             <img src={exercise.thumbnail} alt={exercise.title} />
                                             <div className="video-title">{exercise.title}</div>
                                         </div>
-                                        {index < exercises.length - 1 && (
-                                            <div
-                                                className="rest-period"
-                                                style={{
-                                                    visibility: isDragging ? "hidden" : "visible",
-                                                }}
-                                            >
-                                                {restPeriod}초 - Rest Period
-                                            </div>
-                                        )}
-                                    </React.Fragment>
+                                    )}
+                                </Draggable>
+                                {index < exercises.length - 1 && (
+                                    <div
+                                        className={`rest-period ${currentIndex - 1 === index && isRest
+                                            ? "highlighted-rest"
+                                            : ""
+                                            }`}
+                                        style={{
+                                            visibility: isDragging ? "hidden" : "visible",
+                                        }}
+
+                                    >
+                                        {restSeconds}초 - Rest Period
+                                    </div>
                                 )}
-                            </Draggable>
+                            </React.Fragment>
                         ))}
                         {provided.placeholder}
                     </div>
