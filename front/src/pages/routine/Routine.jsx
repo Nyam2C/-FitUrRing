@@ -9,16 +9,22 @@ import Now from "./Now";
 
 function Routine() {
     const [isActive, setIsActive] = useState(false);
+    const [isPaused, setIsPaused] = useState(false); // 정지 상태 추가
     const [currentIndex, setCurrentIndex] = useState(0);
     const [selectedRoutine, setSelectedRoutine] = useState(null);
     const [totalDuration, setTotalDuration] = useState(0);
-    const [restSeconds, setRestSeconds] = useState(60); // 기본 휴식 시간 설정
-    const [isRest, setIsRest] = useState(false); // 휴식 상태 추가
+    const [restSeconds, setRestSeconds] = useState(60);
+    const [isRest, setIsRest] = useState(false);
 
     const ButtonClick = () => {
         setIsActive((prev) => !prev);
+        setIsPaused(false); // 시작 시 정지 상태 해제
         setCurrentIndex(0);
         setIsRest(false);
+    };
+
+    const handlePause = () => {
+        setIsPaused((prev) => !prev); // 정지 상태 토글
     };
 
     const handleRoutineSelect = (routine) => {
@@ -26,7 +32,7 @@ function Routine() {
         const totalTime = routine.exercises.reduce((sum, exercise) => sum + exercise.duration, 0);
         setTotalDuration(totalTime + restSeconds * (routine.exercises.length - 1));
         setCurrentIndex(0);
-        setIsRest(false); // 초기화 시 휴식 상태 리셋
+        setIsRest(false);
     };
 
     const handleNext = () => {
@@ -69,6 +75,8 @@ function Routine() {
                                 restSeconds={restSeconds}
                                 onNext={handleNext}
                                 isActive={isActive}
+                                onPause={handlePause}
+                                isPaused={isPaused}
                             />
                         )}
                     </div>
@@ -76,7 +84,10 @@ function Routine() {
                         <Rest onRestChange={setRestSeconds} isActive={isActive} />
                     </div>
                     <div id="timer">
-                        <Timer duration={totalDuration} isActive={isActive} />
+                        <Timer
+                            duration={totalDuration}
+                            isActive={isActive && !isPaused} // 정지 상태 반영
+                        />
                     </div>
                 </div>
                 <div id="down">
@@ -89,7 +100,7 @@ function Routine() {
                                 onVideoClick={(video) =>
                                     setCurrentIndex(selectedRoutine.exercises.indexOf(video))
                                 }
-                                isActive={isActive}
+                                isActive={isActive && !isPaused}
                                 currentIndex={currentIndex}
                                 isRest={isRest}
                                 restSeconds={restSeconds}
