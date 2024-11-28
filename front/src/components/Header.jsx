@@ -31,7 +31,7 @@ function Header(){
             <Link class="link large" to='/workout'>Workout</Link>
             <Link class="link large" to='/habitTracker'>Habit Tracker</Link>
             <Link class="link large" to='/routine'>Routine</Link>
-            <Link class="link large" to='diet'>Diet</Link>
+            <Link class="link large" to='/diet'>Diet</Link>
             <MyPage />
         </div>
     );

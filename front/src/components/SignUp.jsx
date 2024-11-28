@@ -3,7 +3,7 @@ import './index.css';
 import { userSignUp } from '../api';
 
 function SignUp(){
-    const [userId, setUserId] = useState('');   
+        const [userId, setUserId] = useState('');   
     const [password, setPassword] = useState('');
     const [userName, setUserName] = useState('');
     const [email, setEmail] = useState('');
