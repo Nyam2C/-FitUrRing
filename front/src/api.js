@@ -97,5 +97,52 @@ async function changeUserData(data){
         console.log(err);
     }
 };
+
+async function userLogout(){
+    try{
+        const uri = '/api/logout'
+        const response = await fetch(uri, {
+             method: "POST",
+             headers: {
+                "Authorization": `Bearer ${localStorage.getItem('accessToken')}`,
+                 "Conent-Type": "application/json",
+             },
+         });
+         
+         if (response.ok){
+            const data = await response.json();
+            window.localStorage.setItem('accessToken', null);
+         }
+         else{
+            throw new Error('Network error', response.status);
+         }
+    } catch(err) {
+        console.error(err.message);
+    }
+}
+
+async function userWithdraw(user) {
+    const data = {...user, isWithdrawn: 1};
+    const uri = '/api/user/withdraw'
+    try{
+        const response = await fetch(uri, {
+            method: "PUT",
+            headers: {
+                "Authorization": `Bearer ${localStorage.getItem('accessToken')}`,
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),        
+        });
+        if (response.ok){
+            window.localStorage.setItem('accessToken', null);
+        }
+        else{
+            throw new Error('Network error', response.status);
+        }
+    } catch(err){
+        console.error(err.message);
+    }
+    
+}
  
-export {userLogin, userSignUp, getUserData, changeUserData};
+export {userLogin, userSignUp, getUserData, changeUserData, userLogout, userWithdraw};

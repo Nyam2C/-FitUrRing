@@ -3,24 +3,28 @@ import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 
 import './index.css';
 import {ReactComponent as Logo} from '../assets/logo.svg';
-
-function MyPage(props){
-    if (props.userId){
-        return (
-            <span>
-                <Link class="link large" to='/mypage'>My Page</Link>
-                <Link class="link large" to='/sign'>Sign Out</Link>
-            </span>
-        );
-    }
-    else{
-        return (
-            <Link class="link large" to='/sign'>Sign in</Link>
-        );
-    }
-}
+import { userLogout } from '../api';
 
 function Header(){
+    function handleSignOut() {
+        userLogout();
+    }
+
+    function MyPage(){
+        if (localStorage.getItem('accessToken')){
+            return (
+                <span>
+                    <Link class="link large" to='/mypage'>My Page</Link>
+                    <label class="link large" to='/sign' onClick={handleSignOut}>Sign Out</label>
+                </span>
+            );
+        }
+        else{
+            return (
+                <Link class="link large" to='/sign'>Sign in</Link>
+            );
+        }
+    }
 
     return (
         <div id="header">

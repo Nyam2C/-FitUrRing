@@ -61,3 +61,23 @@ input[type='radio']:checked {
     background-color: #B87EED; 
     border: 0.3em solid #FFFFFF; 
 }
+
+#background{
+    position: absolute;
+    background-color: #333333a5;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#modal{
+    border-radius: 3em;
+    background-color: #FFFFFF;
+    color: black;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+}

@@ -1,6 +1,7 @@
 import react, { useState, useEffect } from 'react';
 
-import {getUserData, changeUserData} from '../api.js';
+import {getUserData, changeUserData, userWithdraw} from '../api.js';
+import Modal from '../components/Modal.jsx'; 
 
 function MyPage(){
     const [user, setUser] = useState({
@@ -16,6 +17,7 @@ function MyPage(){
     });
     const [newPW, setNewPW] = useState('');
     const [warning, setWarning] = useState(null);
+    const [showModal, setShowModal] = useState(false);
     useEffect(() => {
         fetchUser();
     }, []);
@@ -43,6 +45,15 @@ function MyPage(){
         const response = changeUserData(data);
         if (response.ok){
             alert("성공적으로 저장되었습니다.");
+            window.location.reload();
+        }
+    }
+    function handleWithdraw(e){
+        e.preventDefault();
+        console.log(newPW);
+        if (user.user_password === newPW)   userWithdraw(user);
+        else{
+            alert("비밀번호가 일치하지 않습니다.");
             window.location.reload();
         }
     }
@@ -96,9 +107,20 @@ function MyPage(){
                         <th>가입일시</th>
                         <td>{`${user.user_created_at}`}</td>
                     </tr>
+                    <tr>
+                        <th></th>
+                        <td><button>정보 수정</button> <button type="button" onClick={()=>setShowModal(prev=>!prev)}> 회원 탈퇴</button></td>
+                    </tr>
                 </table>
-                <button>정보 수정</button>
             </form>
+            {showModal && <Modal width="50vw" height="40vh">
+                <form onSubmit={handleWithdraw}>
+                    <label id="title">회원 탈퇴</label>
+                    <label>비밀번호를 입력해주세요</label>
+                    <input type="text" onChange={(e)=>setNewPW(e.target.value)}></input>
+                    <button style={{backgroundColor:'red', color:'white'}}>탈퇴</button>
+                </form>
+                </Modal>}
         </div>
     )
 }
