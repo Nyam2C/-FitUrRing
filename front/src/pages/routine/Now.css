@@ -8,6 +8,7 @@
 
     width: 412.48px;
     height: 191.92px;
+    animation: 0.2s ease-in-out loadEffect1;
 }
 
 .now-thumbnail {

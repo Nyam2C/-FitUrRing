@@ -67,20 +67,22 @@ function Start({ ButtonClick, isActive, hasRoutine }) {
             {isModalOpen && (
                 <div className="modal-backdrop">
                     <div className="modal">
-                        <div className="modal-content">
+                        <div id="modal-contents">
                             {!hasRoutine ? (
                                 <p>운동을 선택해 주세요!</p>
                             ) : countdown !== null ? (
-                                <p>{message[countdown]}</p> 
+                                <span>{message[countdown]}</span>
                             ) : (
                                 <p>운동을 시작하겠습니까?</p>
                             )}
-                            {countdown === null && (
-                                <>
-                                    <button onClick={handleConfirm}>확인</button>
-                                    {hasRoutine && <button onClick={handleCancel}>취소</button>}
-                                </>
-                            )}
+                            <div>
+                                {countdown === null && (
+                                    <>
+                                        <button onClick={handleConfirm}>확인</button>
+                                        {hasRoutine && <button onClick={handleCancel}>취소</button>}
+                                    </>
+                                )}
+                            </div>
                         </div>
                     </div>
                 </div>

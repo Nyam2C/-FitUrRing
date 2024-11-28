@@ -172,7 +172,7 @@ function List({ onRoutineSelect, isActive }) {
                       textDecoration: exercise.canceled ? "line-through" : "none",
                     }}
                   >
-                    {truncateText(exercise.title, 10)}
+                    {truncateText(exercise.title, 11)}
                   </span>
                   <button onClick={() => toggleCancelExercise(exercise)}>
                     {exercise.canceled ? "X" : "O"}

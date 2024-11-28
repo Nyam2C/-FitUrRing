@@ -1,4 +1,4 @@
-import React, { useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import "./Now.css";
 
 function Now({ currentVideo, onNext, isRest, restSeconds, isActive, onPause, isPaused }) {
@@ -37,7 +37,7 @@ function Now({ currentVideo, onNext, isRest, restSeconds, isActive, onPause, isP
 
         const timer = setInterval(() => {
             setRestTimeLeft((prev) => {
-                if (prev <= 1){
+                if (prev <= 1) {
                     onNext();
                 }
                 if (prev <= 4) {
@@ -53,15 +53,13 @@ function Now({ currentVideo, onNext, isRest, restSeconds, isActive, onPause, isP
     useEffect(() => {
         if (currentVideo && !isRest && isActive) {
             setIsModalOpen(false);
-            alert(restTimeLeft);
             setExerciseTime(0);
             setRestTimeLeft(restSeconds);
-            window.open(currentVideo.link, "_blank", "noopener,noreferrer");
         }
     }, [currentVideo, isRest, isActive]);
 
     const handleRestStart = () => {
-        setIsTakingBreak(true);
+        if (!isPaused && isActive) setIsTakingBreak(true);
     };
 
     const handleRestStop = () => {
@@ -70,13 +68,18 @@ function Now({ currentVideo, onNext, isRest, restSeconds, isActive, onPause, isP
     };
 
     const handleRestNext = () => {
-        setRestTimeLeft(4);
+        if (isActive) setRestTimeLeft(4);
+        else onNext();
     };
 
     const formatTime = (seconds) => {
         const minutes = Math.floor(seconds / 60);
         const secs = seconds % 60;
         return `${String(minutes).padStart(2, "0")}:${String(secs).padStart(2, "0")}`;
+    };
+
+    const truncateText = (text, maxLength) => {
+        return text.length > maxLength ? `${text.substring(0, maxLength)}...` : text;
     };
 
     return (
@@ -105,8 +108,8 @@ function Now({ currentVideo, onNext, isRest, restSeconds, isActive, onPause, isP
                     {isModalOpen && (
                         <div className="modal-backdrop">
                             <div className="modal">
-                                <div className="modal-content">
-                                    <p>{restTimeLeft}</p>
+                                <div id="modal-content">
+                                    <span>{restTimeLeft}</span>
                                 </div>
                             </div>
                         </div>
@@ -121,7 +124,7 @@ function Now({ currentVideo, onNext, isRest, restSeconds, isActive, onPause, isP
                                 alt={currentVideo.title}
                                 className="now-thumbnail"
                             />
-                            <p className="now-title">{currentVideo.title}</p>
+                            <p className="now-title">{truncateText(currentVideo.title, 20)}</p>
                         </div>
                     )}
                     <span>Exercise Timer: {formatTime(exerciseTime)}</span>

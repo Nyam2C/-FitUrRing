@@ -51,6 +51,10 @@ function Video({
         onVideoClick(exercise);
     };
 
+    const truncateText = (text, maxLength) => {
+        return text.length > maxLength ? `${text.substring(0, maxLength)}...` : text;
+    };
+
     return (
         <DragDropContext onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
             <Droppable droppableId="video-list" isDropDisabled={isActive}>
@@ -82,7 +86,7 @@ function Video({
                                                 }`}
                                         >
                                             <img src={exercise.thumbnail} alt={exercise.title} />
-                                            <div className="video-title">{exercise.title}</div>
+                                            <div className="video-title">{truncateText(exercise.title, 80)}</div>
                                         </div>
                                     )}
                                 </Draggable>

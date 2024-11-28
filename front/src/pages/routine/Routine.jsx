@@ -21,10 +21,11 @@ function Routine() {
         setIsPaused(false); // 시작 시 정지 상태 해제
         setCurrentIndex(0);
         setIsRest(false);
+        window.open(selectedRoutine.exercises[currentIndex].link, "_blank", "noopener,noreferrer");
     };
 
     const handlePause = () => {
-        setIsPaused((prev) => !prev); // 정지 상태 토글
+        if(isActive) setIsPaused((prev) => !prev); // 정지 상태 토글
     };
 
     const handleRoutineSelect = (routine) => {
@@ -36,11 +37,14 @@ function Routine() {
     };
 
     const handleNext = () => {
+        if (isPaused) return;
         if (isRest) {
             setIsRest(false);
         } else if (currentIndex < selectedRoutine.exercises.length - 1) {
             setIsRest(true);
             setCurrentIndex(currentIndex + 1);
+            if(isActive) window.open(selectedRoutine.exercises[currentIndex+1].link, "_blank", "noopener,noreferrer");
+
         } else {
             alert("모든 운동이 완료되었습니다!");
         }
@@ -100,7 +104,7 @@ function Routine() {
                                 onVideoClick={(video) =>
                                     setCurrentIndex(selectedRoutine.exercises.indexOf(video))
                                 }
-                                isActive={isActive && !isPaused}
+                                isActive={isActive || isPaused}
                                 currentIndex={currentIndex}
                                 isRest={isRest}
                                 restSeconds={restSeconds}

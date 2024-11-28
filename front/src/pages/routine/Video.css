@@ -10,6 +10,7 @@
     overflow-y: auto;
     -ms-overflow-style: none;
     box-sizing: border-box;
+    animation: 0.2s ease-in-out loadEffect1;
 
 }
 
