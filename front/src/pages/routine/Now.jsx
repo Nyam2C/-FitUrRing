@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect} from 'react';
 import "./Now.css";
 
 function Now({ currentVideo, onNext, isRest, restSeconds, isActive, onPause, isPaused }) {
@@ -6,77 +6,62 @@ function Now({ currentVideo, onNext, isRest, restSeconds, isActive, onPause, isP
     const [restTime, setRestTime] = useState(0); // 현재 휴식 타이머
     const [restTimeLeft, setRestTimeLeft] = useState(restSeconds); // 휴식 타이머
     const [isTakingBreak, setIsTakingBreak] = useState(false); // 휴식 상태
-    const [linkOpened, setLinkOpened] = useState(false); // 현재 운동에서 창 열림 여부
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [count, setCount] = useState(null); // 카운트다운 상태
-    const message = ["운동을 시작하겠습니다", "1", "2", "3"];
-    const countRef = useRef(3); // useRef로 count 값 추적
 
     useEffect(() => {
-        // 운동 타이머 관리
+        if (!isActive) setRestTimeLeft(restSeconds);
+    }, [restTimeLeft]);
+
+    useEffect(() => {
         if (isRest || isPaused || !isActive || isTakingBreak) return;
 
         const timer = setInterval(() => {
-            setExerciseTime((prev) => prev + 1); // 운동 타이머 증가
+            setExerciseTime((prev) => prev + 1);
         }, 1000);
 
-        return () => clearInterval(timer); // 타이머 정리
+        return () => clearInterval(timer);
     }, [isRest, isPaused, isActive, isTakingBreak]);
 
     useEffect(() => {
-        // 휴식 타이머 관리
         if (!isTakingBreak) return;
 
         const timer = setInterval(() => {
-            setRestTime((prev) => prev + 1); // 휴식 타이머 증가
+            setRestTime((prev) => prev + 1);
         }, 1000);
 
-        return () => clearInterval(timer); // 타이머 정리
+        return () => clearInterval(timer);
     }, [isTakingBreak]);
 
     useEffect(() => {
         if (!isRest || isPaused || !isActive || isTakingBreak) return;
 
-        // restTimeLeft가 3 이하일 경우 handleRestNext 호출 및 조기 종료
-        if (restTimeLeft <= 3) {
-            handleRestNext();
-            return;
-        }
-
-        // 타이머 설정
         const timer = setInterval(() => {
             setRestTimeLeft((prev) => {
-                if (prev <= 1) {
-                    clearInterval(timer); // 타이머 정리
-                    onNext(); // 다음 동작 실행
-                    return 0; // 최종값 0으로 설정
+                if (prev <= 1){
+                    onNext();
                 }
-                return prev - 1; // 남은 시간 감소
+                if (prev <= 4) {
+                    setIsModalOpen(true);
+                }
+                return prev - 1;
             });
         }, 1000);
 
-        // 타이머 정리
         return () => clearInterval(timer);
-    }, [isRest, restTimeLeft, onNext]);
+    }, [isRest, isPaused, isActive, isTakingBreak]);
 
     useEffect(() => {
-        // 새 운동으로 넘어갈 때 타이머 초기화
-        if (currentVideo) {
-            setExerciseTime(0); // 새로운 운동 타이머 초기화
-            setLinkOpened(false); // 새 운동으로 창 띄우기 초기화
-        }
-    }, [currentVideo]);
-
-    useEffect(() => {
-        // 현재 운동에서 최초 1회만 링크 열기
-        if (!isRest && currentVideo?.link && isActive && !linkOpened) {
+        if (currentVideo && !isRest && isActive) {
+            setIsModalOpen(false);
+            alert(restTimeLeft);
+            setExerciseTime(0);
+            setRestTimeLeft(restSeconds);
             window.open(currentVideo.link, "_blank", "noopener,noreferrer");
-            setLinkOpened(true);
         }
-    }, [currentVideo, isRest, isActive, linkOpened]);
+    }, [currentVideo, isRest, isActive]);
 
     const handleRestStart = () => {
-        setIsTakingBreak(true); // 휴식 상태 활성화
+        setIsTakingBreak(true);
     };
 
     const handleRestStop = () => {
@@ -85,36 +70,8 @@ function Now({ currentVideo, onNext, isRest, restSeconds, isActive, onPause, isP
     };
 
     const handleRestNext = () => {
-        setRestTimeLeft(restSeconds); // 휴식 타이머 초기화
-        setIsModalOpen(true);
-        startCountdown();
-
+        setRestTimeLeft(4);
     };
-    const startCountdown = () => {
-        countRef.current = 3; // 초기값 설정
-        setCount(countRef.current); // UI에 반영
-
-        const countdownFunction = () => {
-            if (countRef.current <= 0) {
-                setIsModalOpen(false); // 모달 닫기
-                onNext();
-                return; // 종료
-            }
-
-            countRef.current -= 1; // 동기적으로 변수 값 업데이트
-            setCount(countRef.current); // UI에 반영
-            setTimeout(countdownFunction, 1000); // 1초마다 호출
-        };
-
-        countdownFunction(); // 타이머 시작
-    };
-
-    useEffect(() => {
-        if (count <= 0) {
-            setIsModalOpen(false); // 모달 닫기
-        }
-    }, [count]);
-
 
     const formatTime = (seconds) => {
         const minutes = Math.floor(seconds / 60);
@@ -149,7 +106,7 @@ function Now({ currentVideo, onNext, isRest, restSeconds, isActive, onPause, isP
                         <div className="modal-backdrop">
                             <div className="modal">
                                 <div className="modal-content">
-                                    {count !== null && <p>{count}</p>}
+                                    <p>{restTimeLeft}</p>
                                 </div>
                             </div>
                         </div>
