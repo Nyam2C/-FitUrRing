@@ -33,3 +33,29 @@
 ul{
     list-style-type: none;
 }
+
+.inputbox{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+input[type='date']{
+    width: 25em;
+    text-align: center;
+    font-size: large;
+    font-weight: bold;
+}
+input[type='radio']{
+    width: 2em;
+    height: 2em;
+    margin: 1em;
+}
+
+input[type='radio']:checked {
+    -webkit-appearance: none; 
+    -moz-appearance: none; 
+    appearance: none;
+    background-color: #B87EED; 
+    border: 0.3em solid #FFFFFF; 
+  }
