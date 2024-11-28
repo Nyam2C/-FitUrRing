@@ -40,4 +40,62 @@ async function userSignUp(body) {
         console.error(err.message);
     }
 }
-export {userLogin, userSignUp};
+async function getUserData(){
+    try{
+        //const uri = `/api/user`
+        //const response = await fetch(uri, {
+        //     method: "GET",
+        //     headers: {
+        //         //JWT
+        //         "Content-Type": "application/json",
+        //     },
+        // });
+
+        // const uri = '/dummy/User.json'
+        // const response = await fetch(uri);
+
+        // if (!response.ok){
+        //     throw new Error('Network error', response.status);
+        // }
+       const data = {
+            user_id: 'idididididdd',
+            user_password: 'klk',
+            user_name: 'asdf',
+            user_gender: 0,
+            user_birthdate: '2024-11-11',
+            user_email: 'asdf@asdf.com',
+            user_created_at: new Date(),
+            user_height: null,
+            user_weight: null
+            }
+        // const data = await response.json();
+        return data;
+    } catch(err) {
+        console.log(err.message);
+    }
+};
+
+async function changeUserData(data){
+    // const body = {}
+    try{
+        const uri = `/api/user/edit`
+        const response = await fetch(uri, {
+            method: "PUT",
+            headers: {
+                //JWT
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data)
+        });        
+        if (!response.ok){
+            throw new Error('Network error', response.status);
+        }
+        const res = await response.json();
+        console.log(res);
+        return res;
+    } catch(err) {
+        console.log(err);
+    }
+};
+ 
+export {userLogin, userSignUp, getUserData, changeUserData};
