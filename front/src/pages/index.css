@@ -18,13 +18,21 @@ aside{
     overflow: hidden;
   }
 
+<<<<<<< HEAD
 /* @keyframes leftmove {
+=======
+@keyframes leftmove {
+>>>>>>> 21f05056a2767c25f4fd4dfd53cdf59a2a6f4888
     from {transform: translate3d(-50vw, 0, 0);}
 }
 
 @keyframes rightmove {
     from {transform: translate3d(50vw, 0, 0);}
+<<<<<<< HEAD
 } */
+=======
+}
+>>>>>>> 21f05056a2767c25f4fd4dfd53cdf59a2a6f4888
 
 #title{
     font-size: 3em;
@@ -69,9 +77,13 @@ button{
     height: 2.5em;
     font-size:medium;
 }
+<<<<<<< HEAD
 
 input::placeholder{
     color: #333333;
     text-align: center;
     font-size: large;
 }
+=======
+  
+>>>>>>> 21f05056a2767c25f4fd4dfd53cdf59a2a6f4888

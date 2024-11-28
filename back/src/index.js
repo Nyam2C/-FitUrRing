@@ -1,19 +1,34 @@
+const mongoose = require('mongoose');
 const express = require('express');
-const cors = require('cors'); // CORS 미들웨어 추가
+const cors = require('cors');
 const app = express();
 const port = 8080;
 
-app.use(cors()); // 모든 요청에 대해 CORS 허용
+const initDB = require('./initDB');
 
-// 서버 시작 시간을 기록합니다.
-const serverStartTime = Date.now();
+const mongoUrl = `mongodb://wss-db:27017`;
+mongoose.connect(mongoUrl);
 
-// 업타임을 계산하여 반환하는 엔드포인트를 추가합니다.
-app.get('/api/uptime', (req, res) => {
-    const uptime = Date.now() - serverStartTime;
-    console.log(`Server uptime: ${Math.floor(uptime / 1000)} seconds`);
-    res.send(`Server uptime: ${Math.floor(uptime / 1000)} seconds`);
+app.use(cors());
+app.use(express.json());
+
+const db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', async () => {
+    console.log('Connected to MongoDB');
+    try {
+        await initDB();
+        console.log('Database initialized successfully');
+    } catch (error) {
+        console.error('Failed to initialize database:', error);
+    }
 });
+
+const userRouter = require('./routers/userRouter');
+const etcRouter = require('./routers/etcRouter');
+
+app.use('/api', etcRouter);
+app.use('/api/user', userRouter);
 
 app.listen(port, () => {
     console.log(`Backend server is running on http://172.20.0.3:${port}`);

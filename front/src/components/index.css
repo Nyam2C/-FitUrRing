@@ -32,6 +32,7 @@
 
 ul{
     list-style-type: none;
+<<<<<<< HEAD
 }
 
 .inputbox{
@@ -59,3 +60,6 @@ input[type='radio']:checked {
     background-color: #B87EED; 
     border: 0.3em solid #FFFFFF; 
   }
+=======
+}
+>>>>>>> 21f05056a2767c25f4fd4dfd53cdf59a2a6f4888
