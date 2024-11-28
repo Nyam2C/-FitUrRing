@@ -46,7 +46,7 @@ async function getUserData(){
         //const response = await fetch(uri, {
         //     method: "GET",
         //     headers: {
-        //         //JWT
+        //         "Authorization": `Bearer ${localStorage.getItem('accessToken')}`,
         //         "Content-Type": "application/json",
         //     },
         // });
@@ -82,7 +82,7 @@ async function changeUserData(data){
         const response = await fetch(uri, {
             method: "PUT",
             headers: {
-                //JWT
+                "Authorization": `Bearer ${localStorage.getItem('accessToken')}`,
                 "Content-Type": "application/json",
             },
             body: JSON.stringify(data)

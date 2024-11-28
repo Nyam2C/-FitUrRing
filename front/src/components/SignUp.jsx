@@ -3,19 +3,20 @@ import './index.css';
 import { userSignUp } from '../api';
 
 function SignUp(){
-        const [userId, setUserId] = useState('');   
+    const [userId, setUserId] = useState('');   
     const [password, setPassword] = useState('');
     const [userName, setUserName] = useState('');
     const [email, setEmail] = useState('');
     const [birthdate, setBirthdate] = useState();
     const [gender, setGender] = useState(0);
 
+    const [warning, setWarning] = useState(null);
+
     const handleConfirm = (e) => {
         if (e.target.value !== password){
-            return (
-                <label>비밀번호가 일치하지 않습니다.</label>
-            )
-        }   
+            setWarning('비밀번호가 일치하지 않습니다.');
+        }
+        else setWarning(null);
     };
 
     function handleSignUp(e){
@@ -49,6 +50,7 @@ function SignUp(){
                         onChange={(e) => setPassword(e.target.value)}></input>
                 <input required type="password" name="pwConfirm" placeholder='PW를 한번 더 입력해주세요' 
                         onChange={handleConfirm}></input>
+                <p style={{color: 'red'}}>{warning}</p>
                 <input required type="email" name="email" placeholder='이메일' value={email}
                         onChange={(e) => setEmail(e.target.value)}></input>
                 <div className='inputbox'>
