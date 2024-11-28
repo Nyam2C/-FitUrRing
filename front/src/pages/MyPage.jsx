@@ -26,7 +26,8 @@ function MyPage(){
             const data = await getUserData();
             setUser(data);
         } catch (error){
-            console.error(error.message);
+            alert("정보를 불러오는 데 실패했습니다.");
+            setUser(null);
         }
     }
     function handleConfirm(e){
@@ -57,6 +58,9 @@ function MyPage(){
             window.location.reload();
         }
     }
+    if (!user && !window.localStorage.getItem('accessToken'))    
+        return (<h2>표시할 사항이 없습니다.</h2>);
+
     return (
         <div id="mypage">
             <label id="title">마이페이지</label>
