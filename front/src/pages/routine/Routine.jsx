@@ -6,6 +6,7 @@ import Rest from "./Rest";
 import List from "./List";
 import Video from "./Video";
 import Now from "./Now";
+import Progress from "./Progress";
 
 function Routine() {
     const [isActive, setIsActive] = useState(false);
@@ -15,6 +16,9 @@ function Routine() {
     const [totalDuration, setTotalDuration] = useState(0);
     const [restSeconds, setRestSeconds] = useState(60);
     const [isRest, setIsRest] = useState(false);
+    const [progressTimes, setProgressTimes] = useState(null);
+    const [endSignal,setEndSignal] = useState(false);
+
 
     const ButtonClick = () => {
         setIsActive((prev) => !prev);
@@ -25,7 +29,7 @@ function Routine() {
     };
 
     const handlePause = () => {
-        if(isActive) setIsPaused((prev) => !prev); // 정지 상태 토글
+        if (isActive) setIsPaused((prev) => !prev); // 정지 상태 토글
     };
 
     const handleRoutineSelect = (routine) => {
@@ -43,10 +47,10 @@ function Routine() {
         } else if (currentIndex < selectedRoutine.exercises.length - 1) {
             setIsRest(true);
             setCurrentIndex(currentIndex + 1);
-            if(isActive) window.open(selectedRoutine.exercises[currentIndex+1].link, "_blank", "noopener,noreferrer");
+            if (isActive) window.open(selectedRoutine.exercises[currentIndex + 1].link, "_blank", "noopener,noreferrer");
 
         } else {
-            alert("모든 운동이 완료되었습니다!");
+            setEndSignal(true);
         }
     };
 
@@ -81,6 +85,8 @@ function Routine() {
                                 isActive={isActive}
                                 onPause={handlePause}
                                 isPaused={isPaused}
+                                onAddTime={(time) => setProgressTimes(time)}
+                                endSignal={endSignal}
                             />
                         )}
                     </div>
@@ -95,7 +101,9 @@ function Routine() {
                     </div>
                 </div>
                 <div id="down">
-                    <div id="progress"></div>
+                    <div id="progress">
+                        <Progress times={progressTimes} endSignal={endSignal} />
+                    </div>
                     <div id="video">
                         {selectedRoutine && (
                             <Video

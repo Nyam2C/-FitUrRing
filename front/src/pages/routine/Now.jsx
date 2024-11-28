@@ -1,16 +1,34 @@
 import React, { useState, useEffect } from 'react';
 import "./Now.css";
 
-function Now({ currentVideo, onNext, isRest, restSeconds, isActive, onPause, isPaused }) {
+function Now({
+    currentVideo,
+    onNext,
+    isRest,
+    restSeconds,
+    isActive,
+    onPause,
+    isPaused,
+    onAddTime, 
+    endSignal
+}) {
     const [exerciseTime, setExerciseTime] = useState(0); // 현재 운동 타이머
     const [restTime, setRestTime] = useState(0); // 현재 휴식 타이머
     const [restTimeLeft, setRestTimeLeft] = useState(restSeconds); // 휴식 타이머
     const [isTakingBreak, setIsTakingBreak] = useState(false); // 휴식 상태
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isFlag, setFlag] = useState(true);
 
     useEffect(() => {
         if (!isActive) setRestTimeLeft(restSeconds);
     }, [restTimeLeft]);
+
+    useEffect(() => {
+        if (endSignal&&!isFlag){
+            onAddTime(`Exercise: ${exerciseTime}`);
+            setFlag(true);
+        }
+    }, [exerciseTime]);
 
     useEffect(() => {
         if (isRest || isPaused || !isActive || isTakingBreak) return;
@@ -51,11 +69,13 @@ function Now({ currentVideo, onNext, isRest, restSeconds, isActive, onPause, isP
     }, [isRest, isPaused, isActive, isTakingBreak]);
 
     useEffect(() => {
-        if (currentVideo && !isRest && isActive) {
+        if (currentVideo && isRest && isActive) {
             setIsModalOpen(false);
+            onAddTime(`Exercise: ${exerciseTime}`);
             setExerciseTime(0);
             setRestTimeLeft(restSeconds);
-        }
+        } else if (!isRest && !isFlag && isActive) onAddTime(`Rest: ${restSeconds}`);
+        else if (!isRest && isFlag && isActive) setFlag(false);
     }, [currentVideo, isRest, isActive]);
 
     const handleRestStart = () => {
@@ -64,12 +84,16 @@ function Now({ currentVideo, onNext, isRest, restSeconds, isActive, onPause, isP
 
     const handleRestStop = () => {
         setIsTakingBreak(false); // 휴식 상태 비활성화
+        onAddTime(`Rest: ${restTime}`);
         setRestTime(0); // 휴식 타이머 초기화
     };
 
     const handleRestNext = () => {
-        if (isActive) setRestTimeLeft(4);
-        else onNext();
+        if (isActive) {
+            onAddTime(`Rest: ${restSeconds - restTimeLeft}`);
+            setFlag(true);
+            setRestTimeLeft(4);
+        } else onNext();
     };
 
     const formatTime = (seconds) => {
@@ -99,9 +123,7 @@ function Now({ currentVideo, onNext, isRest, restSeconds, isActive, onPause, isP
                         <h3>{formatTime(restTimeLeft)}</h3>
                     ) : (
                         <h3>다음 운동으로</h3>
-
-                    )
-                    }
+                    )}
                     <button className="next-button" onClick={handleRestNext}>
                         Next
                     </button>

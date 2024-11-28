@@ -10,13 +10,6 @@ function List({ onRoutineSelect, isActive }) {
         { title: "전신 운동 1", thumbnail: "https://via.placeholder.com/150x100.png?text=Thumbnail1", link: "https://www.youtube.com/watch?v=example1", duration: 300, canceled: false },
         { title: "전신 운동 2", thumbnail: "https://via.placeholder.com/150x100.png?text=Thumbnail2", link: "https://www.youtube.com/watch?v=example2", duration: 420, canceled: false },
         { title: "전신 운동 3", thumbnail: "https://via.placeholder.com/150x100.png?text=Thumbnail3", link: "https://www.youtube.com/watch?v=example3", duration: 350, canceled: false },
-        { title: "전신 운동 4", thumbnail: "https://via.placeholder.com/150x100.png?text=Thumbnail4", link: "https://www.youtube.com/watch?v=example4", duration: 380, canceled: false },
-        { title: "전신 운동 5", thumbnail: "https://via.placeholder.com/150x100.png?text=Thumbnail5", link: "https://www.youtube.com/watch?v=example5", duration: 450, canceled: false },
-        { title: "전신 운동 6", thumbnail: "https://via.placeholder.com/150x100.png?text=Thumbnail6", link: "https://www.youtube.com/watch?v=example6", duration: 320, canceled: false },
-        { title: "전신 운동 7", thumbnail: "https://via.placeholder.com/150x100.png?text=Thumbnail7", link: "https://www.youtube.com/watch?v=example7", duration: 300, canceled: false },
-        { title: "전신 운동 8", thumbnail: "https://via.placeholder.com/150x100.png?text=Thumbnail8", link: "https://www.youtube.com/watch?v=example8", duration: 440, canceled: false },
-        { title: "전신 운동 9", thumbnail: "https://via.placeholder.com/150x100.png?text=Thumbnail9", link: "https://www.youtube.com/watch?v=example9", duration: 500, canceled: false },
-        { title: "전신 운동 10", thumbnail: "https://via.placeholder.com/150x100.png?text=Thumbnail10", link: "https://www.youtube.com/watch?v=example10", duration: 350, canceled: false },
       ],
     },
     {

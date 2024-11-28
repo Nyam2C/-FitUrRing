@@ -90,12 +90,16 @@
 #progress {
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-end;
     align-items: center;
-
+    padding: 15px 0px;
+    
+    position: relative;
     width: 235.02px;
-    height: 480.59px;
+    height: 453.75px;
 
+    overflow: hidden;
+    
     background: #DFDFE4;
     border-radius: 33.5742px;
 }
