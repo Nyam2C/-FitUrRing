@@ -22,10 +22,10 @@ before_script:
 test:
   stage: test
   script:
-    - cd front/nginx/ssl
+    - cd ssl
     - chmod +x setup_ssl.sh
     - ./setup_ssl.sh
-    - cd ../../../
+    - cd ..
     - export DOCKER_HOST=unix:///var/run/docker.sock
     - docker-compose -f docker-compose.yaml up -d
   only:
