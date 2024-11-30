@@ -46,7 +46,7 @@
 .video-info.dragging {
     opacity: 0.6;
     background: #e0f7fa;
-    transform: scale(1.05); /* 드래그 중인 항목 강조 */
+    transform: scale(1.05); 
 }
 
 .video-info img {
@@ -64,7 +64,7 @@
     gap: 9.59px;
     padding: 10px;
     width: 600.71px;
-    height: 60.04px;
+    height: 25.04px;
 
     background: #8C7DFF;
     border-radius: 14.389px;
@@ -84,15 +84,15 @@
     background: #FFFFFF;
     border-radius: 33.5742px;
     transition: transform 0.2s ease, background 0.2s ease;
-    background-color: #f0f8ff; /* 강조 색상 */
-    transform: scale(1.15); /* 크기 증가 */
+    background-color: #f0f8ff; 
+    transform: scale(1.15); 
     border-color: #007acc;
 }
 
 .highlighted-rest {
-    background: #ffe5b4; /* 강조 색상 */
+    background: #ffe5b4;
     border: 2px solid #ff9800;
     font-weight: bold;
-    transform: scale(1.1); /* 강조된 rest-period 크기 증가 */
+    transform: scale(1.1); 
     transition: all 0.2s ease;
 }

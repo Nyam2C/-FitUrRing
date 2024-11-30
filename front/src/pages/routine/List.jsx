@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "./List.css";
+import truncateText from './truncateText';
 
 function List({ onRoutineSelect, isActive }) {
   const initialRoutines = [
@@ -110,17 +111,27 @@ function List({ onRoutineSelect, isActive }) {
     },
   ];
 
-  const [routines] = useState(initialRoutines);
-  const [selectedRoutine, setSelectedRoutine] = useState(null);
+  const [routines] = useState(initialRoutines); // 루틴 목록
+  const [selectedRoutine, setSelectedRoutine] = useState(null); // 선택한 루틴
 
+  /*
+    루틴 목록에서 원하는 루틴 클릭 시 해당 루틴을 selectedRoutine으로 설정하여 
+    해당 루틴 운동 목록화면으로 전환
+  */
   const handleRoutineClick = (routine) => {
     setSelectedRoutine(routine);
   };
 
+  /*
+    뒤로가기 클릭 시 selectedRoutine 값을 null로 설정하여 루틴 목록화면으로 전환
+  */
   const handleBackClick = () => {
     setSelectedRoutine(null);
   };
 
+  /*
+    토글 클릭 시 해당 운동의 루틴 제외 여부 설정
+  */
   const toggleCancelExercise = (exercise) => {
     const updatedExercises = selectedRoutine.exercises.map((ex) =>
       ex.title === exercise.title ? { ...ex, canceled: !ex.canceled } : ex
@@ -128,14 +139,11 @@ function List({ onRoutineSelect, isActive }) {
     setSelectedRoutine({ ...selectedRoutine, exercises: updatedExercises });
   };
 
-  const truncateText = (text, maxLength) => {
-    return text.length > maxLength ? `${text.substring(0, maxLength)}...` : text;
-  };
-
   return (
     <div id="list-container">
       {!selectedRoutine ? (
         <div className="list-head">
+          {/*selectedRoutine이 null로 루틴 목록 화면 표시*/}
           <div>
             <span>routine</span>
             <div className="division-line"></div>
@@ -152,6 +160,7 @@ function List({ onRoutineSelect, isActive }) {
         </div>
       ) : (
         <div className="list-head">
+          {/*selectedRoutine이 설정 되어 운동 목록 화면 표시*/}
           <div>
             <span>{selectedRoutine.name}</span>
             <div className="division-line"></div>

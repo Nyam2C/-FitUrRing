@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from "react";
 import "./Timer.css";
+import formatTime from "./formatTime"
 
 function Timer({ duration, isActive }) {
-    const [timeLeft, setTimeLeft] = useState(duration);
-    const [progress, setProgress] = useState(0);
-    const [timeover, setTimeover] = useState(0);
+    const [timeLeft, setTimeLeft] = useState(duration); // 남은 시간
+    const [progress, setProgress] = useState(0); // 타이머 진행도
+    const [timeover, setTimeover] = useState(0); // 타이머 종료 후 타이머 크기 증가를 위한 가중치
 
+    /*  
+        운동 시작 시 타이머 시간 감소
+    */
     useEffect(() => {
         if (!isActive) return;
         const timerInterval = setInterval(() => {
@@ -17,21 +21,19 @@ function Timer({ duration, isActive }) {
         return () => clearInterval(timerInterval);
     }, [isActive]);
 
+    /*
+        초기 타이머 시간 설정
+    */
     useEffect(() => {
         setTimeLeft(duration);
-        setProgress(0);
     }, [duration]);
 
+    /*
+        타이머 진행도 업데이트
+    */
     useEffect(() => {
         setProgress(((duration - timeLeft) / duration) * 100);
     }, [timeLeft, duration]);
-
-    const formatTime = (seconds) => {
-        seconds = Math.abs(seconds);
-        const minutes = Math.floor(seconds / 60);
-        const secs = seconds % 60;
-        return `${String(minutes).padStart(2, "0")}:${String(secs).padStart(2, "0")}`;
-    };
 
     return (
         <div id="timer-container">

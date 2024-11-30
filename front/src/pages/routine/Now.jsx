@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import "./Now.css";
+import truncateText from './truncateText';
+import formatTime from "./formatTime"
 
 function Now({
     currentVideo,
@@ -13,23 +15,32 @@ function Now({
     endSignal
 }) {
     const [exerciseTime, setExerciseTime] = useState(0); // 현재 운동 타이머
-    const [restTime, setRestTime] = useState(0); // 현재 휴식 타이머
-    const [restTimeLeft, setRestTimeLeft] = useState(restSeconds); // 휴식 타이머
-    const [isTakingBreak, setIsTakingBreak] = useState(false); // 휴식 상태
-    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [restTime, setRestTime] = useState(0); // 운동 중 휴식 타이머
+    const [restTimeLeft, setRestTimeLeft] = useState(restSeconds); // 현재 휴식 타이머
+    const [isTakingBreak, setIsTakingBreak] = useState(false); // 운동 중 휴식 상태
+    const [isModalOpen, setIsModalOpen] = useState(false); // 모달 여부
     const [isFlag, setFlag] = useState(true);
 
+    /*
+        운동 시작 전 설정한 휴식 시간으로 타이머 시간 설정
+    */
     useEffect(() => {
         if (!isActive) setRestTimeLeft(restSeconds);
     }, [restTimeLeft]);
-
+    
+    /*
+        마지막 운동에 대한 시간 전달
+    */
     useEffect(() => {
         if (endSignal&&!isFlag){
             onAddTime(`Exercise: ${exerciseTime}`);
             setFlag(true);
         }
     }, [exerciseTime]);
-
+    
+    /*
+        운동 시간 타이머
+    */
     useEffect(() => {
         if (isRest || isPaused || !isActive || isTakingBreak) return;
 
@@ -40,6 +51,9 @@ function Now({
         return () => clearInterval(timer);
     }, [isRest, isPaused, isActive, isTakingBreak]);
 
+    /*
+        운동 중 쉬는 시간 타이머
+    */
     useEffect(() => {
         if (!isTakingBreak) return;
 
@@ -49,7 +63,11 @@ function Now({
 
         return () => clearInterval(timer);
     }, [isTakingBreak]);
-
+    
+    /*
+        쉬는 시간 타이머
+        4초 남을 시 모달 오픈 1초 남을 시 다음 운동으로 넘어감
+    */
     useEffect(() => {
         if (!isRest || isPaused || !isActive || isTakingBreak) return;
 
@@ -67,7 +85,12 @@ function Now({
 
         return () => clearInterval(timer);
     }, [isRest, isPaused, isActive, isTakingBreak]);
-
+    
+    /*
+        다음 운동으로 넘어 갈 시 운동 시간 전달
+        휴식 종료시 쉬는 시간 전달
+        마지막 조건 문은 휴식 시간에 Next 선택을 위한 조건처리 
+    */
     useEffect(() => {
         if (currentVideo && isRest && isActive) {
             setIsModalOpen(false);
@@ -83,27 +106,21 @@ function Now({
     };
 
     const handleRestStop = () => {
-        setIsTakingBreak(false); // 휴식 상태 비활성화
+        setIsTakingBreak(false); 
         onAddTime(`Rest: ${restTime}`);
-        setRestTime(0); // 휴식 타이머 초기화
+        setRestTime(0); 
     };
 
+    /*
+        휴식 때 Next 클릭시 쉬는 시간 전달 및 쉬는 시간 4초로 변경
+        운동 시작 전이면 그냥 다음 영상으로 넘김
+     */
     const handleRestNext = () => {
         if (isActive) {
             onAddTime(`Rest: ${restSeconds - restTimeLeft}`);
             setFlag(true);
             setRestTimeLeft(4);
         } else onNext();
-    };
-
-    const formatTime = (seconds) => {
-        const minutes = Math.floor(seconds / 60);
-        const secs = seconds % 60;
-        return `${String(minutes).padStart(2, "0")}:${String(secs).padStart(2, "0")}`;
-    };
-
-    const truncateText = (text, maxLength) => {
-        return text.length > maxLength ? `${text.substring(0, maxLength)}...` : text;
     };
 
     return (

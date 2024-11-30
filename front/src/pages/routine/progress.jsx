@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./Progress.css";
 
-function Progress({ times, endSignal }) {
+function Progress({ times, endSignal, onendClick }) {
     const [restTimes, setRestTimes] = useState([]);
     const [exerciseTimes, setExerciseTimes] = useState([]);
     const [allTimes, setAllTimes] = useState([]);
@@ -70,7 +70,7 @@ function Progress({ times, endSignal }) {
                                 동안 운동하셨고, 그 중 {`${Math.round((totals.exerciseTotal / totals.allTotal) * 100)}%`} 동안
                                 운동하셨습니다!
                             </p>
-                            <button onClick={() => setIsModalOpen(false)}>확인</button>
+                            <button onClick={() => {setIsModalOpen(false); onendClick();} }>확인</button>
                         </div>
                     </div>
                 </div>
