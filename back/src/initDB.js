@@ -6,6 +6,13 @@ const Muscle = require('./models/muscle');
 const Routine = require('./models/routine');
 const Video = require('./models/video');
 
+// 타임스탬프 옵션 (KST 시간 사용)
+const timestampOptions = {
+    timestamps: {
+        currentTime: () => new Date(Date.now() + (9 * 60 * 60 * 1000))  // KST (+9시간)
+    }
+};
+
 const initDB = async () => {
     try {
         // 현재 데이터베이스의 모든 컬렉션 출력
@@ -15,45 +22,61 @@ const initDB = async () => {
             console.log(' -', collection.name);
         });
 
-        // User 관련 스키마
+        // 각 스키마에 타임스탬프 옵션 적용
         if (!mongoose.models.User) {
-            mongoose.model('User', User);
+            const schema = User;
+            schema.set('timestamps', timestampOptions.timestamps);
+            mongoose.model('User', schema);
             console.log('User 스키마가 생성되었습니다.');
         }
 
         if (!mongoose.models.UserAchievement) {
-            mongoose.model('UserAchievement', UserAchievement);
+            const schema = UserAchievement;
+            schema.set('timestamps', timestampOptions.timestamps);
+            mongoose.model('UserAchievement', schema);
             console.log('UserAchievement 스키마가 생성되었습니다.');
         }
 
         if (!mongoose.models.UserDiet) {
-            mongoose.model('UserDiet', UserDiet);
+            const schema = UserDiet;
+            schema.set('timestamps', timestampOptions.timestamps);
+            mongoose.model('UserDiet', schema);
             console.log('UserDiet 스키마가 생성되었습니다.');
         }
 
         // 추가 스키마들
         if (!mongoose.models.Food100) {
-            mongoose.model('Food100', Food100);
+            const schema = Food100;
+            schema.set('timestamps', timestampOptions.timestamps);
+            mongoose.model('Food100', schema);
             console.log('Food100 스키마가 생성되었습니다.');
         }
 
         if (!mongoose.models.HabitTracker) {
-            mongoose.model('HabitTracker', HabitTracker);
+            const schema = HabitTracker;
+            schema.set('timestamps', timestampOptions.timestamps);
+            mongoose.model('HabitTracker', schema);
             console.log('HabitTracker 스키마가 생성되었습니다.');
         }
 
         if (!mongoose.models.Muscle) {
-            mongoose.model('Muscle', Muscle);
+            const schema = Muscle;
+            schema.set('timestamps', timestampOptions.timestamps);
+            mongoose.model('Muscle', schema);
             console.log('Muscle 스키마가 생성되었습니다.');
         }
 
         if (!mongoose.models.Routine) {
-            mongoose.model('Routine', Routine);
+            const schema = Routine;
+            schema.set('timestamps', timestampOptions.timestamps);
+            mongoose.model('Routine', schema);
             console.log('Routine 스키마가 생성되었습니다.');
         }
 
         if (!mongoose.models.Video) {
-            mongoose.model('Video', Video);
+            const schema = Video;
+            schema.set('timestamps', timestampOptions.timestamps);
+            mongoose.model('Video', schema);
             console.log('Video 스키마가 생성되었습니다.');
         }
 
