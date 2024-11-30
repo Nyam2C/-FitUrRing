@@ -4,3 +4,4 @@ db/data
 .env
 ssl/*.pem
 ssl/certbot/*
+back/src/logs/*

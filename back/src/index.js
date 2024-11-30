@@ -1,16 +1,22 @@
 const mongoose = require('mongoose');
 const express = require('express');
-const cors = require('cors');
+const cookieParser = require('cookie-parser');
+const authMiddleware = require('./middleware/authMiddleware');
+const initDB = require('./initDB');
+
 const app = express();
 const port = 8080;
-
-const initDB = require('./initDB');
 
 const mongoUrl = `mongodb://wss-db:27017`;
 mongoose.connect(mongoUrl);
 
-app.use(cors());
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
+
+app.set('trust proxy', true);
+
+app.use(authMiddleware.requestLogger, authMiddleware.securityHeaders, authMiddleware.apiLimiter);
 
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
@@ -27,8 +33,8 @@ db.once('open', async () => {
 const userRouter = require('./routers/userRouter');
 const etcRouter = require('./routers/etcRouter');
 
-app.use('/api', etcRouter);
 app.use('/api/user', userRouter);
+app.use('/api', etcRouter);
 
 app.listen(port, () => {
     console.log(`Backend server is running on http://172.20.0.3:${port}`);
