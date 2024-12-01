@@ -4,26 +4,26 @@ const videoSchema = new mongoose.Schema({
     video_id: {
         type: String,
         required: true,
-        unique: true
+        unique: true,
     },
     video_title: {
         type: String,
-        required: true
+        required: true,
     },
     video_description: {
-        type: String
+        type: String,
     },
     video_tag: {
-        type: String
-    },
-    video_url: {
         type: String,
-        required: true
-    }
-}, {
-    timestamps: true
+        required: true,
+    },
+    video_length: {
+        type: Number,
+    },
+    video_likes: {
+        type: Number,
+        default: 0,
+    },
 });
 
-const Video = mongoose.model('Video', videoSchema);
-
-module.exports = { Video };
+module.exports = mongoose.model('Video', videoSchema);
