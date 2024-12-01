@@ -38,3 +38,25 @@ ul{
     display: flex;
     flex-direction: column;
 }
+
+.center{
+    justify-content: center;
+    align-items: center;
+}
+
+#videoSelection button{
+    margin: 5px;
+    width: 7em;
+}
+
+#timeSelection input{
+    width: 7em;
+}
+
+#videoSelection h3{
+    margin: 5px;
+}
+
+.padding{
+    padding: 4px;
+}

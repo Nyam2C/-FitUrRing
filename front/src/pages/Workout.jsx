@@ -1,13 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useReducer, useRef } from 'react';
 
 import Resizable from '../components/Resizable';
 import RadioGroup from '../components/RadioGroup';
+import VideoLists from '../components/VideoLists';
+import VideoSelection from '../components/VideoSelection';
+import Images from '../components/Images';
 
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHeart } from "@fortawesome/free-regular-svg-icons";
+
+import {ReactComponent as Soleus} from '../assets/가자미근.svg';
+
 
 const data = {
-    asdf: 'this is ~'
+    asdf: 'this is'
 }
 const videoData = [
     {
@@ -42,42 +46,7 @@ const videoData = [
     },
 ]
 
-function VideoSelection(){
 
-    return (
-        <div id="inputs">
-            <form>
-                <RadioGroup mode="exclusive" label="난이도">
-                    <label>상</label>
-                    <input type="radio" value="advanced" name="advanced" />
-                    <label>하</label>
-                    <input type="radio" value="beginner" name="beginner" />
-                </RadioGroup>
-                <RadioGroup>
-                    <label>팔</label>
-                    <input type="radio" value="arms" name="arms" />
-                    <label>가슴</label>
-                    <input type="radio" value="chest" name="chest" />
-                    <label>등</label>
-                    <input type="radio" value="back" name="back" />
-                    <label>어깨</label>
-                    <input type="radio" value="shoulders" name="shoulders" />
-                    <label>복근</label>
-                    <input type="radio" value="abs" name="abs" />
-                    <label>허벅지</label>
-                    <input type="radio" value="thigh" name="thigh" />
-                    <label>엉덩이</label>
-                    <input type="radio" value="glutes" name="glutes" />
-                    <label>전신</label>
-                    <input type="radio" value="fullbody" name="fullbody" />
-                    <label>유산소</label>
-                    <input type="radio" value="cardio" name="cardio" />
-                </RadioGroup>
-            </form>
-        </div>
-
-    );
-}
 function Explains({data, selected}){
     //conditional Rendering -> handleClick에서 들어온 input의 처리결과 띄우기
     //h1으로 제목
@@ -90,23 +59,6 @@ function Explains({data, selected}){
 
     );
 }
-function VideoLists({data}){
-    console.log(data);
-    //블록 return 
-    return (
-        <div id="videoLists">
-            {data.map((item) => (
-                <div id="videoBlock">
-                    <h3>{item.video_title}</h3>
-                    <p>{item.by}</p>
-                    <p className='flex-end'>
-                    <FontAwesomeIcon icon={faHeart} />
-                    {' '+item.liked}</p>
-                </div>
-            ))}
-        </div>
-    );
-}
 
 function Workout(){
     const [selected, setSelected] = useState();
@@ -117,9 +69,10 @@ function Workout(){
 
     return (
         <div id="workout">
-                <VideoSelection />
+                <VideoSelection setSelected={setSelected}/>
             <div id="muscles">
-                <h3 id='asdf' onClick={handleClick}>images here</h3>
+                {/* <h3 id='asdf' onClick={handleClick}>images here</h3> */}
+                <Images selected={selected}/>
             </div>
                 <div id="searchResults">
                     <Explains 
