@@ -12,7 +12,13 @@ function SignIn(){
             user_id: userId,
             user_password: password
         }
-        userLogin(data);
+        try{ 
+            userLogin(data);
+            window.location.href = '/home';
+        } catch(err) {
+            alert(err);
+            window.location.reload();
+        } 
     }
 
     return (

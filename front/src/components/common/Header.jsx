@@ -7,7 +7,14 @@ import { userLogout } from '../../api';
 
 function Header(){
     function handleSignOut() {
-        userLogout();
+        try{ 
+            const msg = userLogout();
+            alert(msg);
+            window.location.reload();
+        } catch(err) {
+            alert(err.message);
+            window.location.reload();
+        }     
     }
 
     function MyPage(){

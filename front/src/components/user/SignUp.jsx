@@ -26,18 +26,20 @@ function SignUp(){
             user_password: password,
             user_name: userName,
             user_gender: (gender === 'male')?0:1,
-            user_birthdate: birthdate,
+            user_birth: birthdate,
             user_email: email,
-            user_created_at: new Date(),
         }
         //console.log(data)
         if (warning){
-            alert("비밀번호가 일치하지 않습니다.");
+            alert(warning);
         }
         else{
-            const ok = userSignUp(data);
-            if (ok){
-                alert("회원가입이 완료되었습니다.");
+            try{
+                const response = userSignUp(data);
+                alert(response.message);
+                window.location.reload();
+            } catch(err){
+                alert(err);
                 window.location.reload();
             }
         }

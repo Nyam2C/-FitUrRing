@@ -25,8 +25,8 @@ function MyPage(){
         try{
             const data = await getUserData();
             setUser(data);
-        } catch (error){
-            alert("정보를 불러오는 데 실패했습니다.");
+        } catch (err){
+            alert(err);
             setUser(null);
         }
     }
@@ -40,19 +40,32 @@ function MyPage(){
         e.preventDefault();
         const data = user;
         if (warning){
-            alert("비밀번호가 일치하지 않습니다.");
+            alert(warning);
             window.location.reload();
         }
-        const response = changeUserData(data);
-        if (response.ok){
-            alert("성공적으로 저장되었습니다.");
-            window.location.reload();
+        try{
+            const response = changeUserData(data);
+            if (response.ok){
+                setUser(data);
+                alert(response.message);
+                window.location.reload();    
+            }
+        } catch(err){
+            alert(err);
         }
     }
     function handleWithdraw(e){
         e.preventDefault();
         console.log(newPW);
-        if (user.user_password === newPW)   userWithdraw(user);
+        if (user.user_password === newPW){
+            try{
+                const msg = userWithdraw(user);
+                alert(msg);
+            } catch (err){
+                alert(err);
+            }
+
+        }   
         else{
             alert("비밀번호가 일치하지 않습니다.");
             window.location.reload();
