@@ -38,6 +38,18 @@ const habittrackerController = {
             if (!user) {
                 return res.status(404).json({ message: 'User not found' });
             }
+            if (goals.length === 0) {
+                //만약 비어있다면 dummy data 반환
+                const dummyGoal = [
+                    {
+                        goal_weekly: null,
+                        goal_daily: [null, null, null, null, null, null, null],
+                        goal_daily_time: null,
+                        goal_weight: null,
+                    },
+                ];
+                return res.status(200).json(dummyGoal);
+            }
 
             const habitTrackergoal = goals.map(goal => {
                 return {
