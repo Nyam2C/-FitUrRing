@@ -41,38 +41,38 @@ async function userSignUp(body) {
     }
 }
 async function getUserData(){
-    try{
-        const uri = `/api/user`
-        const response = await fetch(uri, {
-            method: "GET",
-            headers: {
-                "Authorization": `Bearer ${localStorage.getItem('accessToken')}`,
-                "Content-Type": "application/json",
-            },
-        });
+    // try{
+    //     const uri = `/api/user`
+    //     const response = await fetch(uri, {
+    //         method: "GET",
+    //         headers: {
+    //             "Authorization": `Bearer ${localStorage.getItem('accessToken')}`,
+    //             "Content-Type": "application/json",
+    //         },
+    //     });
 
         // const uri = '/dummy/User.json'
         // const response = await fetch(uri);
 
-        if (!response.ok){
-            throw new Error('Network error', response.status);
-        }
-    //    const data = {
-    //         user_id: 'idididididdd',
-    //         user_password: 'klk',
-    //         user_name: 'asdf',
-    //         user_gender: 0,
-    //         user_birthdate: '2024-11-11',
-    //         user_email: 'asdf@asdf.com',
-    //         user_created_at: new Date(),
-    //         user_height: null,
-    //         user_weight: null
-    //         }
-        const data = await response.json();
+        // if (!response.ok){
+        //     throw new Error('Network error', response.status);
+        // }
+       const data = {
+            user_id: 'idididididdd',
+            user_password: 'klk',
+            user_name: 'asdf',
+            user_gender: 0,
+            user_birthdate: '2024-11-11',
+            user_email: 'asdf@asdf.com',
+            user_created_at: new Date(),
+            user_height: null,
+            user_weight: null
+            }
+        // const data = await response.json();
         return data;
-    } catch(err) {
-        console.log(err.message);
-    }
+    // } catch(err) {
+    //     console.log(err.message);
+    // }
 };
 
 async function changeUserData(data){
@@ -110,7 +110,7 @@ async function userLogout(){
          });
          
          if (response.ok){
-            const data = await response.json();
+            await response.json();
             window.localStorage.setItem('accessToken', null);
          }
          else{
@@ -135,6 +135,8 @@ async function userWithdraw(user) {
         });
         if (response.ok){
             window.localStorage.setItem('accessToken', null);
+            const res = await response.json();
+            return res;
         }
         else{
             throw new Error('Network error', response.status);

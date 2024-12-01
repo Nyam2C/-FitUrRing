@@ -1,7 +1,7 @@
 import react from 'react';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 
-import './index.css';
+import '../index.css';
 
 function Footer() {
     return (

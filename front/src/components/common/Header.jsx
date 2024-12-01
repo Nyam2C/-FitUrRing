@@ -1,9 +1,9 @@
 import react from 'react';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 
-import './index.css';
-import {ReactComponent as Logo} from '../assets/logo.svg';
-import { userLogout } from '../api';
+import '../index.css';
+import {ReactComponent as Logo} from '../../assets/logo.svg';
+import { userLogout } from '../../api';
 
 function Header(){
     function handleSignOut() {

@@ -1,6 +1,6 @@
 import react, { useState } from 'react';
-import './index.css';
-import { userLogin } from '../api';
+import '../index.css';
+import { userLogin } from '../../api';
 
 function SignIn(){
     const [userId, setUserId] = useState('');

@@ -1,6 +1,6 @@
 import react, { useState } from 'react';
-import './index.css';
-import { userSignUp } from '../api';
+import '../index.css';
+import { userSignUp } from '../../api';
 
 function SignUp(){
     const [userId, setUserId] = useState('');   
@@ -31,10 +31,15 @@ function SignUp(){
             user_created_at: new Date(),
         }
         //console.log(data)
-        const ok = userSignUp(data);
-        if (ok){
-            alert("회원가입이 완료되었습니다.");
-            window.location.reload();
+        if (warning){
+            alert("비밀번호가 일치하지 않습니다.");
+        }
+        else{
+            const ok = userSignUp(data);
+            if (ok){
+                alert("회원가입이 완료되었습니다.");
+                window.location.reload();
+            }
         }
     }
 

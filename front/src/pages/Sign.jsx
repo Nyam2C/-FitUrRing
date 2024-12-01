@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './index.css';
-import SignIn from '../components/SignIn';
-import SignUp from '../components/SignUp';
+import SignIn from '../components/user/SignIn';
+import SignUp from '../components/user/SignUp';
 import { userLogin, userSignUp } from '../api';
 
 function AsideContent({ isActive, onShow, title, label }){

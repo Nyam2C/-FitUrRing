@@ -1,7 +1,7 @@
 import react, { useState, useEffect } from 'react';
 
 import {getUserData, changeUserData, userWithdraw} from '../api.js';
-import Modal from '../components/Modal.jsx'; 
+import Modal from '../components/common/Modal.jsx'; 
 
 function MyPage(){
     const [user, setUser] = useState({

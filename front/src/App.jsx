@@ -1,9 +1,9 @@
 import react, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 
-import Header from './components/Header';
+import Header from './components//common/Header';
 import Home from './pages/Home';
-import Footer from './components/Footer'
+import Footer from './components/common/Footer'
 import Sign from './pages/Sign';
 import MyPage from './pages/MyPage';
 
