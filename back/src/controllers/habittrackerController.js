@@ -25,7 +25,7 @@ const habittrackerController = {
             });
             await newGoal.save();
 
-            res.status(201).send('habitTracker goal is added');
+            res.status(201).json(newGoal);
         } catch (error) {
             console.error(error);
             res.status(500).send('Failed to add habitTracker goal');
@@ -55,7 +55,7 @@ const habittrackerController = {
                 return {
                     goal_weekly: goal.goal_weekly,
                     goal_daily: goal.goal_daily,
-                    goal_daily_time: goal.goal_daily_time,
+                    goal_daily_time: secondsToMinutes(goal.goal_daily_time),
                     goal_weight: user.user_goal_weights,
                 };
             });

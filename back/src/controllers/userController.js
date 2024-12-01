@@ -1,5 +1,5 @@
 //사용자 정보 조회를 위한 사용자 구조
-const User = require('../models/userI');
+const User = require('../models/user');
 
 const userController = {
     createUser: async (req, res) => {
@@ -25,7 +25,7 @@ const userController = {
                 user_last_login,
             });
             await user.save();
-            res.json({ message: 'User added successfully', user });
+            res.json({ message: 'User signed in successfully', user });
         } catch (error) {
             res.json({ message: 'Failed to add User', error: error.message });
         }
@@ -33,6 +33,9 @@ const userController = {
     signIn: (req, res) => {
         const { id, pw } = req.body;
         res.json({ message: 'signIn' });
+    },
+    logIn: (req, res) => {
+        const { id, pw } = req.body;
     },
     getUser: async (req, res) => {
         try {
