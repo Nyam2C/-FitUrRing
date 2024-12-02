@@ -3,7 +3,6 @@ const rateLimit = require('express-rate-limit');
 const { User } = require('../models/user');
 const UAParser = require('ua-parser-js');
 
-
 const authMiddleware={
     securityHeaders: (req, res, next) => {
         try {
@@ -180,56 +179,6 @@ const authMiddleware={
             error.status=401;
             error.message='유효하지 않은 토큰입니다';
             next(error);
-        }
-    },
-    refreshToken: async (req, res) => {
-        try{
-            const refreshToken = req.cookies?.refreshToken;
-            const oldAccessToken = req.headers.authorization?.split(' ')[1];
-
-            if(!refreshToken || !oldAccessToken) return res.status(401).json({ message: '토큰이 필요합니다' });
-            const decoded = jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET);
-            if(decoded.type !== 'REFRESH') return res.status(401).json({ message: '유효하지 않은 Refresh 토큰입니다' });
-
-            const user=await User.findOne({ 
-                user_id: decoded.userId,
-                'tokens': {
-                    $elemMatch: {
-                        access_token: oldAccessToken,
-                        refresh_token: refreshToken
-                    }
-                }
-            });
-
-            if(!user) return res.status(401).json({ message: '유효하지 않은 토큰입니다' });
-            const deviceInfo=decoded.deviceInfo;
-            const newAccessToken=jwt.sign({
-                type: 'ACCESS',
-                userId: user.user_id,
-                userName: user.user_name,
-                deviceInfo
-            },
-            process.env.JWT_ACCESS_SECRET,
-            { expiresIn: '1h' }
-            );
-
-            await User.updateOne({ 
-                user_id: decoded.userId,
-                'tokens.refresh_token': refreshToken
-            },
-            { 
-                $set: { 
-                    'tokens.$.access_token': newAccessToken,
-                    'tokens.$.device_info.last_used': new Date()
-                }
-            });
-            res.json({ accessToken: newAccessToken });
-        }catch(error){
-            if(error.name === 'TokenExpiredError'){
-                res.clearCookie('refreshToken');
-                return res.status(401).json({ message: 'Refresh 토큰이 만료되었습니다' });
-            }
-            return res.status(401).json({ message: '유효하지 않은 Refresh 토큰입니다' });
         }
     },
     requestLogger: (req, res, next) => {
