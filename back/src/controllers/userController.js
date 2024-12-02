@@ -1,12 +1,6 @@
-const userController = {
-    createUser: (req, res) => {
-        const { name, id, pw, email, age, height, weight } = req.body;
-        res.json({ message: 'createUser' });
-    },
-    signIn: (req, res) => {
-        const { id, pw } = req.body;
-        res.json({ message: 'signIn' });
-    }
-}
+//사용자 정보 조회를 위한 사용자 구조
+const User = require('../models/user');
+
+const userController = {};
 
 module.exports = userController;

@@ -1,11 +1,6 @@
 const mongoose = require('mongoose');
 
 const routineSchema = new mongoose.Schema({
-    routine_id: {
-        type: String,
-        required: true,
-        unique: true
-    },
     user_id: {
         type: String,
         required: true,
@@ -15,6 +10,13 @@ const routineSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    routine_exercises : [{
+        video : {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Video',  // Videon참조
+        }
+    }]
+    ,
     routine_created_at: {
         type: Date,
         default: Date.now
@@ -23,31 +25,7 @@ const routineSchema = new mongoose.Schema({
     timestamps: true
 });
 
-const routineComponentSchema = new mongoose.Schema({
-    component_id: {
-        type: String,
-        required: true,
-        unique: true
-    },
-    routine_id: {
-        type: String,
-        required: true,
-        ref: 'Routine'
-    },
-    video_id: {
-        type: String,
-        required: true,
-        ref: 'Video'
-    },
-    component_sets: {
-        type: Number,
-        min: 0
-    }
-}, {
-    timestamps: true
-});
 
 const Routine = mongoose.model('Routine', routineSchema);
-const RoutineComponent = mongoose.model('RoutineComponent', routineComponentSchema);
 
-module.exports = { Routine, RoutineComponent };
+module.exports = Routine;
