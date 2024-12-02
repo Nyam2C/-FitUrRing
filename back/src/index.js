@@ -4,6 +4,7 @@ const cookieParser = require('cookie-parser');
 const path = require('path');
 const authMiddleware = require('./middleware/authMiddleware');
 const initDB = require('./initDB');
+const { logRequest } = require('./utils/logger');
 
 const app = express();
 const port = 8080;
@@ -18,6 +19,12 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 app.set('trust proxy', true);
+
+app.use('/api', (req, res, next) => {
+    const startTime = Date.now();
+    res.on('finish', () => logRequest(req, res, startTime));
+    next();
+});
 
 app.use(authMiddleware.requestLogger, authMiddleware.securityHeaders, authMiddleware.apiLimiter);
 
