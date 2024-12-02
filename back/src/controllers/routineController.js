@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const minutesToSeconds = require('./etc/timeconvert');
+const minutesToSeconds = require('./utils/timeconvert');
 
 //운동 영상 구조
 const Video = require('./models/video');

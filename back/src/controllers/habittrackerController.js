@@ -4,7 +4,7 @@ router.get('/records', habittrackerController.getEveryGoal);
 
 const express = require('express');
 const router = express.Router();
-const { minutesToSeconds, secondsToMinutes } = require('./etc/timeconvert');
+const { minutesToSeconds, secondsToMinutes } = require('./utils/timeconvert');
 
 //habittracker구조
 const HabitTracker = require('./models/habittracker');
