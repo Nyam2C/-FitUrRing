@@ -43,6 +43,7 @@ services:
       - "8080:8080"
     volumes:
       - ./back/src:/app/src
+      - ./back/public:/app/public
     restart: always
 
   wss-front:
