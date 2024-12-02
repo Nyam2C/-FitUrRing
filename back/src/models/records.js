@@ -14,6 +14,9 @@ const recordSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    video_title: {
+        type: String,
+    },
     video_tag: {
         type: String,
         require: true,

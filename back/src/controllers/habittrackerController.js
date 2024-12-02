@@ -68,9 +68,18 @@ const habittrackerController = {
             });
         }
     },
-    getEveryGoal: async (req, res) => {
+    getEveryRecords: async (req, res) => {
+        const { period } = req.body;
         try {
-            //루틴에서 기록한 일일 기록들을 가져옴
+            //정규식
+            const regex = new RegExp(`^${period}`);
+
+            //해당 월에 해당하는 운동 기록들을 가져옴
+            const monthlyRecords = Record.find({
+                user_id: req.user_id, //미들웨어에 있는 user_id
+                date: { $regex: regex },
+            });
+            res.status(200).json(monthlyRecords);
         } catch (error) {
             res.status(500).json({
                 message: 'Failed to get habitTracker monthly records',

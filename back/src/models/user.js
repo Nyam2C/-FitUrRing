@@ -31,6 +31,10 @@ const userSchema = new mongoose.Schema({
         required: true,
         match: [/^.+@.+\..+$/, '올바른 이메일 형식이 아닙니다']
     },
+    user_goal_weights : {
+        type : Number,
+        min : 0,
+    },
     user_last_login: {
         type: Date
     }
