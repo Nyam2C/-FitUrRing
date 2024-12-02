@@ -1,5 +1,16 @@
 const mongoose = require('mongoose');
 
+const dateOnly=function(date) {
+    if(date){
+        if (typeof date === 'string') {
+            const [year, month, day] = date.split('-').map(Number);
+            return new Date(year, month - 1, day);
+        }
+        return new Date(date.getFullYear(), date.getMonth(), date.getDate());
+    }
+    return date;
+};
+
 const userSchema = new mongoose.Schema({
     user_id: {
         type: String,
@@ -24,7 +35,8 @@ const userSchema = new mongoose.Schema({
         enum: ['male', 'female']
     },
     user_birth: {
-        type: Date
+        type: Date,
+        set: dateOnly
     },
     user_email: {
         type: String,
@@ -34,16 +46,16 @@ const userSchema = new mongoose.Schema({
     tokens: [{
         access_token: {
             type: String,
-            required: true
         },
         refresh_token: {
             type: String,
-            required: true
+        },
+        delete_token: {
+            type: String
         },
         device_info: {
             ua: {
                 type: String,
-                required: true
             },
             browser: {
                 name: String,
@@ -81,6 +93,14 @@ const userSchema = new mongoose.Schema({
     },
     lock_until: { 
         type: Date 
+    },
+    is_deleted: {
+        type: Boolean,
+        default: false
+    },
+    deleted_at: {
+        type: Date,
+        default: null
     }
 }, {
     timestamps: { 
@@ -95,53 +115,78 @@ const userAchievementSchema = new mongoose.Schema({
         required: true,
         ref: 'User'
     },
-    user_date: {
-        type: Date,
-        required: true
-    },
-    user_height: {
-        type: Number,
-        min: 0,
-        max: 300
-    },
-    user_weight: {
-        type: Number,
-        min: 0,
-        max: 500
-    }
+    achievements: [{
+        date: {
+            type: Date,
+            required: true,
+            set: dateOnly
+        },
+        height: {
+            type: Number,
+            min: 0,
+            max: 300
+        },
+        weight: {
+            type: Number,
+            min: 0,
+            max: 500
+        },
+        goal_weight: {
+            type: Number,
+            min: 0,
+            max: 500
+        }
+    }]
 }, {
     timestamps: true
 });
 
 const userDietSchema = new mongoose.Schema({
-    diet_id: {
-        type: String,
-        required: true,
-        unique: true
-    },
     user_id: {
         type: String,
         required: true,
         ref: 'User'
     },
-    diet_date: {
-        type: Date,
-        required: true
-    },
-    mealtime: {
-        type: String,
-        enum: ['breakfast', 'lunch', 'dinner', 'snack'],
-        required: true
-    },
-    food: {
-        type: String,
-        required: true,
-        minlength: 1,
-        maxlength: 100
-    }
+    diets: [{
+        date: {
+            type: Date,
+            required: true,
+            set: dateOnly
+        },
+        meals: [{
+            diet_id: {
+                type: String,
+                required: true,
+                unique: true
+            },
+            mealtime: {
+                type: String,
+                enum: ['breakfast', 'lunch', 'dinner', 'snack'],
+                required: true
+            },
+            foods: [{
+                food_id: {
+                    type: String,
+                    required: true,
+                    ref: 'Food100'
+                },
+                grams: {
+                    type: Number,
+                    required: true,
+                    min: 0
+                }
+            }]
+        }]
+    }]
 }, {
     timestamps: true
 });
+
+// 인덱스 추가
+userAchievementSchema.index({ user_id: 1, 'achievements.date': 1 });
+userDietSchema.index({ user_id: 1, 'diets.date': 1 });
+userDietSchema.index({ 'diets.meals.diet_id': 1 }, { unique: true });
+userDietSchema.index({ 'diets.date': 1, 'diets.meals.mealtime': 1 }, { unique: true });
 
 // 모델 생성
 const User = mongoose.model('User', userSchema);

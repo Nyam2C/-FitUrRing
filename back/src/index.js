@@ -1,11 +1,14 @@
 const mongoose = require('mongoose');
 const express = require('express');
 const cookieParser = require('cookie-parser');
+const path = require('path');
 const authMiddleware = require('./middleware/authMiddleware');
 const initDB = require('./initDB');
 
 const app = express();
 const port = 8080;
+
+app.use(express.static(path.join(__dirname, '../public')));
 
 const mongoUrl = `mongodb://wss-db:27017`;
 mongoose.connect(mongoUrl);
