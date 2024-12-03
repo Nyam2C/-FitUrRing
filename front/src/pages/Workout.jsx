@@ -1,13 +1,10 @@
 import React, { useState, useEffect, useReducer, useRef } from 'react';
 
 import Resizable from '../components/Resizable';
-import RadioGroup from '../components/RadioGroup';
-import VideoLists from '../components/VideoLists';
-import VideoSelection from '../components/VideoSelection';
-import Images from '../components/Images';
-
-
-import {ReactComponent as Soleus} from '../assets/가자미근.svg';
+import VideoLists from '../components/workout/VideoLists';
+import VideoSelection from '../components/workout/VideoSelection';
+import Images from '../components/workout/Images';
+import ExerciseBlock from '../components/ExerciseBlock';
 
 
 const data = {
@@ -79,8 +76,9 @@ function Workout(){
                     data={data}
                     selected={selected}    
                     />
-                    <VideoLists
+                    <ExerciseBlock
                     data={videoData}
+                    mode='clickable'
                     />
                 </div>
         </div>

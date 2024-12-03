@@ -2,9 +2,7 @@ import react, {useState} from 'react';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart } from "@fortawesome/free-regular-svg-icons";
 
-
 function VideoLists({data}){
-    // 태현님의 video 컴포넌트 사용 예정
     return (
         <div id="videoLists">
             {data.map((item) => (

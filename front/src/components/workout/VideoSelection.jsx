@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useReducer, useRef } from 'react';
 
-import SelectBtn from '../components/SelectBtn';
+import SelectBtn from './SelectBtn';
 
 function videoReducer(videos, action){
     switch (action.type){

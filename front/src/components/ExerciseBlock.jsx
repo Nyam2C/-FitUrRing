@@ -1,0 +1,47 @@
+import react from 'react';
+
+import './index.css';
+
+function Clickable({data}){
+    console.log(data);
+    return (
+        <>
+        {data.map((item) => (
+            <div>
+                <div id="clickBlock" className="block">
+                    {item.video_title}
+                </div>
+            </div>
+        ))}
+        </>
+    );
+}
+
+function NonClickable({data}){
+    return (
+        <>
+        {data.map((item) => (
+            <div>
+                <div className="block">
+                    {item.video_title}
+                </div>
+            </div>
+        ))}
+        </>
+    );
+}
+
+
+function ExerciseBlock({data, mode}){
+    return (
+        (mode === 'clickable')?(
+            <Clickable 
+            data={data} />
+            ):(
+            <NonClickable
+            data={data} />
+        )
+    );
+}
+
+export default ExerciseBlock;
