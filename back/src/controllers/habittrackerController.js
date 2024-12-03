@@ -8,7 +8,8 @@ const HabitTracker = require('../models/habittracker');
 
 const habittrackerController = {
     setGoal: async (req, res) => {
-        const { goal_weekly, goal_daily, goal_daily_time } = req.body;
+        const { goal_weekly, goal_daily, goal_daily_time, goal_weight } =
+            req.body;
         //시간 변환
         const dailyTimeSeconds = minutesToSeconds(goal_daily_time);
         try {
@@ -17,6 +18,7 @@ const habittrackerController = {
                 goal_weekly,
                 goal_daily,
                 goal_daily_time: dailyTimeSeconds,
+                goal_weight,
             });
             await newGoal.save();
 
@@ -35,6 +37,7 @@ const habittrackerController = {
                 //만약 비어있다면 dummy data 반환
                 const dummyGoal = [
                     {
+                        user_id: req.user.user_id,
                         goal_weekly: null,
                         goal_daily: [null, null, null, null, null, null, null],
                         goal_daily_time: null,
@@ -46,6 +49,7 @@ const habittrackerController = {
 
             const habitTrackergoal = goals.map(goal => {
                 return {
+                    user_id: req.user.user_id,
                     goal_weekly: goal.goal_weekly,
                     goal_daily: goal.goal_daily,
                     goal_daily_time: secondsToMinutes(goal.goal_daily_time),
