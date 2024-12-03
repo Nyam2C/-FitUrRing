@@ -42,9 +42,18 @@ db.once('open', async () => {
 
 const userRouter = require('./routers/userRouter');
 const etcRouter = require('./routers/etcRouter');
+const videoRouter = require('./routers/videoRouter');
+const habitRouter = require('./routers/habittrackerRouter');
+const routineRouter = require('./routers/routineRouter');
 
 app.use('/api/user', userRouter);
+<<<<<<< HEAD
+app.use('/api/video', videoRouter);
+app.use('/api/habitTracker', habitRouter);
+app.use('/api/routine', routineRouter);
+=======
 app.use('/api', etcRouter);
+>>>>>>> origin/feat/back
 
 app.listen(port, () => {
     console.log(`Backend server is running on http://172.20.0.3:${port}`);
