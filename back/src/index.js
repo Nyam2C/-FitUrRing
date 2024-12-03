@@ -42,8 +42,14 @@ db.once('open', async () => {
 
 const userRouter = require('./routers/userRouter');
 const etcRouter = require('./routers/etcRouter');
+const videoRouter = require('./routers/videoRouter');
+const habitRouter = require('./routers/habittrackerRouter');
+const routineRouter = require('./routers/routineRouter');
 
 app.use('/api/user', userRouter);
+app.use('/api/video', videoRouter);
+app.use('/api/habitTracker', habitRouter);
+app.use('/api/routine', routineRouter);
 app.use('/api', etcRouter);
 
 app.listen(port, () => {
