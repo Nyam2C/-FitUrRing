@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const timeToSeconds = require('../utils/timeconvert');
+const minutesToSeconds = require('../utils/timeconvert');
 
 //운동 영상 구조
 const Video = require('../models/video');
@@ -37,8 +37,8 @@ const videoController = {
         try {
             const { video_tag, video_time_from, video_time_to, video_level } =
                 req.body;
-            const video_min_time = timeToSeconds(video_time_from);
-            const video_max_time = timeToSeconds(video_time_to);
+            const video_min_time = minutesToSeconds(video_time_from);
+            const video_max_time = minutesToSeconds(video_time_to);
 
             const filter = {
                 video_length: { $gte: video_min_time, $lte: video_max_time },
