@@ -1,9 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const timeToSeconds = require('./utils/timeconvert');
+const timeToSeconds = require('../utils/timeconvert');
 
 //운동 영상 구조
-const Video = require('./models/video');
+const Video = require('../models/video');
 
 const videoController = {
     getVideo: async (req, res) => {

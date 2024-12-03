@@ -4,12 +4,12 @@ router.get('/records', habittrackerController.getEveryGoal);
 
 const express = require('express');
 const router = express.Router();
-const { minutesToSeconds, secondsToMinutes } = require('./utils/timeconvert');
+const { minutesToSeconds, secondsToMinutes } = require('../utils/timeconvert');
 
 //habittracker구조
-const HabitTracker = require('./models/habittracker');
+const HabitTracker = require('../models/habittracker');
 //goal_weight를 가져오기 위한
-const User = require('./models/user');
+const User = require('../models/user');
 
 const habittrackerController = {
     setGoal: async (req, res) => {

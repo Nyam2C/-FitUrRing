@@ -1,13 +1,13 @@
 const express = require('express');
 const router = express.Router();
-const minutesToSeconds = require('./utils/timeconvert');
+const minutesToSeconds = require('../utils/timeconvert');
 
 //운동 영상 구조
-const Video = require('./models/video');
+const Video = require('../models/video');
 //루틴 구조
-const Routine = require('./models/routine');
+const Routine = require('../models/routine');
 // 기록할 DB 구조
-const Record = require('./models/records');
+const Record = require('../models/records');
 
 router.get('/', routineController.getRoutine);
 router.get('/videos', routineController.getRoutineExercise);
