@@ -1,7 +1,3 @@
-router.put('/goal', habittrackerController.setGoal);
-router.get('/goal', habittrackerController.getGoal);
-router.get('/records', habittrackerController.getEveryGoal);
-
 const express = require('express');
 const router = express.Router();
 const { minutesToSeconds, secondsToMinutes } = require('../utils/timeconvert');
@@ -17,7 +13,7 @@ const habittrackerController = {
         const dailyTimeSeconds = minutesToSeconds(goal_daily_time);
         try {
             const newGoal = new HabitTracker({
-                user_id: req.user_id, //미들웨어에서  설정한 user_id 가져온다
+                user_id: req.user.user_id, //미들웨어에서  설정한 user_id 가져온다
                 goal_weekly,
                 goal_daily,
                 goal_daily_time: dailyTimeSeconds,
@@ -32,7 +28,9 @@ const habittrackerController = {
     },
     getGoal: async (req, res) => {
         try {
-            const goals = await HabitTracker.find({ user_id: req.user_id });
+            const goals = await HabitTracker.find({
+                user_id: req.user.user_id,
+            });
             if (goals.length === 0) {
                 //만약 비어있다면 dummy data 반환
                 const dummyGoal = [
@@ -71,7 +69,7 @@ const habittrackerController = {
 
             //해당 월에 해당하는 운동 기록들을 가져옴
             const monthlyRecords = Record.find({
-                user_id: req.user_id, //미들웨어에 있는 user_id
+                user_id: req.user.user_id, //미들웨어에 있는 user_id
                 date: { $regex: regex },
             });
             res.status(200).json(monthlyRecords);
