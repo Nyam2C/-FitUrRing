@@ -15,6 +15,19 @@ function timeToSeconds(time) {
     return formattedTime;
 }
 
+function ptToSeconds(time) {
+    const regex = /PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?/;
+    const matches = time.match(regex);
+
+    const hours = parseInt(matches[1] || '0', 10);
+    const minutes = parseInt(matches[2] || '0', 10);
+    const seconds = parseInt(matches[3] || '0', 10);
+
+    const totalSeconds = hours * 3600 + minutes * 60 + seconds;
+
+    return totalSeconds;
+}
+
 function minutesToSeconds(time) {
     if (!time || typeof time !== 'string') {
         throw new Error('Invalid time format.');
@@ -45,4 +58,9 @@ function secondsToMinutes(timeInSeconds) {
     return formattedTime;
 }
 
-module.exports = { timeToSeconds, minutesToSeconds, secondsToMinutes };
+module.exports = {
+    timeToSeconds,
+    ptToSeconds,
+    minutesToSeconds,
+    secondsToMinutes,
+};
