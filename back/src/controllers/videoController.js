@@ -8,7 +8,8 @@ const Video = require('../models/video');
 const videoController = {
     getVideo: async (req, res) => {
         try {
-            const { page, video_per_page } = req.body;
+            const page = parseInt(req.query.page);
+            const video_per_page = parseInt(req.query.video_per_page);
             const skipCount = (page - 1) * video_per_page;
 
             //전체 데이터 수
@@ -35,10 +36,10 @@ const videoController = {
     },
     filterVideo: async (req, res) => {
         try {
-            const { video_tag, video_time_from, video_time_to, video_level } =
-                req.body;
-            const video_min_time = minutesToSeconds(video_time_from);
-            const video_max_time = minutesToSeconds(video_time_to);
+            const video_tag = req.query.video_tag;
+            const video_min_time = minutesToSeconds(req.query.video_time_from);
+            const video_max_time = minutesToSeconds(req.query.video_time_to);
+            const video_level = req.query.video_level;
 
             const filter = {
                 video_length: { $gte: video_min_time, $lte: video_max_time },
