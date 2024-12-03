@@ -119,7 +119,16 @@ const userAchievementSchema = new mongoose.Schema({
         date: {
             type: Date,
             required: true,
-            set: dateOnly
+            set: function(date) {
+                if(date){
+                    const dayOfWeek = date.getDay();
+                    const diff = date.getDate() - dayOfWeek;
+                    date.setDate(diff);
+                    date.setHours(0, 0, 0, 0);
+                    return date;
+                }
+                return date;
+            }
         },
         height: {
             type: Number,
@@ -153,18 +162,32 @@ const userDietSchema = new mongoose.Schema({
             required: true,
             set: dateOnly
         },
-        meals: [{
-            diet_id: {
-                type: String,
-                required: true,
-                unique: true
-            },
-            mealtime: {
-                type: String,
-                enum: ['breakfast', 'lunch', 'dinner', 'snack'],
-                required: true
-            },
-            foods: [{
+        meals: {
+            breakfast: [{
+                food_id: {
+                    type: String,
+                    required: true,
+                    ref: 'Food100'
+                },
+                grams: {
+                    type: Number,
+                    required: true,
+                    min: 0
+                }
+            }],
+            lunch: [{
+                food_id: {
+                    type: String,
+                    required: true,
+                    ref: 'Food100'
+                },
+                grams: {
+                    type: Number,
+                    required: true,
+                    min: 0
+                }
+            }],
+            dinner: [{
                 food_id: {
                     type: String,
                     required: true,
@@ -176,7 +199,7 @@ const userDietSchema = new mongoose.Schema({
                     min: 0
                 }
             }]
-        }]
+        }
     }]
 }, {
     timestamps: true
