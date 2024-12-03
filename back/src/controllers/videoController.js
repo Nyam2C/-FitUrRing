@@ -36,7 +36,8 @@ const videoController = {
     },
     filterVideo: async (req, res) => {
         try {
-            const video_tag = req.query.video_tag;
+            const tags = req.query.video_tag;
+            const video_tag = tags ? tags.split(' ') : []; //video_tag 배열처리
             const video_min_time = minutesToSeconds(req.query.video_time_from);
             const video_max_time = minutesToSeconds(req.query.video_time_to);
             const video_level = req.query.video_level;
