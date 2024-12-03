@@ -1,0 +1,35 @@
+#header{
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-evenly;
+    height: 7rem;
+}
+
+.large{
+    font-size: x-large;
+}
+
+.link:link{
+    color: #FFFFFF;
+    text-decoration: none;
+}
+
+.link:visited{
+    color: #FFFFFF;
+}
+
+#footer{
+    display: flex;
+    flex-direction: row;
+    line-height: 1.8;
+    justify-content: space-evenly;
+    background-color: #242834;
+    margin: 0;
+    color: #DFDFE4;
+    height: 7rem;
+}
+
+ul{
+    list-style-type: none;
+}
