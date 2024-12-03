@@ -9,17 +9,12 @@ const Routine = require('../models/routine');
 // 기록할 DB 구조
 const Record = require('../models/records');
 
-router.get('/', routineController.getRoutine);
-router.get('/videos', routineController.getRoutineExercise);
-router.post('/', routineController.createRoutine);
-router.post('/add', routineController.addRoutine);
-
 const routineController = {
     recordRoutine: async (req, res) => {
         const { date, video_id, video_time, video_tag } = req.body;
         try {
             const newRecord = new Routine({
-                user_id: req.user_id, //미들웨어에서 받아온 user_id
+                user_id: req.user.user_id, //미들웨어에서 받아온 user_id
                 date,
                 video_id,
                 video_tag,
@@ -35,7 +30,7 @@ const routineController = {
     getRoutine: async (req, res) => {
         try {
             const userRoutine = await Routine.find({
-                user_id: req.user_id,
+                user_id: req.user.user_id,
             }).populate('routine_exercises.video');
             if (userRoutine.length === 0) {
                 // 아무런 루틴도 없다면 null 로 채워진 루틴 하나를 return
@@ -68,9 +63,10 @@ const routineController = {
     getRoutineExercise: async (req, res) => {
         const { routine_name } = req.body;
         try {
-            const routine = await Routine.findOne({ routine_name }).populate(
-                'routine_exercises.video'
-            );
+            const routine = await Routine.findOne({
+                user_id: req.user.user_id,
+                routine_name,
+            }).populate('routine_exercises.video');
 
             if (!routine) {
                 return res.status(404).json({ message: 'Routine not Found' });
@@ -89,7 +85,7 @@ const routineController = {
         const { routine_name } = req.body;
         try {
             const newRoutine = new Routine({
-                user_id: req.user_id,
+                user_id: req.user.user_id,
                 routine_name,
             });
             await newRoutine.save();
@@ -103,7 +99,7 @@ const routineController = {
         const { routine_name } = req.body;
         try {
             const deletedRoutine = await Routine.findOneAndDelete({
-                user_id: req.user_id, //미들웨어에서 가져온 user_id
+                user_id: req.user.user_id, //미들웨어에서 가져온 user_id
                 routine_name,
             });
             // 성공적으로 삭제되었을 때
@@ -128,7 +124,7 @@ const routineController = {
             //이걸 matchRoutine의 routine_Exercise로 추가해야함
 
             const updatedRoutine = await Routine.findOneAndUpdate(
-                { user_id: req.user_id, routine_name },
+                { user_id: req.user.user_id, routine_name },
                 { $push: { routine_exercises: { video: selectedVideo._id } } },
                 { new: true }
             );
@@ -152,7 +148,7 @@ const routineController = {
             }
 
             const deletedRoutineComponent = await Routine.updateMany(
-                { user_id: req.user_id },
+                { user_id: req.user.user_id },
                 { $pull: { routine_exercises: { video: videoContent._id } } },
                 { new: true }
             );
