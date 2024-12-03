@@ -22,6 +22,11 @@ const habitTrackerSchema = new mongoose.Schema(
             type: Number,
             min: 0,
         },
+        goal_weight: {
+            //해빗트래커 페이지에서 받아온다
+            type: Number,
+            min: 0,
+        },
     },
     {
         timestamps: true,

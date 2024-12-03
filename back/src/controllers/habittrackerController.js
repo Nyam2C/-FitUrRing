@@ -8,8 +8,7 @@ const { minutesToSeconds, secondsToMinutes } = require('../utils/timeconvert');
 
 //habittracker구조
 const HabitTracker = require('../models/habittracker');
-//goal_weight를 가져오기 위한
-const User = require('../models/user');
+//goal_weight는 habit tracker schema 안에 존재하도록
 
 const habittrackerController = {
     setGoal: async (req, res) => {
@@ -34,10 +33,6 @@ const habittrackerController = {
     getGoal: async (req, res) => {
         try {
             const goals = await HabitTracker.find({ user_id: req.user_id });
-            const user = await User.findOne({ user_id: req.user_id }); // 미들웨어에서 설정한 user_id
-            if (!user) {
-                return res.status(404).json({ message: 'User not found' });
-            }
             if (goals.length === 0) {
                 //만약 비어있다면 dummy data 반환
                 const dummyGoal = [
@@ -56,7 +51,7 @@ const habittrackerController = {
                     goal_weekly: goal.goal_weekly,
                     goal_daily: goal.goal_daily,
                     goal_daily_time: secondsToMinutes(goal.goal_daily_time),
-                    goal_weight: user.user_goal_weights,
+                    goal_weight: goal.goal_weight,
                 };
             });
 
