@@ -1,4 +1,4 @@
-const ptToSeconds = require('../utils/timeconvert');
+const ptToSeconds = require('./utils/timeconvert');
 
 async function fetchVidLength(videoId) {
     try {
