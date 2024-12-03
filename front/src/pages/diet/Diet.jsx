@@ -1,41 +1,9 @@
-import styled from 'styled-components';
 import React, { useEffect, useState } from 'react';
 import BmrDisplay from './BmrDisplay';
 import WeightBar from './WeightBar';
 import WeightChart from './WeightChart';
 import MealRecord from './MealRecord';
-
-const All = styled.div`
-  *{
-      box-sizing: border-box;
-      border-radius: 8px;
-      color : black;
-    }
-`;
-
-const Container = styled.div`
-  display: flex;
-  flex-direction: row;
-  width: 1425px;
-  height: 700px;
-  background-color: #eeeeee;
-`;
-
-const Sidebar = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 25%;
-  height: 100%;
-  background-color: #e0e0e0;
-`;
-
-const Content = styled.div`
-  height: 100%;
-  width: 75%;
-  display: flex;
-  flex-direction: column;
-`;
+import "./Diet.css"
 
 function App() {
   const [user,setUser] = useState([]);
@@ -58,18 +26,16 @@ function App() {
   
 
   return (
-    <All>
-      <Container>
-        <Sidebar>
+      <div id='Diet-container'>
+        <div id='SideBar'>
           <BmrDisplay user = {user} diet = {diet} />
           <WeightBar diet = {diet} />
-        </Sidebar>
-        <Content>
+        </div>
+        <div id='Contents'>
           <WeightChart />
           <MealRecord />
-        </Content>
-      </Container>
-    </All>
+        </div>
+      </div>
   );
 }
 

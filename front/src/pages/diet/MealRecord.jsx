@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import './MealRecord.css'
 
 const Header = styled.div`
     display: flex;
@@ -326,8 +327,8 @@ function MealRecord() {
 
 
     return (
-        <Header>
-            <div className='datelist' style={{overflowY: 'scroll' }}>
+        <div className='MealRecord-container'>
+            <div className='datelist' style={{ overflowY: 'scroll' }}>
                 <ul className='list'>
                     {Object.keys(data).map((date) => (
                         <li
@@ -342,8 +343,8 @@ function MealRecord() {
                     ))}
                 </ul>
             </div>
-            <div className='record' style={{ borderLeft: '1px solid #ddd' }}>
-                <p><strong>{selectedDate} 식사 기록</strong></p>
+            <div className='record'>
+                <span>{selectedDate} 식사 기록</span>
                 <table>
                     <thead>
                         <tr>
@@ -357,38 +358,53 @@ function MealRecord() {
                     <tbody>
                         {["breakfast", "lunch", "dinner"].map((meal, index) => (
                             <tr key={index} onClick={() => handleSelectMeal(meal)} style={{ cursor: 'pointer' }}>
-                                <td>{meal === "breakfast" ? "아침" : meal === "lunch" ? "점심" : "저녁"}</td>
-                                <td>{calculateTotal(meal, 'calories')} kcal</td>
-                                <td>{calculateTotal(meal, 'carbs')} g</td>
-                                <td>{calculateTotal(meal, 'protein')} g</td>
-                                <td>{calculateTotal(meal, 'fat')} g</td>
+                                <td><strong>{meal === "breakfast" ? "아침" : meal === "lunch" ? "점심" : "저녁"}</strong></td>
+                                <td>{calculateTotal(meal, 'calories').toFixed(1)} kcal</td>
+                                <td>{calculateTotal(meal, 'carbs').toFixed(1)} g</td>
+                                <td>{calculateTotal(meal, 'protein').toFixed(1)} g</td>
+                                <td>{calculateTotal(meal, 'fat').toFixed(1)} g</td>
                             </tr>
                         ))}
                         <tr>
-                            <td>총합</td>
-                            <td> {calculateTotalSum('calories')} kcal</td>
-                            <td> {calculateTotalSum('carbs')} g</td>
-                            <td> {calculateTotalSum('protein')} g</td>
-                            <td> {calculateTotalSum('fat')} g</td>
+                            <td><strong>총합</strong></td>
+                            <td> {calculateTotalSum('calories').toFixed(1)} kcal</td>
+                            <td> {calculateTotalSum('carbs').toFixed(1)} g</td>
+                            <td> {calculateTotalSum('protein').toFixed(1)} g</td>
+                            <td> {calculateTotalSum('fat').toFixed(1)} g</td>
                         </tr>
                     </tbody>
                 </table>
             </div>
 
             {selectedMeal && (
-                <div className='input' style={{ borderLeft: '1px solid #ddd' }}>
-                    <h3>기록 하기</h3>
-                    {data[selectedDate][selectedMeal].map((item, index) => (
-                        <div key={index} className='detail'>
-                            <input value={item.food} readOnly />
-                            <input type="number" value={item.calories} readOnly />  kcal
-                            <input type="number" value={item.carbs} readOnly />  g
-                            <input type="number" value={item.protein} readOnly />  g
-                            <input type="number" value={item.fat} readOnly />  g
-                            <button onClick={() => handleDeleteFood(selectedMeal, index)} >삭제</button>
-                        </div>
-                    ))}
-                    <button onClick={() => setIsModalOpen(true)} style={{ marginTop: '10px', color: '#007bff' }}>+ 음식 추가</button>
+                <div className='input'>
+                    <span>기록 하기</span>
+                    <div className='detail'>
+                        <table className=''>
+                            <thead>
+                                <tr>
+                                    <th>음식</th>
+                                    <th>칼로리</th>
+                                    <th>탄수화물</th>
+                                    <th>단백질</th>
+                                    <th>지방</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {data[selectedDate][selectedMeal].map((item, index) => (
+                                    <tr key={index}>
+                                        <td>{item.food}</td>
+                                        <td>{item.calories.toFixed(1)} kcal</td>
+                                        <td>{item.carbs.toFixed(1)} g</td>
+                                        <td>{item.protein.toFixed(1)} g</td>
+                                        <td>{item.fat.toFixed(1)} g</td> 
+                                        <button onClick={() => handleDeleteFood(selectedMeal, index)}>삭제</button>                       
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                        <button className='mealregi' onClick={() => setIsModalOpen(true)}>+ 음식 추가</button>
+                    </div>
                 </div>
             )}
             {isModalOpen && (
@@ -423,7 +439,7 @@ function MealRecord() {
                 </div>
             )}
 
-        </Header>
+        </div>
     );
 }
 

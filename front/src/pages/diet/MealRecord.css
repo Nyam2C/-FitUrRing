@@ -1,0 +1,174 @@
+.MealRecord-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 0px;
+
+    width: 960px;
+    height: 275px;
+
+    background: #FFFFFF;
+    border-radius: 20px;
+
+    .mini {
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        top: 5%;
+        left: 20%;
+        padding: 80px;
+        background: white;
+        border: 1px solid #ddd;
+        boxShadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+
+        ul {
+            height: 200px;
+            width: 500px;
+            padding: 0px;
+            overflow-y: auto;
+            border: 2px solid #ddd;
+            list-style-type: none;
+
+            li {
+                padding-left: 0px;
+                border: 1px solid #ddd;
+            }
+        }
+    }
+}
+
+.datelist {
+    overflow-y: auto;
+    -ms-overflow-style: none;
+    box-sizing: border-box;
+    max-Height: 400px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    width: 170px;
+    height: 240px;
+
+    background: #ffffff;
+}
+
+.datelist::-webkit-scrollbar {
+    display: none;
+}
+
+.list {
+    padding: 5px;
+}
+
+.list li {
+    border-radius: 7px;
+    padding: 5px;
+    cursor: pointer;
+}
+
+.record {
+    background-color: black;
+    border-left: 1px solid #ddd;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    width: 350px;
+    height: 270px;
+
+    background: #FFFFFF;
+}
+
+.record span {
+    font-size: 16px;
+    font-weight: 600;
+    width: 330px;
+    margin-left: 10px;
+    margin-top: -20px;
+    margin-bottom: 5px;
+}
+
+
+.record table {
+    margin-bottom: -20px;
+    width: 350px;
+    height: 220px;
+}
+
+.record th,
+td {
+    font-size: 13px;
+    text-align: center;
+    border-bottom: none;
+}
+
+.input {
+    background-color: black;
+    border-left: 1px solid #ddd;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    width: 420px;
+    height: 270px;
+    background: #FFFFFF;
+}
+
+.input span {
+    font-size: 16px;
+    font-weight: 600;
+    width: 340px;
+    margin-left: 10px;
+    margin-top: 8px;
+    margin-bottom: 5px;
+}
+
+.detail {
+    overflow-y: auto;
+    -ms-overflow-style: none;
+    width: 430px;
+    height: 300px;
+
+}
+
+.detail::-webkit-scrollbar {
+    display: none;
+}
+.detail table {
+    margin-bottom: -20px;
+    width: 430px;
+}
+
+.detail th{
+    font-size: 13px;
+}
+
+.detail td{
+    font-size: 13px;
+    padding: 0px;
+    line-height: 20px;
+    padding: 5px 1px;
+    height: 20px;
+}
+
+
+.input tbody button {
+    width: 50px;
+    height: 25px;
+    margin: 0; 
+    padding: 2px 4px;
+    color: red;
+    cursor: pointer;
+}
+
+.mealregi{
+    color: #007bff;
+    cursor: pointer;
+    width: 90px;
+    height: 20px;
+    font-size: 14px;
+}

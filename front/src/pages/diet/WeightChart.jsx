@@ -1,6 +1,6 @@
-import styled from 'styled-components';
 import { Line } from "react-chartjs-2";
 import React, { useState, useEffect } from 'react';
+import './WeightChart.css'
 
 import {
     Chart as ChartJS,
@@ -72,25 +72,7 @@ const options = {
     },
 };
 
-const Header = styled.div`
-    display: flex;
-    align-items: center;
-    padding: 10px;
-    margin: 10px;
-    text-align: center;
-    width: 98%;
-    height: 53%;
-    color: #333;
-    background-color: #e0e0e0;
-    .graph {
-        width: 100%;
-        height: 100%;
-        background-color: #ffffff;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-`;
+
 
 function WeightChart() {
     const [chartData, setChartData] = useState({
@@ -134,11 +116,11 @@ function WeightChart() {
     }, []);
 
     return (
-        <Header>
+        <div className='WeightChart-container'>
             <div className="graph">
                 <Line options={options} data={chartData} />
             </div>
-        </Header>
+        </div>
     );
 }
 
