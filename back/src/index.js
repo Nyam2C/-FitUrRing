@@ -50,6 +50,7 @@ app.use('/api/user', userRouter);
 app.use('/api/video', videoRouter);
 app.use('/api/habitTracker', habitRouter);
 app.use('/api/routine', routineRouter);
+app.use('/api', etcRouter);
 
 app.listen(port, () => {
     console.log(`Backend server is running on http://172.20.0.3:${port}`);
