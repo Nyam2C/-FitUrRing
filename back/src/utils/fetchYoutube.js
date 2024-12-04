@@ -21,9 +21,8 @@ async function fetchYoutube(query, iteration, videoObject, pageToken = '') {
 
         const results = await Promise.all(
             data.items.map(async item => {
-                let { videoLength, videoLikes } = await fetchVidLength(
-                    item.id.videoId
-                );
+                let { videoLength, videoLikes, channelTitle } =
+                    await fetchVidLength(item.id.videoId);
                 return {
                     video_id: item.id.videoId,
                     video_title: item.snippet.title,
@@ -31,6 +30,7 @@ async function fetchYoutube(query, iteration, videoObject, pageToken = '') {
                     video_tag: query, // 검색 키워드가 들어가게 된다.
                     video_length: videoLength, //videoLength 값 사용
                     video_likes: videoLikes,
+                    channel_title: channelTitle, //채널명 추가
                 };
             })
         );
