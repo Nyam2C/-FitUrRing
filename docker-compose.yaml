@@ -22,10 +22,6 @@ services:
         ipv4_address: 172.20.0.4
     ports:
       - "27017:27017"
-    command: >
-      /bin/sh -c '
-      /docker-entrypoint-initdb.d/init.sh &&
-      exec mongod --bind_ip_all --replSet rs0'
     volumes:
       - ./db/data:/data/db
       - ./db/init-mongo.sh:/docker-entrypoint-initdb.d/init-mongo.sh
@@ -47,6 +43,7 @@ services:
       - "8080:8080"
     volumes:
       - ./back/src:/app/src
+      - ./back/public:/app/public
     restart: always
 
   wss-front:

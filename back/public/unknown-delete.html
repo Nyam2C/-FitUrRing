@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>만료된 페이지</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f5f5f5;
+        }
+        
+        .container {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+        }
+        
+        h1 {
+            color: #333;
+            margin-bottom: 1.5rem;
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+        
+        button {
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.3s;
+        }
+        
+        #confirmBtn {
+            background-color: #dc3545;
+            color: white;
+        }
+        
+        #confirmBtn:hover {
+            background-color: #c82333;
+        }
+        
+        #cancelBtn {
+            background-color: #6c757d;
+            color: white;
+        }
+        
+        #cancelBtn:hover {
+            background-color: #5a6268;
+        }
+        
+        .message {
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: 4px;
+            display: none;
+        }
+        
+        .message.success {
+            background-color: #d4edda;
+            color: #155724;
+            display: block;
+        }
+        
+        .message.error {
+            background-color: #f8d7da;
+            color: #721c24;
+            display: block;
+        }
+        
+        .message.info {
+            background-color: #cce5ff;
+            color: #004085;
+            display: block;
+        } 
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="deny-box">
+            <h1>만료된 토큰</h1>
+            <div class="error-icon">❌</div>
+            <p class="error-text">유효하지 않은 토큰입니다</p>
+            <p class="sub-text">토큰이 만료되었거나 올바르지 않습니다.</p>
+            <div class="button-group">
+                <button id="homeBtn" class="btn home-btn">홈으로 돌아가기</button>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const homeBtn = document.getElementById('homeBtn');
+            homeBtn.addEventListener('click', () => {
+                window.location.href = '/';
+            });
+        });
+    </script>
+</body>
+</html>
