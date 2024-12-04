@@ -1,3 +1,4 @@
+require('dotenv').config();
 const fetchVidLength = require('./fetchVideoLength');
 
 // API 키를 사용하여 유튜브 API에 검색 요청 보내기
@@ -5,7 +6,9 @@ async function fetchYoutube(query, iteration, videoObject, pageToken = '') {
     const fetchUrl = `https://www.googleapis.com/youtube/v3/search?part=snippet&q=${encodeURIComponent(
         query
     )}
-    &type=video&maxResults=10&videoType=any&key=${apiKey}&pageToken=${pageToken}`;
+    &type=video&maxResults=10&videoType=any&key=${
+        process.env.YOUTUBE_API_KEY
+    }&pageToken=${pageToken}`;
 
     if (iteration >= maxiterations) {
         return;
