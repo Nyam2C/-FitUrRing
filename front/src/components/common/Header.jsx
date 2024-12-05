@@ -6,10 +6,10 @@ import {ReactComponent as Logo} from '../../assets/logo.svg';
 import { userLogout } from '../../api';
 
 function Header(){
-    function handleSignOut() {
+    async function handleSignOut() {
         try{ 
-            const msg = userLogout();
-            alert(msg);
+            const result = await userLogout();
+            alert(result.message);
             window.location.reload();
         } catch(err) {
             alert(err.message);
@@ -22,7 +22,7 @@ function Header(){
             return (
                 <span>
                     <Link class="link large" to='/mypage'>My Page</Link>
-                    <label class="link large" to='/sign' onClick={handleSignOut}>Sign Out</label>
+                    <label class="link large" onClick={handleSignOut}>Sign Out</label>
                 </span>
             );
         }

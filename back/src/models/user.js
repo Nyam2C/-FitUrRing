@@ -1,5 +1,16 @@
 const mongoose = require('mongoose');
 
+const dateOnly=function(date) {
+    if(date){
+        if (typeof date === 'string') {
+            const [year, month, day] = date.split('-').map(Number);
+            return new Date(year, month - 1, day);
+        }
+        return new Date(date.getFullYear(), date.getMonth(), date.getDate());
+    }
+    return date;
+};
+
 const userSchema = new mongoose.Schema({
     user_id: {
         type: String,
@@ -24,15 +35,114 @@ const userSchema = new mongoose.Schema({
         enum: ['male', 'female']
     },
     user_birth: {
-        type: Date
+        type: Date,
+        set: dateOnly
     },
     user_email: {
         type: String,
         required: true,
         match: [/^.+@.+\..+$/, '올바른 이메일 형식이 아닙니다']
     },
-    user_last_login: {
-        type: Date
+    tokens: {
+        access_sessions: [{
+            token_pair: {
+                access_token: {
+                    type: String,
+                    required: true
+                },
+                refresh_token: {
+                    type: String,
+                    required: true
+                }
+            },
+            device_info: {
+                ua: {
+                    type: String,
+                },
+                browser: {
+                    name: String,
+                    version: String
+                },
+                os: {
+                    name: String,
+                    version: String
+                },
+                device: {
+                    vendor: String,
+                    model: String,
+                    type: {
+                        type: String,
+                        default: 'desktop'
+                    }
+                },
+                ip: {
+                    type: String,
+                    required: true
+                },
+                last_login_at: {
+                    type: Date,
+                    default: Date.now
+                },
+                last_used: {
+                    type: Date,
+                    default: Date.now
+                }
+            }
+        }],
+        delete_sessions: [{
+            delete_token: {
+                type: String,
+                required: true
+            },
+            device_info: {
+                ua: {
+                    type: String,
+                },
+                browser: {
+                    name: String,
+                    version: String
+                },
+                os: {
+                    name: String,
+                    version: String
+                },
+                device: {
+                    vendor: String,
+                    model: String,
+                    type: {
+                        type: String,
+                        default: 'desktop'
+                    }
+                },
+                ip: {
+                    type: String,
+                    required: true
+                },
+                last_login_at: {
+                    type: Date,
+                    default: Date.now
+                },
+                last_used: {
+                    type: Date,
+                    default: Date.now
+                }
+            }
+        }]
+    },
+    login_attempts: { 
+        type: Number, 
+        default: 0 
+    },
+    lock_until: { 
+        type: Date 
+    },
+    is_deleted: {
+        type: Boolean,
+        default: false
+    },
+    deleted_at: {
+        type: Date,
+        default: null
     }
 }, {
     timestamps: { 
@@ -47,53 +157,78 @@ const userAchievementSchema = new mongoose.Schema({
         required: true,
         ref: 'User'
     },
-    user_date: {
-        type: Date,
-        required: true
-    },
-    user_height: {
-        type: Number,
-        min: 0,
-        max: 300
-    },
-    user_weight: {
-        type: Number,
-        min: 0,
-        max: 500
-    }
+    achievements: [{
+        date: {
+            type: Date,
+            required: true,
+            set: dateOnly
+        },
+        user_height: {
+            type: Number,
+            min: 0,
+            max: 300
+        },
+        user_weight: {
+            type: Number,
+            min: 0,
+            max: 500
+        },
+        goal_weight: {
+            type: Number,
+            min: 0,
+            max: 500
+        }
+    }]
 }, {
     timestamps: true
 });
 
 const userDietSchema = new mongoose.Schema({
-    diet_id: {
-        type: String,
-        required: true,
-        unique: true
-    },
     user_id: {
         type: String,
         required: true,
         ref: 'User'
     },
-    diet_date: {
-        type: Date,
-        required: true
-    },
-    mealtime: {
-        type: String,
-        enum: ['breakfast', 'lunch', 'dinner', 'snack'],
-        required: true
-    },
-    food: {
-        type: String,
-        required: true,
-        minlength: 1,
-        maxlength: 100
-    }
+    diets: [{
+        date: {
+            type: Date,
+            required: true,
+            set: dateOnly
+        },
+        meals: [{
+            diet_id: {
+                type: String,
+                required: true,
+                unique: true
+            },
+            mealtime: {
+                type: String,
+                enum: ['breakfast', 'lunch', 'dinner', 'snack'],
+                required: true
+            },
+            foods: [{
+                food_id: {
+                    type: String,
+                    required: true,
+                    ref: 'Food100'
+                },
+                grams: {
+                    type: Number,
+                    required: true,
+                    min: 0
+                }
+            }]
+        }]
+    }]
 }, {
     timestamps: true
 });
+
+// 인덱스 추가
+userAchievementSchema.index({ user_id: 1, 'achievements.date': 1 });
+userDietSchema.index({ user_id: 1, 'diets.date': 1 });
+userDietSchema.index({ 'diets.meals.diet_id': 1 }, { unique: true });
+userDietSchema.index({ 'diets.date': 1, 'diets.meals.mealtime': 1 }, { unique: true });
 
 // 모델 생성
 const User = mongoose.model('User', userSchema);

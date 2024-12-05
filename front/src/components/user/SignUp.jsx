@@ -19,7 +19,7 @@ function SignUp(){
         else setWarning(null);
     };
 
-    function handleSignUp(e){
+    async function handleSignUp(e){
         e.preventDefault();
         const data = {
             user_id: userId,
@@ -29,19 +29,18 @@ function SignUp(){
             user_birth: birthdate,
             user_email: email,
         }
-        //console.log(data)
+        
         if (warning){
             alert(warning);
+            return;
         }
-        else{
-            try{
-                const response = userSignUp(data);
-                alert(response.message);
-                window.location.reload();
-            } catch(err){
-                alert(err);
-                window.location.reload();
-            }
+        
+        try {
+            const response = await userSignUp(data);
+            alert(response.message);
+            window.location.reload();
+        } catch(err) {
+            alert(err.message);
         }
     }
 
