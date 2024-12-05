@@ -6,18 +6,21 @@ function SignIn(){
     const [userId, setUserId] = useState('');
     const [password, setPassword] = useState('');
 
-    function handleSignIn(e){
+    async function handleSignIn(e){
         e.preventDefault();
         const data = {
             user_id: userId,
             user_password: password
         }
         try{ 
-            userLogin(data);
-            window.location.href = '/home';
+            const response = await userLogin(data);
+            if(response.success) {
+                window.location.href = '/home';
+            } else {
+                alert(response.message);
+            }
         } catch(err) {
-            alert(err);
-            window.location.reload();
+            alert(err.message);
         } 
     }
 

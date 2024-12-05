@@ -1,8 +1,17 @@
-const serverStartTime = Date.now();
+const path = require('path');
 
 const etcController = {
     getUptime: (req, res) => {
-        res.json({ uptime: Math.floor((Date.now() - serverStartTime) / 1000) });
+        const uptime = process.uptime();
+        res.json({ uptime });
+    },
+
+    handleConfirmDelete: (req, res) => {
+        res.sendFile(path.join(__dirname, '../../public/confirm-delete.html'));
+    },
+
+    handleCancelDelete: (req, res) => {
+        res.sendFile(path.join(__dirname, '../../public/cancel-delete.html'));
     }
 };
 

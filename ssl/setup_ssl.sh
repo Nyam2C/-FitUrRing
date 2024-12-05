@@ -46,7 +46,7 @@ install_local_ca() {
 # SSL 인증서 발급 및 이동
 generate_and_move_ssl_certificates() {
   # IS_LOCAL이 true이면 localhost, 아니면 SERVER_NAME 사용
-  if [ "$IS_LOCAL" = "true" ]; then
+  if [ "$SERVER_NAME" = "localhost" ]; then
     local domains="localhost"
   else
     local domains="$SERVER_NAME"
