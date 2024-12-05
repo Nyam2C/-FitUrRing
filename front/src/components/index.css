@@ -74,12 +74,13 @@ ul{
 
 #videoLists{
     display: flex;
-    flex-wrap: wrap; 
-    margin: 10px;
+    flex-wrap: wrap;
     max-height: 25em; 
-    overflow-y: auto; 
-    overflow-x: hidden;
+    overflow-y: scroll; 
     bottom: 0;
+    align-items: center;
+    justify-content: center;
+    min-height: 20em;
 }
 
 .block{
@@ -120,4 +121,10 @@ ul{
 .thumbnails{
     width: 10em;
     height: 5.6em;
+}
+
+.more{
+    width: 100%;
+    display: inline-flex;
+    justify-content: center;
 }

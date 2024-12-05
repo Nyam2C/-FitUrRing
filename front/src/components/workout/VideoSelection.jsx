@@ -2,10 +2,9 @@ import React, { useState, useEffect, useRef } from 'react';
 
 import SelectBtn from './SelectBtn';
 
-function VideoSelection({dispatch, setPage, setSelected}){
+function VideoSelection({dispatch, setSelected}){
     const [warning, setWarning] = useState();
 
-    //const [searchTags, setSearchTags] = useState('');
     const [startMin, setStartMin] = useState(0);
     const [endMin, setEndMin] = useState(0);
     const [startSec, setStartSec] = useState(0);
@@ -14,18 +13,19 @@ function VideoSelection({dispatch, setPage, setSelected}){
     const tagRef = useRef([]);
     
     useEffect(() => {
-        if (startMin > endMin || (startMin===endMin && startSec>endSec)){
-            setWarning("시작 시간은 종료 시간보다 클 수 없습니다");
-        }
-        else{
-            setWarning(null);
-        }
-        dispatch({
-            type: 'time',
-            start: `${startMin}:${startSec}`,
-            end: `${endMin}:${endSec}`,
-        });
-        setPage(3);
+        if (startSec || endSec || startMin || endMin){
+            if (startMin > endMin || (startMin===endMin && startSec>endSec)){
+                setWarning("시작 시간은 종료 시간보다 클 수 없습니다");
+            }
+            else{
+                setWarning(null);
+            }
+            dispatch({
+                type: 'time',
+                start: `${startMin}:${startSec}`,
+                end: `${endMin}:${endSec}`,
+            });
+            }
     }, [startSec, endSec, startMin, endMin]);
 
     function handleAddTag(e){
@@ -34,9 +34,8 @@ function VideoSelection({dispatch, setPage, setSelected}){
         tagRef.current = newTag;
         dispatch({
             type: 'tag',
-            tag: tagRef,
+            tag: tagRef.current,
         });
-        setPage(1);
     }
     function handleDelTag(e){
         setSelected(e);
@@ -44,16 +43,17 @@ function VideoSelection({dispatch, setPage, setSelected}){
         tagRef.current = newTag;
         dispatch({
             type: 'tag',
-            tag: tagRef,
+            tag: tagRef.current,
         });
-        setPage(1);
     }
     function handleLevel(e){
         dispatch({
             type: 'level',
             level: e.target.value,
         })
-        setPage(1);
+    }
+    function handleChange(e){
+        if (e.target.name === 'startMin')   setStartMin(e.target.value?e.target.value:0);
     }
 
     return (
@@ -70,7 +70,12 @@ function VideoSelection({dispatch, setPage, setSelected}){
                 <div id="timeSelection" className="col center padding">
                     <h3>시간</h3>
                     <span> 
-                    <input type="text" name="start" onChange={(e) => setStartMin(parseInt(e.target.value))}></input>
+                    <input type="text" name="startMin" onChange={handleChange}></input>
+                    {/* <input type="text" name="start"  value={startMin !== null ? startMin : ""}
+                    onChange={(e) => {
+                        const value = e.target.value;
+                        setStartMin(value === "" ? null : parseInt(value, 10));
+                    }}></input> */}
                     <span> 분</span>
                     <input type="text" name="start" onChange={(e) => setStartSec(parseInt(e.target.value))}></input>
                     <span> 초</span>
@@ -81,7 +86,6 @@ function VideoSelection({dispatch, setPage, setSelected}){
                     <input type="text" name="start" onChange={(e) => setSEndSec(parseInt(e.target.value))}></input>
                     <span> 초</span>
                     </span>
-                    {/* {warning?<p>{warning}</p>:null} */}
                     <p>{warning}</p>
                 </div>
                 <div className="col center padding">

@@ -32,49 +32,86 @@ function Workout(){
     }
 
     const [videos, setVideos] = useState([]);
+    const [expose, setExpose] = useState(videos);
     const [selected, setSelected] = useState();
-    const [page, setPage] = useState(3);
+    const [showMore, setShowMore] = useState(false);
     const [filter, dispatch] = useReducer(FilterReducer, initial);
     
     useEffect(() => {
-            fetchEntireVideos();
+        fetchEntireVideos();
         }, [])
+    useEffect(() => {
+        if (videos.length >= 500){  //500개만 가지고있도록 관리
+            //필터링 시 비디오 태그에 맞게 필터링하는 기능..
+            //블록에 유튜버 이름도 보이게..
+            //페이지 없앰..
+            setVideos()
+        }
+    }, videos, filter)
+    useEffect(() => {
+        //필터가 바뀔때마다 필터링된 비디오 제공...
+    })
 
     const fetchEntireVideos = async () => { 
         try{
-            const data = await getEntireVideos(page);
-            console.log(data.videos);
-            //처음 받은 데이터를 필터링 해서 보여주고, 더보기를 누르면 백에게 필터링 정보 요청
+            const last_id = (videos.length)?videos[videos.length-1]._id:null;
+            const data = await getEntireVideos(last_id);
             const newVideos = [...videos, ...data.videos];
-            setVideos(newVideos);            
+            setVideos(newVideos);
         } catch (error) {
             console.error(error.message);
         }
     }
-    console.log(videos);
-    //filter에 따라서 필터링된 data를 제공
-    //더보기 버튼 누르면 API호출
+
+    const fetchFilteredVideos = async () => {
+        try{
+            const last_id = (videos.length)?videos[videos.length-1]._id:null;
+            const data = await searchVideos(filter, last_id);
+            const newVideos = [...videos, ...data.videos];
+            console.log(data);
+            setVideos(newVideos);
+        } catch (error) {
+            console.error(error.message);
+        }
+    }
+
+    const handleShowMore = async () => {
+        console.log(filter);
+        if (filter){
+            console.log("filtered");
+            fetchFilteredVideos()
+        }
+        else{
+            console.log("entire");
+            fetchEntireVideos();
+        }
+      };
+
+        //filter에 따라서 필터링된 data를 제공
     function FilterReducer(filter, action){
         switch (action.type){
-                //백엔드에서 필터링된 영상 보내주기
-                //한페이지당 30개씩 표시, 처음에는 60개씩 가져옴(useEffect)
-                //더보기 누르면 새로운 정보 30개 받아오기
             case 'tag': {
-                const newFilter = {...filter, video_tag: action.tag};
-                return newFilter;
-                break;
+                // if(!action.tag.length){
+                //     delete filter.video_tag;
+                //     console.log(filter);
+                //     return filter;
+                // }
+                // else{
+                    const newFilter = {...filter, video_tag: action.tag};
+                    console.log(newFilter);
+                    return newFilter;
+                // } 
                 //return videos.filter((t) => t.tags.indexOf(action.tag) !== -1);
             }
             case 'time': {
                 const newFilter = {...filter, video_time_from: action.start, video_time_to: action.end};
                 return newFilter;
-                break;
                 //return videos.filter((t) => t.time<action.end && t.time>action.start);
             }
             case 'level':{
+                //레벨 다시 눌렀을때 없어질 수 있어야함...
                 const newFilter = {...filter, video_level: action.level};
                 return newFilter;
-                break;
             }
             default:{
                 throw Error('Unknown action: ' + action.type);
@@ -86,7 +123,6 @@ function Workout(){
         <div id="workout">
                 <VideoSelection 
                 dispatch={dispatch} 
-                setPage={setPage}
                 setSelected={setSelected}/>
             <div id="muscles">
                 <Images selected={selected}/>
@@ -97,6 +133,8 @@ function Workout(){
                     />
                     <VideoLists
                     data={videos}
+                    filter={filter}
+                    onShowMore={handleShowMore}
                     />
                 </div>
         </div>
