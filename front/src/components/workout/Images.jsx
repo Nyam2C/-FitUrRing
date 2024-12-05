@@ -19,19 +19,19 @@ function Images({selected}){
 
     switch(selected){
         case 'chest':
-            return  <Chest width='30vw' height='80vh'/>
+            return  <Chest width='25em' height='40em'/>
         case 'back':
-            return <Back width='30vw' height='80vh'/>
+            return <Back width='25em' height='40em'/>
         case 'shoulders':
-            return <Deltoid width='30vw' height='80vh'/>
+            return <Deltoid width='25em' height='40em'/>
         case 'abs':
-            return <Abs width='30vw' height='80vh'/>
+            return <Abs width='25em' height='40em'/>
         case 'thighs':
-            return <Thighs width='30vw' height='80vh'/>
+            return <Thighs width='25em' height='40em'/>
         case 'glutes':
-            return <Glutes width='30vw' height='80vh'/>
+            return <Glutes width='25em' height='40em'/>
         default:
-            return <FullBody width='30vw' height='80vh'/>;
+            return <FullBody width='25em' height='40em'/>;
     }
 }
 export default Images;

@@ -72,10 +72,7 @@ button{
 
 #workout{
     display: grid;
-    grid-template-columns: 1fr 1fr 2fr;
-
-    /* display: flex;
-    flex-direction: row; */
+    grid-template-columns: 1fr 3fr 6fr;
     width: 100vw;
     min-height: calc(100vh - 7rem - 7rem);
 }
@@ -85,6 +82,3 @@ button{
     grid-template-rows: 1fr;
 }
 
-#videoLists{
-    column-count: 3;
-}

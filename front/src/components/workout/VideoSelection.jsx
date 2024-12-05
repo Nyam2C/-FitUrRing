@@ -1,77 +1,59 @@
-import React, { useState, useEffect, useReducer, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 import SelectBtn from './SelectBtn';
 
-function videoReducer(videos, action){
-    switch (action.type){
-            //백엔드에서 필터링된 영상 보내주기
-            //한페이지당 30개씩 표시, 처음에는 60개씩 가져옴(useEffect)
-            //더보기 누르면 새로운 정보 30개 받아오기
-        case 'tag': {
-            return videos.filter((t) => t.tags.indexOf(action.tag) !== -1);
-        }
-        case 'time': {
-            return videos.filter((t) => t.time<action.end && t.time>action.start);
-        }
-        default:{
-            throw Error('Unknown action: ' + action.type);
-        }
-    }
-}
-
-
-function VideoSelection({setSelected}){
+function VideoSelection({dispatch, setPage, setSelected}){
     const [warning, setWarning] = useState();
-    const [page, setPage] = useState(1);
-    const [videos, dispatch] = useReducer(videoReducer, []);
-    const [searchTags, setSearchTags] = useState('');
-    const [start, setStart] = useState(0);
-    const [end, setEnd] = useState(0);
 
+    //const [searchTags, setSearchTags] = useState('');
+    const [startMin, setStartMin] = useState(0);
+    const [endMin, setEndMin] = useState(0);
+    const [startSec, setStartSec] = useState(0);
+    const [endSec, setSEndSec] = useState(0);
+    
+    const tagRef = useRef([]);
+    
     useEffect(() => {
-        console.log(searchTags);
-        dispatch({
-            type: 'tag',
-            tag: searchTags,
-        });
-    }, [searchTags]);
-
-    useEffect(() => {
-        console.log(start, end);
-        if (start && end && start > end){
+        if (startMin > endMin || (startMin===endMin && startSec>endSec)){
             setWarning("시작 시간은 종료 시간보다 클 수 없습니다");
         }
         else{
-            setWarning();
+            setWarning(null);
         }
         dispatch({
             type: 'time',
-            start: start,
-            end: end,
+            start: `${startMin}:${startSec}`,
+            end: `${endMin}:${endSec}`,
         });
-    }, [start, end]);
+        setPage(3);
+    }, [startSec, endSec, startMin, endMin]);
 
     function handleAddTag(e){
         setSelected(e);
-        const newTags = (searchTags)?searchTags+'|'+`${e}`:`${e}`;
-        setSearchTags(newTags);
+        const newTag = [...tagRef.current, e];
+        tagRef.current = newTag;
+        dispatch({
+            type: 'tag',
+            tag: tagRef,
+        });
         setPage(1);
     }
     function handleDelTag(e){
         setSelected(e);
-        const newTags = searchTags.replace(e, '');
-        setSearchTags(newTags);
+        const newTag = tagRef.current.filter((t) => t !== e);
+        tagRef.current = newTag;
+        dispatch({
+            type: 'tag',
+            tag: tagRef,
+        });
         setPage(1);
     }
-    function handleTime(e){
- 
+    function handleLevel(e){
         dispatch({
-            type: 'time',
-            start: parseInt(start),
-            end: parseInt(end),
+            type: 'level',
+            level: e.target.value,
         })
         setPage(1);
-        console.log(start, ' ', end);
     }
 
     return (
@@ -79,19 +61,28 @@ function VideoSelection({setSelected}){
                 <div className='col padding'>
                     <h3>난이도</h3>
                     <label>상
-                        <SelectBtn type="radio" value="advanced" name="level" onAdd={handleAddTag} onDelete={handleDelTag}></SelectBtn>
+                        <input type="radio" value="advanced" name="level" onChange={handleLevel}></input>
                     </label>
                     <label>하 
-                        <SelectBtn type="radio" value="beginner" name="level" onAdd={handleAddTag} onDelete={handleDelTag}></SelectBtn>
+                        <input type="radio" value="beginner" name="level" onChange={handleLevel}></input>
                     </label>
                 </div>
                 <div id="timeSelection" className="col center padding">
                     <h3>시간</h3>
-                    <span> From: </span>
-                    <input type="number" name="start" onChange={(e)=>(setStart(e.target.value))}></input>
-                    <span> To:  </span>
-                    <input type="number" name="end" onChange={(e)=>(setEnd(e.target.value))}></input>
-                    {warning?<p>{warning}</p>:null}
+                    <span> 
+                    <input type="text" name="start" onChange={(e) => setStartMin(parseInt(e.target.value))}></input>
+                    <span> 분</span>
+                    <input type="text" name="start" onChange={(e) => setStartSec(parseInt(e.target.value))}></input>
+                    <span> 초</span>
+                    </span>
+                    <span> ~
+                    <input type="text" name="end" onChange={(e) => setEndMin(parseInt(e.target.value))}></input>
+                    <span> 분 </span>
+                    <input type="text" name="start" onChange={(e) => setSEndSec(parseInt(e.target.value))}></input>
+                    <span> 초</span>
+                    </span>
+                    {/* {warning?<p>{warning}</p>:null} */}
+                    <p>{warning}</p>
                 </div>
                 <div className="col center padding">
                     <h3>부위</h3>
