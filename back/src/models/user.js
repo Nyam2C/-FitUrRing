@@ -43,50 +43,92 @@ const userSchema = new mongoose.Schema({
         required: true,
         match: [/^.+@.+\..+$/, '올바른 이메일 형식이 아닙니다']
     },
-    tokens: [{
-        access_token: {
-            type: String,
-        },
-        refresh_token: {
-            type: String,
-        },
-        delete_token: {
-            type: String
-        },
-        device_info: {
-            ua: {
-                type: String,
-            },
-            browser: {
-                name: String,
-                version: String
-            },
-            os: {
-                name: String,
-                version: String
-            },
-            device: {
-                vendor: String,
-                model: String,
-                type: {
+    tokens: {
+        access_sessions: [{
+            token_pair: {
+                access_token: {
                     type: String,
-                    default: 'desktop'
+                    required: true
+                },
+                refresh_token: {
+                    type: String,
+                    required: true
                 }
             },
-            ip: {
+            device_info: {
+                ua: {
+                    type: String,
+                },
+                browser: {
+                    name: String,
+                    version: String
+                },
+                os: {
+                    name: String,
+                    version: String
+                },
+                device: {
+                    vendor: String,
+                    model: String,
+                    type: {
+                        type: String,
+                        default: 'desktop'
+                    }
+                },
+                ip: {
+                    type: String,
+                    required: true
+                },
+                last_login_at: {
+                    type: Date,
+                    default: Date.now
+                },
+                last_used: {
+                    type: Date,
+                    default: Date.now
+                }
+            }
+        }],
+        delete_sessions: [{
+            delete_token: {
                 type: String,
                 required: true
             },
-            last_login_at: {
-                type: Date,
-                default: Date.now
-            },
-            last_used: {
-                type: Date,
-                default: Date.now
+            device_info: {
+                ua: {
+                    type: String,
+                },
+                browser: {
+                    name: String,
+                    version: String
+                },
+                os: {
+                    name: String,
+                    version: String
+                },
+                device: {
+                    vendor: String,
+                    model: String,
+                    type: {
+                        type: String,
+                        default: 'desktop'
+                    }
+                },
+                ip: {
+                    type: String,
+                    required: true
+                },
+                last_login_at: {
+                    type: Date,
+                    default: Date.now
+                },
+                last_used: {
+                    type: Date,
+                    default: Date.now
+                }
             }
-        }
-    }],
+        }]
+    },
     login_attempts: { 
         type: Number, 
         default: 0 
@@ -121,12 +163,12 @@ const userAchievementSchema = new mongoose.Schema({
             required: true,
             set: dateOnly
         },
-        height: {
+        user_height: {
             type: Number,
             min: 0,
             max: 300
         },
-        weight: {
+        user_weight: {
             type: Number,
             min: 0,
             max: 500

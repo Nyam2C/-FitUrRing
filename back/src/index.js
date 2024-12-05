@@ -9,6 +9,12 @@ const { logRequest } = require('./utils/logger');
 const app = express();
 const port = 8080;
 
+const cors = require('cors');
+app.use(cors({
+    origin: `https://${process.env.SERVER_NAME}`,
+    credentials: true
+}));
+
 app.use(express.static(path.join(__dirname, '../public')));
 
 const mongoUrl = `mongodb://wss-db:27017`;
@@ -19,6 +25,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 app.set('trust proxy', true);
+
+app.disable('x-powered-by');
 
 app.use('/api', (req, res, next) => {
     const startTime = Date.now();

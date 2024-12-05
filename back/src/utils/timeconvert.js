@@ -42,7 +42,6 @@ function secondsToMinutes(timeInSeconds) {
 }
 
 module.exports = {
-    timeToSeconds,
     ptToSeconds,
     minutesToSeconds,
     secondsToMinutes,

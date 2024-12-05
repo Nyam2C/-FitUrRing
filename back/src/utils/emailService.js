@@ -12,30 +12,11 @@ const transporter = nodemailer.createTransport({
 });
 
 const emailService = {
-    sendDeleteConfirmation: async (user_email, user_id, user_name, deviceInfo) => {
-        const deleteToken = jwt.sign({
-            type: 'DELETE',
-            user_id: user_id,
-            },
-            process.env.JWT_DELETE_SECRET,
-            { expiresIn: '24h' }
-        );
-
+    sendDeleteConfirmation: async (user_email, user_id, user_name, deviceInfo, deleteToken) => {
         const user = await User.findOne({ user_id: user_id });
         if (!user) {
             throw new Error('사용자를 찾을 수 없습니다');
         }
-
-        await User.updateOne(
-            { user_id: user_id },
-            { 
-                $set: { 
-                    'tokens.0.delete_token': deleteToken,
-                    'is_deleted': true,
-                    'deleted_at': new Date()
-                }
-            }
-        );
 
         const confirmationLink = `https://${process.env.SERVER_NAME}/api/confirm-delete?token=${deleteToken}`;
         const denyLink = `https://${process.env.SERVER_NAME}/api/cancel-delete?token=${deleteToken}`;

@@ -162,3 +162,5 @@ const routineController = {
         }
     },
 };
+
+module.exports = routineController;

@@ -1,4 +1,4 @@
-const ptToSeconds = require('./utils/timeconvert');
+const timeConvert = require('./utils/timeconvert');
 
 async function fetchVidLength(videoId) {
     try {
@@ -8,7 +8,7 @@ async function fetchVidLength(videoId) {
         const data = await response.json();
         let video_length = data.items[0].contentDetails.duration;
         let video_likes = data.items[0].statistics.likeCount;
-        video_length = convertTime(video_length);
+        video_length = timeConvert.ptToSeconds(video_length);
         return { videoLength: video_length, videoLikes: video_likes };
     } catch (err) {
         console.error('Error during API details request;', err);

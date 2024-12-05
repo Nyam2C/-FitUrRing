@@ -1,5 +1,3 @@
-const express = require('express');
-const router = express.Router();
 const minutesToSeconds = require('../utils/timeconvert');
 
 //운동 영상 구조
