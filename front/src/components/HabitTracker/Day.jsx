@@ -1,38 +1,39 @@
 import react, { useState, useEffect } from 'react';
 
-import './index.css';
+import '../index.css';
 import Ring from './Ring';
 import ExerciseBlock from './ExerciseBlock';
-import { getGoal } from '../api';
+import { getGoal } from '../../api/HabitTrackerAPI';
 
 function displayWhat(item, mode, goal, doit){
-    console.log(item, doit);
     if (!item.date)             
         return <></>;
     else if (!item.exercises)
         return (
-            <div className={`DateCell ${doit}`}>
+            <div id={`${item.date}`} className={`DateCell ${doit}`}>
                 <span className="center">{item.date.substr(8,2)}</span>
             </div>
         );
     else if (item.date && item.exercises){
-        if (mode === 'ring')
+        if (mode === 'ring'){
             return (
-                <div className={`DateCell ${doit}`}>
+                <div id={`${item.date}`} className={`DateCell ${doit}`}>
                     <span className="center">{item.date.substr(8,2)}</span>
                     <Ring
                     data={item}
                     goal={goal} />
                 </div>
             );
-        else if (mode === 'list')
+        }
+        else if (mode === 'list'){
             return (
-                <div className={`DateCell ${doit}`}>
+                <div id={`${item.date}`} className={`DateCell ${doit}`}>
                     <span className="center">{item.date.substr(8,2)}</span>
                     <ExerciseBlock
                     data={item} />
                 </div>
             );
+        }
         else    return(
                 <div>
                     <span>표시할 정보가 없습니다.</span>
@@ -98,7 +99,7 @@ function Day({data, mode, onDetail}){
     }
 
     function onShow(e){
-        onDetail(true);
+        onDetail(e.target.id);
     }
 
     return (

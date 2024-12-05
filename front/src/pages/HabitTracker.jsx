@@ -1,12 +1,28 @@
-import react, { useState } from 'react';
-import Calendar from '../components/Calendar';
-import SideBar from '../components/SideBar';
+import react, { useState, useEffect } from 'react';
+import Calendar from '../components/HabitTracker/Calendar';
+import SideBar from '../components/HabitTracker/SideBar';
+import { getMonthlyRecord } from '../api/HabitTrackerAPI'
+
 
 function HabitTracker(){
     const [detail, setDetail] = useState(false);
+    const [records, setRecords] = useState({});
+
+
+    useEffect(() => {
+        fetchMonthlyRecords();
+    }, [])
+    const fetchMonthlyRecords = async () => {
+        try{
+            const data = await getMonthlyRecord();
+            setRecords(data);
+        } catch (error) {
+            console.error(error.message);
+        }
+    }
     
-    function onDetail(){
-        setDetail(true);
+    function onDetail(e){
+        setDetail(e);
     }
     function deleteDetail(){
         setDetail(false);
@@ -22,6 +38,7 @@ function HabitTracker(){
 
             <div className={`flex-grow-main `}>
                 <Calendar 
+                records={records}
                 onDetail={onDetail}
                 />
             </div>
@@ -29,6 +46,8 @@ function HabitTracker(){
             {detail && (
             <SideBar
             side={"right"} 
+            records={records}
+            day={detail}
             onDetail={deleteDetail}/>
             )}
         </div>

@@ -1,6 +1,6 @@
 import react, { useState } from 'react';
 
-import './index.css';
+import '../index.css';
 
 function calculPercent(data, goal){
     let total = 0;
@@ -22,8 +22,9 @@ function Ring({data, goal}){
 
     return (
         <div className="center">
-            <svg width="10vh" heigth="10vh" viewBox="0 0 30 30">
-                <circle cx="15" cy="15" r="10" fill="none" 
+            <svg id={data.date} width="10vh" heigth="10vh" viewBox="0 0 30 30">
+                <circle id={data.date}
+                        cx="15" cy="15" r="10" fill="none" 
                         stroke={achieved} stroke-width="6" 
                         strokeDasharray={dasharray}
                         strokeDashoffset={2*Math.PI*10 * (1-percent)}

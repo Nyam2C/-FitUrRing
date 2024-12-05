@@ -1,7 +1,7 @@
 import react, { useState, useEffect } from 'react';
 
-import SideBar from '../components/SideBar';
-import { getGoal, addGoal } from '../api.js';
+import SideBar from '../components/HabitTracker/SideBar.jsx';
+import { getGoal, addGoal } from '../api/HabitTrackerAPI.js';
 
 function Goal(){
     const [goal, setGoal] = useState([]);

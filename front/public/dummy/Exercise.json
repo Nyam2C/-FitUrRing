@@ -43,5 +43,50 @@
                 "video_time": "20:04"
             }
         ]
+    },
+    {
+        "date": "2024-12-02",
+        "exercises": [
+            {
+                "video_title": "workout3",
+                "video_tag": "foot",
+                "video_time": "20:04"
+            }
+        ]
+    },
+    {
+        "date": "2024-12-07",
+        "exercises": [
+            {
+                "video_title": "workout3",
+                "video_tag": "foot",
+                "video_time": "20:04"
+            }
+        ]
+    },
+    {
+        "date": "2024-12-27",
+        "exercises": [
+            {
+                "video_title": "workout3",
+                "video_tag": "foot",
+                "video_time": "20:04"
+            }
+        ]
+    },
+    {
+        "date": "2024-12-31",
+        "exercises": [
+            {
+                "video_title": "workout3",
+                "video_tag": "foot",
+                "video_time": "20:04"
+            }
+        ]
     }
+
+
+
+
+
 ]

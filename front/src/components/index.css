@@ -41,7 +41,7 @@ ul{
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
 }
 
-.block {
+.nonclickable {
     display: flex;
     flex-direction: column;
     line-height: 1.8;

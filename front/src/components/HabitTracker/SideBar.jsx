@@ -1,9 +1,9 @@
 import react, {useEffect, useState} from 'react';
 import {Link} from 'react-router-dom';
 
-import './index.css';
+import '../index.css';
 import ExerciseBlock from './ExerciseBlock';
-import { getGoal, getUserData } from '../api';
+import { getGoal, getUserData } from '../../api/HabitTrackerAPI';
 
 
 
@@ -82,19 +82,31 @@ function UserStatus({userData, data}){
     );
     };
 
-function DailyDetails({onShow}){
-    //날짜 + ExerciseBlock(clickable)
-    return (
+function DailyDetails({day, records, onShow}){
+    const data =  records.filter(item => item.date === day);
+    if (data.length > 0){
+        return (
+            <>
+                <h2 style={{position:'absolute', top:'150px'}}>{day}</h2>
+                <ExerciseBlock 
+                data={data[0]}
+                mode={'clickable'}/>
+                <button onClick={onShow}>close</button>
+            </>
+        );
+    }
+    else{
+        return (
         <>
-            <button onClick={onShow}>X</button>
-            <ExerciseBlock 
-            data={exerciseData}
-            mode={'clickable'}/>
+            <h2 style={{position:'absolute', top:'150px'}}>{day}</h2>
+            <h3>표시할 데이터가 없습니다.</h3>
+            <button onClick={onShow}>close</button>
         </>
-    );
+        );
+    }
 }
 
-function SideBar({side, onDetail}){
+function SideBar({side, day, records, onDetail}){
     const [goal, setGoal] = useState({
         goal_weekly: null,
         goal_daily: [null, null, null, null, null, null, null],
@@ -139,6 +151,8 @@ function SideBar({side, onDetail}){
         (side === 'right')?(
         <div className="sidebar rightSide flex-grow-side">
             <DailyDetails 
+            records={records}
+            day={day}
             onShow={onShow}/>
         </div>
         ):(

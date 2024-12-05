@@ -1,8 +1,7 @@
 import react, { useState, useEffect } from 'react';
 
 import Day from './Day.jsx';
-import './index.css';
-import { getMonthlyRecord } from '../api.js';
+import '../index.css';
 
 
 
@@ -16,23 +15,9 @@ const dateFormat = (date) => {
     return `${year}-${month}-${day}`
 };
 
-function Calendar(props){
+function Calendar({onDetail, records}){
     const [today, setToday] = useState(new Date());
     const [view, setView] = useState('ring');
-    const [records, setRecords] = useState({});
-
-    useEffect(() => {
-        fetchMonthlyRecords();
-    }, [])
-    const fetchMonthlyRecords = async () => {
-        try{
-            const data = await getMonthlyRecord();
-            setRecords(data);
-        } catch (error) {
-            console.error(error.message);
-        }
-    }
-
 
     function onPrev(){
         const newMonth = today.getMonth() - 1;
@@ -69,6 +54,7 @@ function Calendar(props){
             fullData.push(temp);
         }
         cur.setDate(cur.getDate()+1);
+        //console.log(fullData);
     }
     
     return (
@@ -94,7 +80,7 @@ function Calendar(props){
                 <Day 
                 mode={view}
                 data={fullData}
-                onDetail={props.onDetail} />
+                onDetail={onDetail} />
             </div>
         </>
     );

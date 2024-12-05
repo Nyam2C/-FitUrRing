@@ -85,6 +85,8 @@ async function getMonthlyRecord(year, month) {
         // }
         // });
         const uri = '/dummy/Exercise.json'
+        //여기서 year, month에 맞는 것만 골라서 내보내야함...
+        
         const response = await fetch(uri);
 
         if (!response.ok){

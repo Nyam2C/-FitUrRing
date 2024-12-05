@@ -1,7 +1,5 @@
 import react from 'react';
 
-import Ring from '../components/Ring';
-
 function Home(){
     return (
         <div>
