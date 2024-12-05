@@ -17,7 +17,7 @@ const addVideoInfo = require('./utils/addVideoDB');
 /*const apiKey = 'AIzaSyAtnFTu-E6GUePD2AYOXwa2YXQugbb08Jc'; /*키1*/
 /*const apiKey = 'AIzaSyBeiUVktH4Rtnw34NQP-z3BNo7X5uXX38Y'; //임시 키2*/
 /*const apiKey = 'AIzaSyB5AzBrtWbFNlQxzIFMs_k6Fmel-7jmMUM'; /*임시 키3*/
-const apiKey = 'AIzaSyDZN4lyCTEDWZV9H9P3cq4xIIDSUmc-y-w'; /*임시 키 4*/
+/*const apiKey = 'AIzaSyDZN4lyCTEDWZV9H9P3cq4xIIDSUmc-y-w'; /*임시 키 4*/
 
 const queries = [
     '팔 홈트레이닝 | Arms Home Training',

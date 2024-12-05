@@ -30,7 +30,7 @@ const videoRouter = require('./routers/videoRouter');
 const habitRouter = require('./routers/habittrackerRouter');
 const routineRouter = require('./routers/routineRouter');
 
-app.use('/api', etcRouter);
+app.use('/api', etcRouter);git 
 app.use('/api/user', userRouter);
 app.use('/api/video', videoRouter);
 app.use('/api/habitTracker', habitRouter);

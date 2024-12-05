@@ -39,8 +39,23 @@ const videoController = {
         try {
             const tags = req.query.video_tag;
             const video_tag = tags ? tags.split(' ') : []; //video_tag 배열처리
-            const video_min_time = minutesToSeconds(req.query.video_time_from);
-            const video_max_time = minutesToSeconds(req.query.video_time_to);
+
+            //시간 undefined 방지를 위한 기본값 설정
+            let video_min_time = minutesToSeconds('00:00');
+            let video_max_time = minutesToSeconds('1440:00');
+
+            //00:00 입력에 대한 기본값 설정
+            if (
+                req.query.video_time_from === '00:00' &&
+                req.query.video_time_to === '00:00'
+            ) {
+                video_min_time = minutesToSeconds('00:00');
+                video_max_time = minutesToSeconds('1440:00');
+            } else if (req.query.video_time_from && req.query.video_time_to) {
+                video_min_time = minutesToSeconds(req.query.video_time_from);
+                video_max_time = minutesToSeconds(req.query.video_time_to);
+            }
+
             const video_level = req.query.video_level;
             const video_per_page = parseInt(req.query.video_per_page) || 10;
             const last_id = req.query.last_id; //커서페이징
