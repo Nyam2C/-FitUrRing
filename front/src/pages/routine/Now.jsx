@@ -11,7 +11,7 @@ function Now({
     isActive,
     onPause,
     isPaused,
-    onAddTime, 
+    onAddTime,
     endSignal
 }) {
     const [exerciseTime, setExerciseTime] = useState(0); // 현재 운동 타이머
@@ -20,6 +20,7 @@ function Now({
     const [isTakingBreak, setIsTakingBreak] = useState(false); // 운동 중 휴식 상태
     const [isModalOpen, setIsModalOpen] = useState(false); // 모달 여부
     const [isFlag, setFlag] = useState(true);
+    const [oneRest, setoneRest] = useState(false);
 
     /*
         운동 시작 전 설정한 휴식 시간으로 타이머 시간 설정
@@ -27,17 +28,16 @@ function Now({
     useEffect(() => {
         if (!isActive) setRestTimeLeft(restSeconds);
     }, [restTimeLeft]);
-    
+
     /*
         마지막 운동에 대한 시간 전달
     */
     useEffect(() => {
-        if (endSignal&&!isFlag){
+        if (endSignal) {
             onAddTime(`Exercise: ${exerciseTime}`);
-            setFlag(true);
         }
-    }, [exerciseTime]);
-    
+    }, [exerciseTime,endSignal]);
+
     /*
         운동 시간 타이머
     */
@@ -63,7 +63,7 @@ function Now({
 
         return () => clearInterval(timer);
     }, [isTakingBreak]);
-    
+
     /*
         쉬는 시간 타이머
         4초 남을 시 모달 오픈 1초 남을 시 다음 운동으로 넘어감
@@ -75,6 +75,10 @@ function Now({
             setRestTimeLeft((prev) => {
                 if (prev <= 1) {
                     onNext();
+                    if (!isRest && !isFlag && isActive) {
+                        onAddTime(`Rest: ${restSeconds}`);
+                    } else if (!isRest && isFlag && isActive) setFlag(false);
+                    setoneRest(false);
                 }
                 if (prev <= 4) {
                     setIsModalOpen(true);
@@ -85,7 +89,7 @@ function Now({
 
         return () => clearInterval(timer);
     }, [isRest, isPaused, isActive, isTakingBreak]);
-    
+
     /*
         다음 운동으로 넘어 갈 시 운동 시간 전달
         휴식 종료시 쉬는 시간 전달
@@ -97,24 +101,28 @@ function Now({
             onAddTime(`Exercise: ${exerciseTime}`);
             setExerciseTime(0);
             setRestTimeLeft(restSeconds);
-        } else if (!isRest && !isFlag && isActive) onAddTime(`Rest: ${restSeconds}`);
-        else if (!isRest && isFlag && isActive) setFlag(false);
+        }
     }, [currentVideo, isRest, isActive]);
 
     const handleRestStart = () => {
-        if (!isPaused && isActive) setIsTakingBreak(true);
+        if (!isPaused && isActive && !oneRest) {
+            setIsTakingBreak(true);
+            setoneRest(true);
+        }
     };
 
     const handleRestStop = () => {
-        setIsTakingBreak(false); 
-        onAddTime(`Rest: ${restTime}`);
-        setRestTime(0); 
+        if (isTakingBreak) {
+            setIsTakingBreak(false);
+            onAddTime(`Rest: ${restTime}`);
+            setRestTime(0);
+        }
     };
 
     /*
         휴식 때 Next 클릭시 쉬는 시간 전달 및 쉬는 시간 4초로 변경
         운동 시작 전이면 그냥 다음 영상으로 넘김
-     */
+    */
     const handleRestNext = () => {
         if (isActive) {
             onAddTime(`Rest: ${restSeconds - restTimeLeft}`);
@@ -124,26 +132,34 @@ function Now({
     };
 
     return (
-        <div className={`now-container ${isRest ? "rest-highlight" : ""}`}>
+        <div className='now-container'>
             {isTakingBreak ? (
-                <div className="now-break">
-                    <p>Taking a Break</p>
-                    <h3>{formatTime(restTime)}</h3>
-                    <button className="stop-rest-button" onClick={handleRestStop}>
-                        Resume Exercise
-                    </button>
+                <div>
+                    <div className='now-content'>
+                        <span>Taking a Break / </span>
+                        <span> / {formatTime(restTime)}</span>
+                    </div>
+                    <div className="underbar">
+                        <button onClick={handleRestStop}>
+                            Go back
+                        </button>
+                    </div>
                 </div>
             ) : isRest ? (
-                <div className="now-rest">
-                    <p>Rest Period</p>
-                    {!isModalOpen ? (
-                        <h3>{formatTime(restTimeLeft)}</h3>
-                    ) : (
-                        <h3>다음 운동으로</h3>
-                    )}
-                    <button className="next-button" onClick={handleRestNext}>
-                        Next
-                    </button>
+                <div>
+                    <div className='now-content'>
+                        <span>Rest Period / </span>
+                        {!isModalOpen ? (
+                            <span>/ {formatTime(restTimeLeft)}</span>
+                        ) : (
+                            <span>/ 다음 운동으로</span>
+                        )}
+                    </div>
+                    <div className="underbar">
+                        <button className="next-button" onClick={handleRestNext}>
+                            Next
+                        </button>
+                    </div>
                     {isModalOpen && (
                         <div className="modal-backdrop">
                             <div className="modal">
@@ -155,26 +171,28 @@ function Now({
                     )}
                 </div>
             ) : (
-                <div className="now-container">
-                    {currentVideo?.thumbnail && (
-                        <div className="now-thumbnail">
-                            <img
-                                src={currentVideo.thumbnail}
-                                alt={currentVideo.title}
-                                className="now-thumbnail"
-                            />
-                            <p className="now-title">{truncateText(currentVideo.title, 20)}</p>
-                        </div>
-                    )}
-                    <span>Exercise Timer: {formatTime(exerciseTime)}</span>
+                <div>
+                    <div className='now-content'>
+                        {currentVideo?.thumbnail && (
+                            <div className="now-thumbnail">
+                                <img
+                                    src={currentVideo.thumbnail}
+                                    alt={currentVideo.title}
+                                    className="now-thumbnail"
+                                />
+                                <p className="now-title">{truncateText(currentVideo.title, 20)}</p>
+                            </div>
+                        )}
+                        <p>Timer: {formatTime(exerciseTime)}</p>
+                    </div>
                     <div className="underbar">
-                        <button className="next-button" onClick={onNext}>
+                        <button onClick={onNext}>
                             Next
                         </button>
-                        <button className="pause-button" onClick={onPause}>
+                        <button onClick={onPause}>
                             {isPaused ? "Start" : "Pause"}
                         </button>
-                        <button className="rest-button" onClick={handleRestStart}>
+                        <button onClick={handleRestStart}>
                             Rest
                         </button>
                     </div>
