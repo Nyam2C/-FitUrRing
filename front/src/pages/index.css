@@ -51,6 +51,16 @@ form {
     align-items: center;
   }
     
+
+#signForm{
+    width: 42em;
+    height: 3em;
+    border:none;
+    border-radius: 10em;
+    background-color: lightgray;
+    margin: 10px;
+}
+
 input{
     width: 28vw;
     min-width: 20rem;
@@ -71,6 +81,18 @@ button{
     min-width: 8rem;
     height: 2.5em;
     font-size:medium;
+}
+
+#workout{
+    display: grid;
+    grid-template-columns: 1fr 3fr 6fr;
+    width: 100vw;
+    min-height: calc(100vh - 7rem - 7rem);
+}
+
+#searchResults{
+    display: grid;
+    grid-template-rows: 1fr;
 }
 
 input::placeholder{

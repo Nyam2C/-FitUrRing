@@ -1,7 +1,5 @@
 import react, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
-
-
 import Header from './components/common/Header';
 import Home from './pages/Home';
 import Footer from './components/common/Footer'
@@ -22,8 +20,9 @@ function App(){
                     <Routes>
                         <Route exact path="/"  element={<Home />} />
                         <Route path="/sign"  element={<Sign />} />
+                        <Route path="/workout"  element={<Workout />} />
+                        <Route path="/routine"  element={<Routine />} />
                         <Route path="/mypage" element={<MyPage />} />
-                        // <Route path="/routine"  element={<Routine />} />
                     </Routes>
                 </div>
                 <Footer />
