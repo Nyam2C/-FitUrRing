@@ -7,22 +7,22 @@ else
     export $(grep -v '^#' .env | xargs)
 fi
 
+cd ssl
+find . -not -name 'init-letsencrypt.sh' -not -name 'setup_ssl.sh' -not -name '.' -not -name '..' -exec sudo rm -rf {} +
+cd ..
+
 echo "SERVER_NAME: $SERVER_NAME"
 
 docker-compose down -v
 
 if [ "$SERVER_NAME" = "localhost" ]; then
-    if [ ! -f ssl/fullchain.pem ]; then
-        cd ssl
-        sudo ./setup_ssl.sh
-        cd ..
-    fi
+    cd ssl
+    sudo ./setup_ssl.sh
+    cd ..
 else
-    if [ ! -d ssl/certbot ]; then
-        cd ssl
-        sudo ./init-letsencrypt.sh -y
-        cd ..
-    fi
+    cd ssl
+    sudo ./init-letsencrypt.sh -y
+    cd ..
 fi
 
 sudo rm -rf db/data

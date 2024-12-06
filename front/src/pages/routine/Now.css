@@ -1,0 +1,44 @@
+.now-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 0px;
+    gap: 2px;
+
+    width: 412.48px;
+    height: 191.92px;
+    animation: 0.2s ease-in-out loadEffect1;
+}
+
+.now-thumbnail {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 0px;
+    gap: 9.59px;
+
+    width: 412.48px;
+    height: 146.83px;
+}
+
+.now-thumbnail img {
+    width: 150px;
+    height: 100px;
+    border-radius: 16px;
+    /* 둥근 모서리 적용 */
+    object-fit: cover;
+    /* 이미지 비율 유지하며 크기 조정 */
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    /* 선택 사항: 그림자 추가 */
+}
+
+.underbar{
+    display: flex;
+}
+
+.now-container button{
+    width: 80px;
+    height: 30px;
+    margin: 20px;
+}

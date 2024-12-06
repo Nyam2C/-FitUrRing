@@ -1,5 +1,3 @@
-const express = require('express');
-const router = express.Router();
 const { minutesToSeconds, secondsToMinutes } = require('../utils/timeconvert');
 
 //habittracker구조
@@ -96,3 +94,5 @@ const habittrackerController = {
         }
     },
 };
+
+module.exports = habittrackerController;

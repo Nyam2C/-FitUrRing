@@ -48,4 +48,4 @@ async function fetchYoutube(query, iteration, videoObject, pageToken = '') {
     }
 }
 
-modules.export = fetchYoutube;
+module.export = fetchYoutube;
