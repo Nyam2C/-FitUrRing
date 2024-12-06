@@ -23,7 +23,10 @@ const habittrackerController = {
             res.status(201).json(newGoal);
         } catch (error) {
             console.error(error);
-            res.status(500).send('Failed to add habitTracker goal');
+            res.status(500).json({
+                message: 'failed to add goal',
+                error: error.message,
+            });
         }
     },
     getGoal: async (req, res) => {
@@ -37,8 +40,16 @@ const habittrackerController = {
                     {
                         user_id: req.user.user_id,
                         goal_weekly: null,
-                        goal_daily: [null, null, null, null, null, null, null],
-                        goal_daily_time: null,
+                        goal_daily: [
+                            false,
+                            false,
+                            false,
+                            false,
+                            false,
+                            false,
+                            false,
+                        ],
+                        goal_daily_time: '00:00',
                         goal_weight: null,
                     },
                 ];
@@ -64,7 +75,7 @@ const habittrackerController = {
         }
     },
     getEveryRecords: async (req, res) => {
-        const { period } = req.body;
+        const { period } = req.query.period;
         try {
             //정규식
             const regex = new RegExp(`^${period}`);

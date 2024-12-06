@@ -12,12 +12,12 @@ async function connect() {
 connect();
 
 const fetchYoutube = require('./utils/fetchYoutube');
-const addVideoInfo = require('./controllers/addVideoController');
+const addVideoInfo = require('./utils/addVideoDB');
 
 /*const apiKey = 'AIzaSyAtnFTu-E6GUePD2AYOXwa2YXQugbb08Jc'; /*키1*/
 /*const apiKey = 'AIzaSyBeiUVktH4Rtnw34NQP-z3BNo7X5uXX38Y'; //임시 키2*/
 /*const apiKey = 'AIzaSyB5AzBrtWbFNlQxzIFMs_k6Fmel-7jmMUM'; /*임시 키3*/
-const apiKey = 'AIzaSyDZN4lyCTEDWZV9H9P3cq4xIIDSUmc-y-w'; /*임시 키 4*/
+/*const apiKey = 'AIzaSyDZN4lyCTEDWZV9H9P3cq4xIIDSUmc-y-w'; /*임시 키 4*/
 
 const queries = [
     '팔 홈트레이닝 | Arms Home Training',
@@ -41,7 +41,7 @@ const queries = [
 ];
 
 let currentIteration = 0;
-const maxiterations = 10; // 10개씩 10번 추출하므로 max=10
+const maxiterations = 2; //50개씩 2번 추출하므로 max=2
 
 //query에 대해 반복하는 함수
 async function processAllQueries() {
