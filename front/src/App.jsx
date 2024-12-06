@@ -1,13 +1,11 @@
 import react, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
-
-import Header from './components/Header';
+import Header from './components/common/Header';
 import Home from './pages/Home';
-import Footer from './components/Footer'
+import Footer from './components/common/Footer'
 import Sign from './pages/Sign';
-import Workout from './pages/Workout';
+import MyPage from './pages/MyPage';
 import Routine from './pages/routine/Routine';
-
 
 import './App.css';
 
@@ -24,6 +22,7 @@ function App(){
                         <Route path="/sign"  element={<Sign />} />
                         <Route path="/workout"  element={<Workout />} />
                         <Route path="/routine"  element={<Routine />} />
+                        <Route path="/mypage" element={<MyPage />} />
                     </Routes>
                 </div>
                 <Footer />
