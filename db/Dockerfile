@@ -1,4 +1,6 @@
-FROM mariadb:latest
+FROM mongo:latest
 
-ENV MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
-ENV MYSQL_DATABASE=${MYSQL_DATABASE}
+COPY init-mongo.sh /docker-entrypoint-initdb.d/
+RUN chmod +x /docker-entrypoint-initdb.d/init-mongo.sh
+
+EXPOSE 27017

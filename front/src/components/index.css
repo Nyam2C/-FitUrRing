@@ -4,6 +4,7 @@
     align-items: center;
     justify-content: space-evenly;
     height: 7rem;
+    width: 100vw;
 }
 
 .large{
@@ -32,4 +33,146 @@
 
 ul{
     list-style-type: none;
+}
+
+.col{
+    display: flex;
+    flex-direction: column;
+}
+
+.center{
+    justify-content: center;
+    align-items: center;
+}
+
+#videoSelection{
+    background-color: #CFFF5E;
+    color: black;
+    border-radius: 0 2em 2em 0px;
+}
+
+#videoSelection button{
+    margin: 5px;
+    width: 6em;
+    height: 2em;
+}
+
+#timeSelection input{
+    width: 2em;
+}
+
+#videoSelection h3{
+    margin: 5px;
+}
+
+.padding{
+    padding: 4px;
+}
+
+#searchResults{
+    background-color: #FFFFFF;
+}
+
+#videoLists{
+    display: flex;
+    flex-wrap: wrap;
+    max-height: 25em; 
+    overflow-y: scroll; 
+    bottom: 0;
+    align-items: center;
+    justify-content: center;
+    min-height: 20em;
+}
+
+.block{
+    background-color: #333333;
+    break-inside: avoid;
+    border-radius: 10px;
+    width: 30em; 
+    padding: 5px;
+    margin: 5px;
+    margin-left: 1rem;
+    overflow: hidden;
+    font-size: small;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+}
+
+.simplified{
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+    overflow: hidden;
+    text-overflow: ellipsis; 
+    margin: 3px;
+}
+
+.space-between{
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    padding: 0.5em;
+}
+
+.right-text{
+    text-align: right;
+}
+
+.thumbnails{
+    width: 10em;
+    height: 5.6em;
+}
+
+.more{
+    width: 100%;
+    display: inline-flex;
+    justify-content: center;
+
+
+.inputbox{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+input[type='date']{
+    width: 25vw;
+    text-align: center;
+    font-size: large;
+    font-weight: bold;
+}
+input[type='radio']{
+    min-width: 1rem;
+    width: 2em;
+    height: 2em;
+    margin: 1em;
+}
+
+input[type='radio']:checked {
+    -webkit-appearance: none; 
+    -moz-appearance: none; 
+    appearance: none;
+    background-color: #B87EED; 
+    border: 0.3em solid #FFFFFF; 
+}
+
+#background{
+    position: absolute;
+    background-color: #333333a5;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#modal{
+    border-radius: 3em;
+    background-color: #FFFFFF;
+    color: black;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
 }
