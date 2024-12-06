@@ -7,7 +7,7 @@ import Home from './pages/Home';
 import Footer from './components/common/Footer'
 import Sign from './pages/Sign';
 import MyPage from './pages/MyPage';
-
+import Routine from './pages/routine/Routine';
 
 import './App.css';
 
