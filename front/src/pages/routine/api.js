@@ -24,12 +24,18 @@ async function addExerciseRecord(record) {
 async function getUserRoutines() {
     return await fetchWithOptions('/routine', {
         method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        },
     });
 }
 
 async function getRoutineVideos(routineName) {
     return await fetchWithOptions(`/routine/videos?routine_name=${routineName}`, {
         method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        },
     });
 }
 
