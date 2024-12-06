@@ -29,4 +29,4 @@ const recordSchema = new mongoose.Schema({
 
 const Record = mongoose.model('Record', recordSchema);
 
-module.export = Record;
+module.exports = { Record };
