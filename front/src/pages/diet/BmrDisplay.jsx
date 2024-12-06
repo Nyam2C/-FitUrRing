@@ -4,13 +4,23 @@ import './BmrDisplay.css';
 
 function BmrDisplay({ user, diet }) {
     const [bmr, setBmr] = useState(0);
+    const [achievement, setAchievement] = useState([]);
     const [constants] = useState([1.2, 1.375, 1.555, 1.725, 1.9]);
+
+    useEffect(() => {
+        for (let i = 0; i < diet.length; i++) {
+            if (diet[i]) {
+                setAchievement(diet[i].achievement);
+                break; 
+            }
+        }
+    },[diet]);
 
     const calculateBmr = () => {
         if (user.user_gender === 1) {
-            return 66.47 + (13.75 * user.user_weight) + (5 * user.user_height) - (6.76 * user.user_age);
+            return 66.47 + (13.75 * achievement.weight) + (5 * achievement.height) - (6.76 * user.user_birth);
         } else {
-            return 655.1 + (9.56 * user.user_weight) + (1.85 * user.user_height) - (4.68 * user.user_age);
+            return 655.1 + (9.56 * achievement.weight) + (1.85 * achievement.height) - (4.68 * user.user_birth);
         }
     };
 
@@ -31,13 +41,13 @@ function BmrDisplay({ user, diet }) {
                     </div>
                     <div className="calorie-box">
                         <p>총 대사량</p>
-                        <span>{Math.round(constants[diet.user_activity] * bmr)}</span>
+                        <span>{Math.round(constants[achievement.in_current_week] * bmr)}</span>
                         <p>kcal</p>
 
                     </div>
                 </div>
             </div>
-            <NutrientDisplay user={user} bmr={bmr} diet={diet} />
+            <NutrientDisplay user={user} bmr={Math.round(constants[achievement.in_current_week] * bmr)} />
         </React.Fragment>
     );
 }

@@ -40,9 +40,9 @@ const options = {
             },
             ticks: {
                 font: {
-                  size: 9, // 가로 축 폰트 크기 조정
+                    size: 9, // 가로 축 폰트 크기 조정
                 },
-              },
+            },
         },
         y: {
             title: {
@@ -51,9 +51,9 @@ const options = {
             },
             ticks: {
                 font: {
-                  size: 9, // 가로 축 폰트 크기 조정
+                    size: 9, // 가로 축 폰트 크기 조정
                 },
-              },
+            },
         }
     },
     plugins: {
@@ -74,7 +74,7 @@ const options = {
 
 
 
-function WeightChart() {
+function WeightChart(diet) {
     const [chartData, setChartData] = useState({
         labels: [],
         datasets: [
@@ -86,34 +86,40 @@ function WeightChart() {
             },
         ],
     });
+    const [weight, setWeight] = useState(0);
+
+    const getTodayDate = (date) => {
+        const today = new Date(date);
+        const year = today.getFullYear();
+        const month = String(today.getMonth() + 1).padStart(2, '0');
+        const day = String(today.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
+    };
+
+    const getWeight = (w) => {
+        if(w!=undefined){
+            setWeight(w);
+            return w;
+        }else return false;
+    }
 
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await fetch(`http://localhost:8000/weights`); // 백엔드 API 경로로 수정
-                const data = await response.json();
-
-                const labels = data.map(entry => entry.date); // 날짜 데이터
-                const weights = data.map(entry => entry.weight); // 체중 데이터
-
-                setChartData({
-                    labels: labels,
-                    datasets: [
-                        {
-                            label: "Weight",
-                            data: weights,
-                            backgroundColor: "#FFCA29",
-                            borderColor: "#FFCA29",
-                        },
-                    ],
-                });
-            } catch (error) {
-                console.error("Error fetching weight data:", error);
-            }
-        };
-
-        fetchData();
-    }, []);
+        if (diet && diet.array) {
+            const labels = diet.array.map(entry => getTodayDate(entry.date)); // 날짜 데이터
+            const weights = diet.array.map(entry => getWeight(entry.achievement?.weight) || weight); // 체중 데이터
+            setChartData({
+                labels: labels,
+                datasets: [
+                    {
+                        label: "Weight",
+                        data: weights,
+                        backgroundColor: "#FFCA29",
+                        borderColor: "#FFCA29",
+                    },
+                ],
+            });
+        }
+    }, [diet]);
 
     return (
         <div className='WeightChart-container'>

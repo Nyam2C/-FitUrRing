@@ -1,5 +1,4 @@
 .NutrientDisplay-container {
-    /* Auto layout */
     display: flex;
     flex-direction: column;
     align-items: left;
@@ -18,9 +17,6 @@
 }
 
 .nutrient-goals {
-    /* Frame 27 */
-
-    /* Auto layout */
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -35,25 +31,17 @@
 }
 
 .side {
-
-
     width: 100px;
 
     font-family: 'Roboto';
     font-style: normal;
     font-weight: 700;
-    font-size: 14px;
+    font-size: 11px;
     line-height: 20px;
     margin-left: -20px;
-    /* or 143% */
     display: flex;
     flex-direction: column;
     color: #000000;
-
-    /* Inside auto layout */
-    flex: none;
-    order: 0;
-    flex-grow: 0;
 
 }
 
@@ -62,9 +50,6 @@
 }
 
 .nutrients {
-    /* Frame 26 */
-
-    /* Auto layout */
     display: flex;
     flex-direction: row;
     align-items: flex-end;
@@ -72,12 +57,6 @@
     gap: 0px;
     width: 210px;
     height: 37px;
-
-
-    /* Inside auto layout */
-    flex: none;
-    order: 1;
-    flex-grow: 0;
 }
 
 .nutrients span {

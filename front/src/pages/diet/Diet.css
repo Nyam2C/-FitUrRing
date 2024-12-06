@@ -23,10 +23,6 @@
 
     background: #FFFFFF;
     border-radius: 30px;
-
-    flex: none;
-    order: 0;
-    flex-grow: 0;
 }
 
 #Contents {
@@ -38,9 +34,4 @@
 
     width: 850px;
     height: 626px;
-
-    flex: none;
-    order: 1;
-    flex-grow: 0;
-
 }

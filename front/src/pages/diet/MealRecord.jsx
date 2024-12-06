@@ -1,96 +1,9 @@
-import React, { useState } from 'react';
-import styled from 'styled-components';
+import React, { useState, useEffect } from 'react';
 import './MealRecord.css'
-
-const Header = styled.div`
-    display: flex;
-    align-items: left;
-    background-color: #ffffff;
-    margin: 10px;
-    width: 98%;
-    height: 41%;
-    .datelist {
-        overflowY: scroll;
-        maxHeight: 200px;
-        flex: 1;
-        .list {
-            list-style-type: none;
-            padding: 5px;
-            li {
-                text-align: center;
-                padding: 5px;
-                cursor: pointer;
-            }
-        }
-    }
-    .record {
-        padding: 10px;
-        table {
-            width: 400px;
-            height: 80%;
-            border-collapse: collapse;
-        }
-        th,
-        td {
-            font-size : 15px;
-            padding: 8px;
-            text-align: center;
-            border-bottom: none;
-        }
-
-    }
-    .input {
-        padding: 10px;
-        width: 480px ;
-        .detail {
-            display: flex;
-            alignItems: center;
-            margin-top: 5px;
-            input{
-                width: 15%; 
-                height: 20px;
-                marginLeft: 10px;
-                marginRight: 5px;
-            }
-            button{
-                width: 50px;
-                marginLeft: 10px;
-                color: red;
-                border: none;
-            }
-        }
-        button{
-            marginLeft: 10px;
-            border: none;
-        }
-    }
-    .mini {
-        display: flex;
-        flex-direction: column;
-        position: absolute;
-        top: 5%;
-        left: 20%;
-        padding: 80px;
-        background: white;
-        border: 1px solid #ddd;
-        boxShadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        ul{
-            height: 200px; 
-            width: 500px;
-            padding: 0px;
-            overflow-y: auto;
-            border: 2px solid #ddd;
-            list-style-type: none;
-            li {
-                padding-left: 0px;
-                border: 1px solid #ddd;
-            }
-        }
-    }
-`;
+import { createDiet, deleteDiet } from './api';
 
 const recordedData = {
-    "2024-11-01": {
+    "2024-12-03": {
         breakfast: [
             { food: "계란", calories: 70, carbs: 1, protein: 6, fat: 5 },
             { food: "밥", calories: 300, carbs: 68, protein: 6, fat: 0.5 }
@@ -102,7 +15,7 @@ const recordedData = {
             { food: "사과", calories: 80, carbs: 21, protein: 0.5, fat: 0.3 }
         ]
     },
-    "2024-11-02": {
+    "2024-11-01": {
         breakfast: [
             { food: "토스트", calories: 150, carbs: 27, protein: 4, fat: 3 },
             { food: "우유", calories: 100, carbs: 12, protein: 8, fat: 4 }
@@ -172,18 +85,6 @@ const recordedData = {
             { food: "두부조림", calories: 100, carbs: 5, protein: 8, fat: 5 }
         ]
     },
-    "2024-11-08": {
-        breakfast: [
-            { food: "요거트", calories: 120, carbs: 20, protein: 8, fat: 3 },
-            { food: "견과류", calories: 100, carbs: 5, protein: 3, fat: 9 }
-        ],
-        lunch: [
-            { food: "피자", calories: 500, carbs: 50, protein: 20, fat: 25 }
-        ],
-        dinner: [
-            { food: "연어구이", calories: 200, carbs: 0, protein: 25, fat: 10 }
-        ]
-    },
     "2024-11-09": {
         breakfast: [
             { food: "핫케이크", calories: 300, carbs: 40, protein: 5, fat: 10 }
@@ -243,11 +144,10 @@ const foodOptions = [
 ];
 
 
-function MealRecord() {
-    const [data, setData] = useState(recordedData);
-    const [selectedDate, setSelectedDate] = useState("2024-11-01");
+function MealRecord(diet) {
+    const [data, setData] = useState(null);
+    const [selectedDate, setSelectedDate] = useState(null);
     const [selectedMeal, setSelectedMeal] = useState("breakfast");
-    const [total, setTotal] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
     const [selectedFood, setSelectedFood] = useState(null);
@@ -256,41 +156,36 @@ function MealRecord() {
     const handleSelectDate = (date) => setSelectedDate(date);
     const handleSelectMeal = (meal) => setSelectedMeal(meal);
 
-    const handleFoodChange = (meal, index, newFood) => {
-        const selectedFood = foodOptions.find((food) => food.name === newFood);
-        setData((prevData) => {
-            const updatedMeal = prevData[selectedDate][meal].map((item, idx) =>
-                idx === index ? { ...selectedFood } : item
-            );
-            return {
-                ...prevData,
-                [selectedDate]: { ...prevData[selectedDate], [meal]: updatedMeal },
-            };
-        });
+    const getTodayDate = (date) => {
+        const today = new Date(date);
+        const year = today.getFullYear();
+        const month = String(today.getMonth() + 1).padStart(2, '0');
+        const day = String(today.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
     };
 
-    // 음식 추가
-    const handleAddFood = () => {
-        if (selectedFood && foodWeight > 0) {
-            const scaledFood = {
-                ...selectedFood,
-                food: selectedFood.name,
-                calories: (selectedFood.calories * foodWeight) / 100,
-                carbs: (selectedFood.carbs * foodWeight) / 100,
-                protein: (selectedFood.protein * foodWeight) / 100,
-                fat: (selectedFood.fat * foodWeight) / 100,
-            };
-            setData((prevData) => {
-                const updatedMeal = [...prevData[selectedDate][selectedMeal], scaledFood];
-                return {
-                    ...prevData,
-                    [selectedDate]: { ...prevData[selectedDate], [selectedMeal]: updatedMeal },
-                };
-            });
+    useEffect(() => {
+        if (diet && Array.isArray(diet)) {
+            const mealsData = diet.map(item => item.meals).flat();
+            setData(mealsData);
+        }
+    }, [diet]);
+
+
+    const handleAddFood = async () => {
+        if (!selectedFood || foodWeight <= 0) {
+            alert("음식을 선택하고 적절한 무게를 입력하세요.");
+            return;
+        }
+
+        try {
+            await createDiet(selectedDate, selectedMeal, selectedFood.food_id, foodWeight);
             setIsModalOpen(false);
             setSearchQuery("");
             setFoodWeight(100);
             setSelectedFood(null);
+        } catch (err) {
+            alert(err);
         }
     };
 
@@ -330,7 +225,7 @@ function MealRecord() {
         <div className='MealRecord-container'>
             <div className='datelist' style={{ overflowY: 'scroll' }}>
                 <ul className='list'>
-                    {Object.keys(data).map((date) => (
+                    {data && Object.keys(data).map((date) => (
                         <li
                             key={date}
                             onClick={() => handleSelectDate(date)}
@@ -338,13 +233,13 @@ function MealRecord() {
                                 backgroundColor: date === selectedDate ? '#eee' : 'transparent',
                             }}
                         >
-                            {date}
+                            {getTodayDate(data.date)}
                         </li>
                     ))}
                 </ul>
             </div>
             <div className='record'>
-                <span>{selectedDate} 식사 기록</span>
+                <span>{getTodayDate(selectedDate)} 식사 기록</span>
                 <table>
                     <thead>
                         <tr>
@@ -355,10 +250,12 @@ function MealRecord() {
                             <th>지방</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    {selectedDate && <tbody>
                         {["breakfast", "lunch", "dinner"].map((meal, index) => (
                             <tr key={index} onClick={() => handleSelectMeal(meal)} style={{ cursor: 'pointer' }}>
-                                <td><strong>{meal === "breakfast" ? "아침" : meal === "lunch" ? "점심" : "저녁"}</strong></td>
+                                <td className='mealtime' style={{
+                                    backgroundColor: meal === selectedMeal ? '#eee' : 'transparent',
+                                }}><strong>{meal === "breakfast" ? "아침" : meal === "lunch" ? "점심" : "저녁"}</strong></td>
                                 <td>{calculateTotal(meal, 'calories').toFixed(1)} kcal</td>
                                 <td>{calculateTotal(meal, 'carbs').toFixed(1)} g</td>
                                 <td>{calculateTotal(meal, 'protein').toFixed(1)} g</td>
@@ -373,10 +270,11 @@ function MealRecord() {
                             <td> {calculateTotalSum('fat').toFixed(1)} g</td>
                         </tr>
                     </tbody>
+                    }
                 </table>
             </div>
 
-            {selectedMeal && (
+            {(selectedDate && selectedMeal) && (
                 <div className='input'>
                     <span>기록 하기</span>
                     <div className='detail'>
@@ -397,8 +295,8 @@ function MealRecord() {
                                         <td>{item.calories.toFixed(1)} kcal</td>
                                         <td>{item.carbs.toFixed(1)} g</td>
                                         <td>{item.protein.toFixed(1)} g</td>
-                                        <td>{item.fat.toFixed(1)} g</td> 
-                                        <button onClick={() => handleDeleteFood(selectedMeal, index)}>삭제</button>                       
+                                        <td>{item.fat.toFixed(1)} g</td>
+                                        <button onClick={() => handleDeleteFood(selectedMeal, index)}>삭제</button>
                                     </tr>
                                 ))}
                             </tbody>
@@ -408,34 +306,44 @@ function MealRecord() {
                 </div>
             )}
             {isModalOpen && (
-                <div className='mini'>
-                    <h4>음식 검색</h4>
-                    <input
-                        type="text"
-                        placeholder="음식 이름"
-                        value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
-                    />
-                    <ul className="list">
-                        {filteredFoods.map((food, index) => (
-                            <li key={index} onClick={() => handleSelectFood(food)} style={{ cursor: 'pointer' }}>
-                                {food.name}
-                            </li>
-                        ))}
-                    </ul>
-                    {selectedFood && (
-                        <div>
-                            <p>선택: {selectedFood.name}</p>
+                <div className="modal-backdrop">
+                    <div className="modal">
+                        <div className='mini'>
+                            <h4>음식 검색</h4>
                             <input
-                                type="number"
-                                placeholder="무게 (g)"
-                                value={foodWeight}
-                                onChange={(e) => setFoodWeight(Number(e.target.value))}
-                            /> g
-                            <button onClick={handleAddFood}>추가</button>
+                                type="text"
+                                placeholder="음식 이름"
+                                value={searchQuery}
+                                onChange={(e) => setSearchQuery(e.target.value)}
+                            />
+                            <ul className="list">
+                                {filteredFoods.map((food, index) => (
+                                    <li key={index} onClick={() => handleSelectFood(food)} style={{ cursor: 'pointer' }}>
+                                        {food.name}
+                                    </li>
+                                ))}
+                            </ul>
+                            <div className='under'>
+                                {selectedFood && (
+                                    <div>
+                                        <p>선택: {selectedFood.name}</p>
+                                        <input
+                                            type="number"
+                                            placeholder="무게 (g)"
+                                            value={foodWeight}
+                                            onChange={(e) => setFoodWeight(Number(e.target.value))}
+                                        /> g
+                                    </div>
+                                )}
+                                <div>
+                                    {selectedFood && (
+                                        <button onClick={handleAddFood}>추가</button>
+                                    )}
+                                    <button onClick={() => setIsModalOpen(false)}>닫기</button>
+                                </div>
+                            </div>
                         </div>
-                    )}
-                    <button onClick={() => setIsModalOpen(false)}>닫기</button>
+                    </div>
                 </div>
             )}
 
