@@ -1,4 +1,4 @@
-const {User, UserAchievement, UserDiet} = require('../models/user');
+const {User, UserAchievement} = require('../models/user');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const UAParser = require('ua-parser-js');
@@ -100,6 +100,12 @@ const userController = {
                 return res.status(400).json({
                     success: false,
                     message: '존재하지 않는 아이디입니다'
+                });
+            }
+            if(user.is_deleted) {
+                return res.status(400).json({
+                    success: false,
+                    message: '탈퇴 대기 중인 계정입니다'
                 });
             }
 
