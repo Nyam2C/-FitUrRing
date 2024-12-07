@@ -13,6 +13,7 @@ async function getEntireVideos(last_id){
         "video_tag": "가슴 홈트레이닝 | Chest Home Training",
         "video_length": 1071,
         "video_likes": 14,
+        "channel_title": "Men's Health UK",
         "__v": 0
         },
         {
@@ -23,6 +24,7 @@ async function getEntireVideos(last_id){
             "video_tag": "가슴 홈트레이닝 | Chest Home Training",
             "video_length": 1071,
             "video_likes": 14,
+            "channel_title": "Men's Health UK",
             "__v": 0
             },
             {
@@ -33,6 +35,7 @@ async function getEntireVideos(last_id){
                 "video_tag": "가슴 홈트레이닝 | Chest Home Training",
                 "video_length": 1071,
                 "video_likes": 14,
+                "channel_title": "Men's Health UK",
                 "__v": 0
                 },
                 {
@@ -43,6 +46,7 @@ async function getEntireVideos(last_id){
                     "video_tag": "가슴 홈트레이닝 | Chest Home Training",
                     "video_length": 1071,
                     "video_likes": 14,
+                    "channel_title": "Men's Health UK",
                     "__v": 0
                     },
         {
@@ -53,6 +57,7 @@ async function getEntireVideos(last_id){
             "video_tag": "가슴 홈트레이닝 | Chest Home Training",
             "video_length": 1071,
             "video_likes": 14,
+            "channel_title": "Men's Health UK",
             "__v": 0
         },
         {
@@ -63,6 +68,7 @@ async function getEntireVideos(last_id){
             "video_tag": "가슴 홈트레이닝 | Chest Home Training",
             "video_length": 1071,
             "video_likes": 14,
+            "channel_title": "Men's Health UK",
             "__v": 0
         },
         {
@@ -73,6 +79,7 @@ async function getEntireVideos(last_id){
             "video_tag": "가슴 홈트레이닝 | Chest Home Training",
             "video_length": 1071,
             "video_likes": 14,
+            "channel_title": "Men's Health UK",
             "__v": 0
             },
             {
@@ -83,6 +90,7 @@ async function getEntireVideos(last_id){
                 "video_tag": "가슴 홈트레이닝 | Chest Home Training",
                 "video_length": 1071,
                 "video_likes": 14,
+                "channel_title": "Men's Health UK",
                 "__v": 0
                 },
                 {
@@ -93,6 +101,7 @@ async function getEntireVideos(last_id){
                     "video_tag": "가슴 홈트레이닝 | Chest Home Training",
                     "video_length": 1071,
                     "video_likes": 14,
+                    "channel_title": "Men's Health UK",
                     "__v": 0
                     },
                     {
@@ -103,6 +112,7 @@ async function getEntireVideos(last_id){
                         "video_tag": "가슴 홈트레이닝 | Chest Home Training",
                         "video_length": 1071,
                         "video_likes": 14,
+                        "channel_title": "Men's Health UK",
                         "__v": 0
                         },
                         {
@@ -113,6 +123,7 @@ async function getEntireVideos(last_id){
                             "video_tag": "가슴 홈트레이닝 | Chest Home Training",
                             "video_length": 1071,
                             "video_likes": 14,
+                            "channel_title": "Men's Health UK",
                             "__v": 0
                             },
     ]};
@@ -306,4 +317,25 @@ async function searchVideos(filters, last_id){
     }
 }
 
-export { getEntireVideos, searchVideos };
+async function addRoutineVideo(data){
+    //추후에 RoutineAPI로 옮기기
+
+    try{
+        const uri = `/api/routine/add`
+        const response = await fetch(uri, {
+            method: "PUT",  //POST가 아니고??
+            headers: {
+                "Authorization": `Bearer ${localStorage.getItem('accessToken')}`,
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+        });
+        const responseData = await response.json();
+        if(!responseData || !response.ok) 
+            throw new Error(responseData.message || '루틴을 불러오는데 실패했습니다.');
+        else return data;
+    } catch(err){
+        console.log(err.message);
+    }
+}
+export { getEntireVideos, searchVideos, addRoutineVideo };

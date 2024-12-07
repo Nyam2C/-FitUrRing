@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import "./Progress.css";
+import "./progress.css";
 
 function Progress({ times, endSignal, onendClick }) {
     const [restTimes, setRestTimes] = useState([]);
