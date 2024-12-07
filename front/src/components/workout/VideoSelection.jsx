@@ -67,10 +67,10 @@ function VideoSelection({dispatch, setSelected}){
                 <div className='col padding'>
                     <h3>난이도</h3>
                     <label>상
-                        <input type="radio" value="advanced" name="level" onChange={handleLevel} checked={currentLevel === 'advanced'} ></input>
+                        <input type="radio" value="advanced" name="level" onClick={handleLevel} checked={currentLevel === 'advanced'} ></input>
                     </label>
                     <label>하 
-                        <input type="radio" value="beginner" name="level" onChange={handleLevel}></input>
+                        <input type="radio" value="beginner" name="level" onClick={handleLevel} checked={currentLevel === 'beginner'} ></input>
                     </label>
                 </div>
                 <div id="timeSelection" className="col center padding">
@@ -83,7 +83,7 @@ function VideoSelection({dispatch, setSelected}){
                         setStartMin(value === "" ? null : parseInt(value, 10));
                     }}></input> */}
                     <span> 분</span>
-                    <input type="text" name="start" onChange={(e) => setStartSec(parseInt(e.target.value))} checked={currentLevel === 'beginner'} ></input>
+                    <input type="text" name="start" onChange={(e) => setStartSec(parseInt(e.target.value))}></input>
                     <span> 초</span>
                     </span>
                     <span> ~
