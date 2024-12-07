@@ -12,17 +12,19 @@ services:
     build:
       context: ./db
       dockerfile: Dockerfile
-    env_file:
-      - .env
+    environment:
+      - MONGODB_DATABASE=${DB_NAME}
+      - MONGODB_INITDB_ROOT_PASSWORD=${DB_PASSWORD}
+      - MONGODB_INITDB_ROOT_USERNAME=${DB_USER}
     container_name: wss-db
     networks:
       mybridge:
         ipv4_address: 172.20.0.4
     ports:
-      - "3307:3306"
+      - "27017:27017"
     volumes:
-      - ./db/data:/var/lib/mysql
-      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./db/data:/data/db
+      - ./db/init-mongo.sh:/docker-entrypoint-initdb.d/init-mongo.sh
     restart: always
 
   wss-back:
@@ -30,6 +32,8 @@ services:
       context: ./back
       dockerfile: Dockerfile
     container_name: wss-back
+    env_file:
+      - .env
     depends_on:
       - wss-db
     networks:
@@ -39,6 +43,7 @@ services:
       - "8080:8080"
     volumes:
       - ./back/src:/app/src
+      - ./back/public:/app/public
     restart: always
 
   wss-front:
@@ -46,6 +51,8 @@ services:
       context: ./front
       dockerfile: Dockerfile
     container_name: wss-front
+    env_file:
+      - .env
     depends_on:
       - wss-back
     networks:
@@ -57,7 +64,32 @@ services:
     volumes:
       - ./front/src:/app/src
       - ./front/public:/app/public
-      - ./front/nginx/ssl:/etc/nginx/ssl
-    environment:
-      - SERVER_NAME=fiturring.kro.kr, localhost
+      - ./ssl/fullchain.pem:/etc/nginx/ssl/fullchain.pem
+      - ./ssl/privkey.pem:/etc/nginx/ssl/privkey.pem
+      - ./ssl/certbot/conf:/etc/letsencrypt
+      - ./ssl/certbot/www:/var/www/certbot
+    command: >
+      /bin/sh -c '
+      /etc/nginx/env.sh &&
+      nginx -g "daemon off;" &
+      while :; do
+        sleep 6h &
+        wait $${!}
+        nginx -s reload
+      done
+      '
+    restart: always
+
+  wss-certbot:
+    image: certbot/certbot
+    container_name: wss-certbot
+    env_file:
+      - .env
+    volumes:
+      - ./ssl/certbot/conf:/etc/letsencrypt
+      - ./ssl/certbot/www:/var/www/certbot
+    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
+    networks:
+      mybridge:
+        ipv4_address: 172.20.0.5
     restart: always

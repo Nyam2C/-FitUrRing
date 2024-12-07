@@ -11,9 +11,12 @@ RUN npm run build
 # Step 2: Serve the React application with Nginx
 FROM nginx:alpine AS run
 
+RUN apk add --no-cache gettext
+
 COPY --from=build /app/build /usr/share/nginx/html
 
-COPY nginx/nginx.conf /etc/nginx/nginx.conf
-CMD /docker-entrypoint.d/20-envsubst-on-templates.sh && \
-    nginx -g "daemon off;"
-EXPOSE 80
+COPY nginx/*.conf.template /etc/nginx/templates/
+COPY nginx/locations.conf /etc/nginx/locations.conf
+COPY nginx/env.sh /etc/nginx/env.sh
+
+EXPOSE 80 443

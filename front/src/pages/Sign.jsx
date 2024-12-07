@@ -1,53 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import './index.css';
-
-function SignInForm(){
-    return (
-        <form id="signInForm" className="rightmove">
-            <label id="title">Sign In</label>
-            <input 
-            id="id"
-            type="text" 
-            name="id" 
-            placeholder='ID'
-            ></input>
-            <input 
-            id="pw"
-            type="password" 
-            name="pw" 
-            placeholder='PW'
-            ></input>
-            <button type="submit">sign in</button>
-        </form>
-    );
-}
-
-function SignUpForm(){
-    return (
-        <form id="signUpForm" className='leftmove'>
-            <label id="title">Sign Up</label>
-            <input required id="name" type="text" name="name" placeholder='성함'></input>
-            <input required id="id" type="text" name="id" placeholder='ID'></input>
-            <input required id="pw" type="password" name="pw" placeholder='PW'></input>
-            <input required id="pwConfirm" type="password" name="pwConfirm" placeholder='PW를 한번 더 입력해주세요'></input>
-            <input required id="email" type="email" name="email" placeholder='이메일'></input>
-
-            <div style={{display: "flex", width: "30em", justifyContent: "center"}}>
-                <input id="age" type="number" name="age" placeholder='나이'></input>
-                <input id="height" type="number" name="height" placeholder='키'></input>
-                <input id="weight" type="number" name="weight" placeholder='몸무게'></input>
-            </div>
-
-            <button type="submit">sign up</button>
-        </form>
-
-    );
-}
+import SignIn from '../components/user/SignIn';
+import SignUp from '../components/user/SignUp';
+import { userLogin, userSignUp } from '../api';
 
 function AsideContent({ isActive, onShow, title, label }){
     let move = '';
     if (label === 'Sign In') move = 'rightmove';
-    else                move = 'leftmove';
+    else                     move = 'leftmove';
 
     return (
         <>
@@ -94,14 +54,14 @@ function Sign() {
                 isActive={activeIndex === 0}
                 onShow={() => setActiveIndex(0)}
             >
-                <SignInForm />
+                <SignIn />
             </Panel>
 
             <Panel
                 isActive={activeIndex === 1}
                 onShow={() => setActiveIndex(1)}
             >
-                <SignUpForm />
+                <SignUp />
             </Panel>
             <AsideContent
                 isActive={activeIndex === 1}

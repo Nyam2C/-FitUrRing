@@ -2,4 +2,6 @@ node_modules
 .vscode
 db/data
 .env
-front/nginx/ssl/*.pem
+ssl/*.pem
+ssl/certbot/*
+back/src/logs/*
