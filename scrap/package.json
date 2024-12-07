@@ -1,0 +1,17 @@
+{
+    "name": "fitturring_scrap",
+    "version": "1.0.0",
+    "description": "To make it easy for you to get started with GitLab, here's a list of recommended next steps.",
+    "main": "index.js",
+    "type": "module",
+    "scripts": {
+        "start": "node src/index.js",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "dotenv": "^16.4.7",
+        "mongoose": "^8.8.4"
+    }
+}

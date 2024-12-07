@@ -46,6 +46,22 @@ services:
       - ./back/public:/app/public
     restart: always
 
+  wss-scrap:
+    build:
+      context: ./scrap
+      dockerfile: Dockerfile
+    container_name: wss-scrap
+    env_file:
+      - .env
+    depends_on:
+      - wss-back
+    networks:
+      mybridge:
+        ipv4_address: 172.20.0.6
+    volumes:
+      - ./scrap/src:/app/src
+    restart: always
+
   wss-front:
     build:
       context: ./front
