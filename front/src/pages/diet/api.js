@@ -24,6 +24,7 @@ const getDietData = async (date = null, start_date = null, end_date = null) => {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
         },
     });
 };
@@ -33,10 +34,11 @@ const getUserData = async (fields = []) => {
     if (fields.length > 0) {
         queryParams.append('fields', fields.join(',')); 
     }
-    return await fetchWithOptions(`api/user/profile?${queryParams.toString()}`), {
+        return await fetchWithOptions(`api/user/profile?${queryParams.toString()}`), {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
         },
     };
 }
@@ -46,6 +48,7 @@ const createDiet = async ({ date, mealtime, food_id, grams }) => {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
         },
         body: JSON.stringify({ date, mealtime, food_id, grams }),
     });
@@ -56,6 +59,7 @@ const deleteDiet = async ({ date, mealtime, food_id }) => {
         method: 'DELETE',
         headers: {
             'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
         },
         body: JSON.stringify({ date, mealtime, food_id }),
     });
