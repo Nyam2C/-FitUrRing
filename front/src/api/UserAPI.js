@@ -56,17 +56,6 @@ async function getUserData(){
     } catch(err){
         console.log(err.message);
     }
-    //    const data = {
-    //         user_id: 'idididididdd',
-    //         user_password: 'klk',
-    //         user_name: 'asdf',
-    //         user_gender: 0,
-    //         user_birthdate: '2024-11-11',
-    //         user_email: 'asdf@asdf.com',
-    //         user_created_at: new Date(),
-    //         user_height: null,
-    //         user_weight: null
-    //     }
 };
 
 async function changeUserData(userData) {

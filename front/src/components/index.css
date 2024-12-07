@@ -74,6 +74,7 @@ ul{
 }
 
 #videoLists{
+    border-top: solid 3px #B87EED;
     display: flex;
     flex-wrap: wrap;
     max-height: 25em; 
@@ -116,12 +117,20 @@ ul{
 }
 
 .right-text{
+    display: flex;
     text-align: right;
+    padding-bottom: 10px;   
+    justify-content: space-between;
 }
 
-.thumbnails{
+.thumbnails-mqdefault{
     width: 10em;
     height: 5.6em;
+}
+
+.thumbnails-maxresdefault{
+    width: 32.4em;
+    height: 18em;
 }
 
 .more{
@@ -159,6 +168,8 @@ input[type='radio']:checked {
 
 #background{
     position: absolute;
+    top: 0;
+    left: 0;
     background-color: #333333a5;
     width: 100vw;
     height: 100vh;
@@ -175,4 +186,25 @@ input[type='radio']:checked {
     justify-content: center;
     text-align: center;
     align-items: center;
+}
+
+.videoDetails{
+    display: flex;
+    align-items: center;
+}
+
+.left-align{
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+}
+
+.details{
+    font-size: large;
+    padding-bottom: 7px;
+}
+
+.addbutton{
+    align-self: center;
 }
