@@ -61,9 +61,10 @@ function Routine() {
             setCurrentIndex(currentIndex + 1);
             if (isActive) window.open(selectedRoutine.exercises[currentIndex + 1].link, "_blank", "noopener,noreferrer");
 
-        } else {
+        } else if (isActive) {
             setEndSignal(true);
             setIsActive(false);
+            setCurrentIndex(currentIndex + 1);
         }
     };
 
@@ -93,6 +94,17 @@ function Routine() {
     const handleRoutineChange = (updatedExercises) => {
         setSelectedRoutine({ ...selectedRoutine, exercises: updatedExercises });
     };
+
+    useEffect(() => {
+        const handleBeforeUnload = (event) => {
+            event.preventDefault();
+        };
+
+        window.addEventListener("beforeunload", handleBeforeUnload);
+        return () => {
+            window.removeEventListener("beforeunload", handleBeforeUnload);
+        };
+    }, []);
 
     return (
         <div id="box">
@@ -125,7 +137,14 @@ function Routine() {
                 </div>
                 <div id="down">
                     <div id="progress">
-                        <Progress times={progressTimes} endSignal={endSignal} onendClick={onendClick} />
+                        {selectedRoutine && (
+                            <Progress
+                                currentVideo={selectedRoutine.exercises[currentIndex-1]}
+                                times={progressTimes}
+                                endSignal={endSignal}
+                                onendClick={onendClick}
+                            />
+                        )}
                     </div>
                     <div id="video">
                         {selectedRoutine && (
@@ -153,6 +172,7 @@ function Routine() {
                         ButtonClick={ButtonClick}
                         isActive={isActive}
                         hasRoutine={selectedRoutine !== null}
+                        endSignal={endSignal}
                     />
                 </div>
             </div>

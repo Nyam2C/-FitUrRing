@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
-import "./progress.css";
+import "./Progress.css";
+import { addExerciseRecord } from './api';
 
-function Progress({ times, endSignal, onendClick }) {
+function Progress({ currentVideo, times, endSignal, onendClick }) {
     const [restTimes, setRestTimes] = useState([]);
     const [exerciseTimes, setExerciseTimes] = useState([]);
     const [allTimes, setAllTimes] = useState([]);
@@ -21,8 +22,19 @@ function Progress({ times, endSignal, onendClick }) {
                 setRestTimes((prev) => [...prev, timeValue]);
                 setAllTimes((prev) => [...prev, { type: "Rest", value: timeValue, color: randomColor, id: Date.now() }]);
             } else if (times.startsWith("Exercise:")) {
-                setExerciseTimes((prev) => [...prev, timeValue]);
-                setAllTimes((prev) => [...prev, { type: "Exercise", value: timeValue, color: randomColor, id: Date.now() }]);
+                const tmp = new Date();
+                const { canceled, ...recordvideo } = {
+                    ...currentVideo,
+                    date: tmp.toISOString().split("T")[0],
+                };
+                addExerciseRecord(recordvideo)
+                    .then(() => {
+                        setExerciseTimes((prev) => [...prev, timeValue]);
+                        setAllTimes((prev) => [...prev, { type: "Exercise", value: timeValue, color: randomColor, id: Date.now() }]);
+                    })
+                    .catch((err) => {
+                        alert(err);
+                    });
             }
         }
     }, [times]);
@@ -41,7 +53,7 @@ function Progress({ times, endSignal, onendClick }) {
         if (endSignal) setIsModalOpen(true);
     }, [endSignal]);
 
-    const calculateHeight = (value) => 5 * ((value + 60) / 60 + 1);
+    const calculateHeight = (value) => 2 * ((value + 60) / 60 + 1);
 
     return (
         <div className="progress-container">
@@ -60,7 +72,7 @@ function Progress({ times, endSignal, onendClick }) {
                     />
                 );
             })}
-            {isModalOpen && (
+            {(isModalOpen && endSignal) && (
                 <div className="modal-backdrop">
                     <div className="modal">
                         <div className="modal-content">
@@ -70,7 +82,7 @@ function Progress({ times, endSignal, onendClick }) {
                                 동안 운동하셨고, 그 중 {`${Math.round((totals.exerciseTotal / totals.allTotal) * 100)}%`} 동안
                                 운동하셨습니다!
                             </p>
-                            <button onClick={() => {setIsModalOpen(false); onendClick();} }>확인</button>
+                            <button onClick={() => { setIsModalOpen(false); onendClick(); }}>확인</button>
                         </div>
                     </div>
                 </div>
