@@ -22,7 +22,12 @@ function Progress({ currentVideo, times, endSignal, onendClick }) {
                 setRestTimes((prev) => [...prev, timeValue]);
                 setAllTimes((prev) => [...prev, { type: "Rest", value: timeValue, color: randomColor, id: Date.now() }]);
             } else if (times.startsWith("Exercise:")) {
-                addExerciseRecord(currentVideo)
+                const tmp = new Date();
+                const { canceled, ...recordvideo } = {
+                    ...currentVideo,
+                    date: tmp.toISOString().split("T")[0],
+                };
+                addExerciseRecord(recordvideo)
                     .then(() => {
                         setExerciseTimes((prev) => [...prev, timeValue]);
                         setAllTimes((prev) => [...prev, { type: "Exercise", value: timeValue, color: randomColor, id: Date.now() }]);
