@@ -3,6 +3,7 @@ import BmrDisplay from './BmrDisplay';
 import WeightBar from './WeightBar';
 import WeightChart from './WeightChart';
 import MealRecord from './MealRecord';
+import Checkactivity from './Checkactivity';
 import { getDietData, getUserData } from './api';
 import "./Diet.css"
 
@@ -10,13 +11,14 @@ function App() {
   const [user, setUser] = useState([]);
   const [diet, setDiet] = useState([]);
   const [update, setUpdate] = useState(false);
+  const [activity, setActivity] = useState(2);
 
   useEffect(() => {
     const fetchDietData = async () => {
       try {
         const startDate = new Date();
         const endDate = new Date();
-        endDate.setDate(startDate.getDate() - 14);
+        endDate.setDate(startDate-13);
 
         const data = await getDietData(null, startDate, endDate);
         setDiet(data);
@@ -42,15 +44,21 @@ function App() {
     fetchUser();
   }, []);
 
+  const handleButtonClick = (act) => {
+    setActivity(act);
+  };
+
+
   return (
     <div id='Diet-container'>
       <div id='SideBar'>
-        <BmrDisplay user={user} diet={diet} />
+        <BmrDisplay user={user} diet={diet} activity = {activity} />
         <WeightBar diet={diet} />
+        <Checkactivity onButtonClick={handleButtonClick} />
       </div>
       <div id='Contents'>
         <WeightChart diet={diet} />
-        <MealRecord diet={diet} onClick={setUpdate(true)} />
+        <MealRecord diet={diet} />
       </div>
     </div>
   );

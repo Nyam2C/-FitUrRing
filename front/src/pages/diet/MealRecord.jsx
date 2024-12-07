@@ -189,14 +189,12 @@ function MealRecord(diet) {
         }
     };
 
-    const handleDeleteFood = (meal, index) => {
-        setData((prevData) => {
-            const updatedMeal = prevData[selectedDate][meal].filter((_, idx) => idx !== index);
-            return {
-                ...prevData,
-                [selectedDate]: { ...prevData[selectedDate], [meal]: updatedMeal },
-            };
-        });
+    const handleDeleteFood = async (meal, index) => {
+        try {
+            await deleteDiet(selectedDate, selectedMeal, selectedFood.food_id);
+        } catch (err) {
+            alert(err);
+        }
     };
 
     const calculateTotal = (meal, nutrient) => {

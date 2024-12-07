@@ -3,6 +3,120 @@
     position: relative;
     width: 1325px;
     height: 714px;
+
+    ul {
+        position: absolute;
+        top: 48%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        margin: 0;
+        padding: 0;
+        display: flex;
+    }
+
+    ul li {
+        list-style: none;
+        margin: 0 95px;
+    }
+
+
+    ul li a {
+        position: relative;
+        display: block;
+        width: 170px;
+        height: 170px;
+        text-align: center;
+        font-size: 30px;
+        font-weight: 600;
+        -webkit-text-stroke: 0.5px black;
+        text-decoration: none;
+        color: #181818;
+        background-color: #808080;
+        transform: perspective(1000px) rotate(-30deg) skew(25deg) translate(0, 0);
+        transition: 0.5s;
+        box-shadow: -30px 30px 10px rgba(0, 0, 0, 0.5);
+    }
+
+    ul li a::before {
+        content: "";
+        position: absolute;
+        top: 10px;
+        left: -20px;
+        height: 100%;
+        width: 20px;
+        background-color: #93a092;
+        transition: 0.5s;
+        transform: rotate(0deg) skewY(-45deg);
+    }
+
+    ul li a::after {
+        content: "";
+        position: absolute;
+        bottom: -20px;
+        left: -10px;
+        height: 20px;
+        width: 100%;
+        background-color: var(--grey);
+        transition: 0.5s;
+        transform: rotate(0deg) skewX(-45deg);
+    }
+
+    ul li a:hover {
+        transform: perspective(1000px) rotate(-30deg) skew(25deg) translate(20px, -20px);
+        box-shadow: -50px 50px 50px rgba(0, 0, 0, 0.5);
+    }
+
+    ul li:hover .fab {
+        color: var(--white);
+    }
+
+    ul li:hover:nth-child(1) a {
+        color: #242834;
+    }
+
+    ul li:hover:nth-child(1) a::before {
+        background: #242834;
+    }
+
+    ul li:hover:nth-child(1) a::after {
+        background: #3C3D40;
+    }
+
+    ul li:hover:nth-child(2) a {
+        color: #8C7DFF;
+    }
+
+    ul li:hover:nth-child(2) a::before {
+        background: #8C7DFF;
+    }
+
+    ul li:hover:nth-child(2) a::after {
+        background: #9E91FF;
+    }
+
+    ul li:hover:nth-child(3) a {
+        color: #CFFF5E;
+    }
+
+    ul li:hover:nth-child(3) a::before {
+        background: #CFFF5E;
+    }
+
+    ul li:hover:nth-child(3) a::after {
+        background: #E0FF96;
+    }
+
+    ul li:hover:nth-child(4) a {
+        color: #B87EED;
+    }
+
+    ul li:hover:nth-child(4) a::before {
+        background: #B87EED;
+    }
+
+    ul li:hover:nth-child(4) a::after {
+        background: #CBA8EA;
+    }
 }
 
 .hero {
@@ -35,11 +149,6 @@
     display: flex;
     justify-content: center;
     gap: 3rem;
-}
-
-.content-box {
-    width: 200px;
-    height: 200px;
-    background-color: #f5f5f5;
-    border-radius: 10px;
+    margin: 0;
+    padding: 0;
 }

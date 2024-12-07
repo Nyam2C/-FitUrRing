@@ -1,4 +1,5 @@
 import React from "react";
+import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import "./Home.css";
 
 function Home() {
@@ -10,10 +11,28 @@ function Home() {
         <p>Unlock a Personalized Training Plan Designed to Fit Your Goals, Schedule, and Lifestyle.</p>
       </header>
       <div className="content-grid">
-        <div className="content-box"></div>
-        <div className="content-box"></div>
-        <div className="content-box"></div>
-        <div className="content-box"></div>
+        <ul>
+          <li>
+            <Link to="/workout">
+              <span>Workout</span>
+            </Link>
+          </li>
+          <li>
+            <Link to="/habitTracker">
+              <span>Habit Tracker</span>
+            </Link>
+          </li>
+          <li>
+            <Link to="/routine">
+              <span>Routine</span>
+            </Link>
+          </li>
+          <li>
+            <Link to="/diet">
+              <span>Diet</span>
+            </Link>
+          </li>
+        </ul>
       </div>
     </div>
   );

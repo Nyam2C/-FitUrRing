@@ -72,9 +72,21 @@ const options = {
     },
 };
 
+let diet = [
+    { weight: 54 },
+    { weight: 54 },
+    { weight: 54 },
+    { weight: 53 },
+    { weight: 53 },
+    { weight: 53 },
+    { weight: 52 },
+    { weight: 52 },
+    { weight: 51 },
+];
 
 
-function WeightChart(diet) {
+
+function WeightChart() {
     const [chartData, setChartData] = useState({
         labels: [],
         datasets: [
@@ -96,17 +108,44 @@ function WeightChart(diet) {
         return `${year}-${month}-${day}`;
     };
 
-    const getWeight = (w) => {
-        if(w!=undefined){
-            setWeight(w);
-            return w;
-        }else return false;
-    }
-
     useEffect(() => {
-        if (diet && diet.array) {
-            const labels = diet.array.map(entry => getTodayDate(entry.date)); // 날짜 데이터
-            const weights = diet.array.map(entry => getWeight(entry.achievement?.weight) || weight); // 체중 데이터
+        const toda = new Date();
+        for (let i = 0; i < 9; i++) {
+            diet[i].date = new Date();
+            diet[i].date.setDate(toda.getDate() - i);
+        }
+
+        if (diet && Array.isArray(diet)) {
+            let labels = Array(14).fill("");
+            let weights = Array(14).fill(null);
+            /*
+            const itemMap = new Map(diet.map((item, index) => [item.date.toISOString().split("T")[0], index]));
+            const tmp = new Date(diet[diet.length - 1].date);
+            for (let i = 13; i >= 0; i--) {
+                tmp.setDate(tmp.getDate() + 1);
+                const targetIndex = itemMap.get(tmp.toISOString().split("T")[0]) ?? -1;
+                if (targetIndex != -1) {
+                    labels[i] = getTodayDate(diet[targetIndex].date);
+                    weights[i] = diet[targetIndex].achievement.weight;
+                } else if (i < 13) {
+                    labels[i] = labels[i + 1];
+                    weights[i] = weights[i + 1];
+                }
+            }
+            */
+            const itemMap = new Map(diet.map((item, index) => [item.date.toISOString().split("T")[0], index]));
+            for (let i = 0; i < 14; i++) {
+                const tmp = new Date();
+                tmp.setDate(toda.getDate() - i);
+                  const targetIndex = itemMap.get(tmp.toISOString().split("T")[0]) ?? -1;
+                if (targetIndex != -1) {
+                    labels[i] = getTodayDate(diet[targetIndex].date);
+                    weights[i] = diet[targetIndex].weight;
+                } else if (i > 0) {
+                    labels[i] = labels[i - 1];
+                    weights[i] = weights[i - 1];
+                }
+            }
             setChartData({
                 labels: labels,
                 datasets: [
