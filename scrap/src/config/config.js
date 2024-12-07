@@ -2,7 +2,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 export const dbURL = 'mongodb://wss-db:27017'; // MongoDB connection
-export const apiKey = process.env.API_KEY; // 유튜브 api key
+export const apiKey = process.env.YOUTUBE_API_KEY_1; // 유튜브 api key
 export const maxIterations = 2; //반복횟수
 export const queries = [
     '팔 홈트레이닝 | Arms Home Training',

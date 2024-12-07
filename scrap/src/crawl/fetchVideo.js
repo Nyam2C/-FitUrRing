@@ -25,54 +25,75 @@ async function fetchVidLength(videoId) {
     }
 }
 
-// API 키를 사용하여 유튜브 API에 검색 요청 보내기
 export default async function fetchVideo(
     query,
     iteration,
     videoObject,
     pageToken = ''
 ) {
-    //한번에 50개씩 2번(maxiteration만큼) 반복 (키워드 당 100개씩)
-    const fetchUrl = `https://www.googleapis.com/youtube/v3/search?part=snippet&q=${encodeURIComponent(
-        query
-    )}
-    &type=video&maxResults=50&videoType=any&key=${apiKey}&pageToken=${pageToken}`;
-
     if (iteration >= maxIterations) {
         return;
     }
     iteration++;
 
     try {
+        const fetchUrl = `https://www.googleapis.com/youtube/v3/search?part=snippet&q=${encodeURIComponent(
+            query
+        )}&type=video&maxResults=50&videoType=any&key=${apiKey}&pageToken=${pageToken}`;
+
         const response = await fetch(fetchUrl);
         const data = await response.json();
 
+        // API 에러 응답 처리
+        if (data.error) {
+            console.error('YouTube API Error:', data.error.message);
+            return;
+        }
+
+        // items가 없거나 비어있는 경우 처리
+        if (!data.items || data.items.length === 0) {
+            console.log('No items found for query:', query);
+            return;
+        }
+
         const results = await Promise.all(
             data.items.map(async item => {
-                let { videoLength, videoLikes, channelTitle } =
-                    await fetchVidLength(item.id.videoId);
-                return {
-                    video_id: item.id.videoId,
-                    video_title: item.snippet.title,
-                    video_description: item.snippet.description,
-                    video_tag: query, // 검색 키워드가 들어가게 된다.
-                    video_length: videoLength, //videoLength 값 사용
-                    video_likes: parseInt(videoLikes),
-                    channel_title: channelTitle,
-                };
+                try {
+                    let { videoLength, videoLikes, channelTitle } =
+                        await fetchVidLength(item.id.videoId) || {};
+                    
+                    return {
+                        video_id: item.id.videoId,
+                        video_title: item.snippet.title,
+                        video_description: item.snippet.description,
+                        video_tag: query,
+                        video_length: videoLength || 0,
+                        video_likes: parseInt(videoLikes) || 0,
+                        channel_title: channelTitle || '',
+                    };
+                } catch (err) {
+                    console.error('Error processing video:', item.id.videoId, err);
+                    return null;
+                }
             })
         );
-        /*console.log('Results:', results);*/
-        videoObject.push(...results); //video_object에 추가
 
-        //페이지 토큰 설정
-        let nextPageToken = data.nextPageToken;
+        // null 값 필터링
+        const validResults = results.filter(result => result !== null);
+        videoObject.push(...validResults);
 
-        //다음페이지 진행
-        if (nextPageToken) {
-            await fetchVideo(query, iteration, videoObject, nextPageToken);
+        // 다음 페이지 처리
+        if (data.nextPageToken) {
+            // API 할당량 초과 방지를 위한 딜레이 추가
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            await fetchVideo(query, iteration, videoObject, data.nextPageToken);
         }
     } catch (err) {
         console.error('Error during API request:', err);
+        // API 할당량 초과 시 잠시 대기
+        if (err.message.includes('quota')) {
+            console.log('API quota exceeded. Waiting before retry...');
+            await new Promise(resolve => setTimeout(resolve, 60000));
+        }
     }
 }
