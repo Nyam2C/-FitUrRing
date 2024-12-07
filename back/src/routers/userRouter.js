@@ -22,5 +22,6 @@ router.delete('/withdraw', authMiddleware.authenticate(['user_id', 'user_email',
 
 router.delete('/confirm-hard-delete', authMiddleware.authenticate(['user_id', 'user_name', 'user_email', 'type']), userController.confirmHardDelete);
 router.post('/cancel-hard-delete', authMiddleware.authenticate(['user_id', 'user_name', 'user_email','type']), userController.cancelHardDelete);
+router.get('/weight-history', authMiddleware.authenticate(['user_id']), userController.getWeightHistory);
 
 module.exports = router;

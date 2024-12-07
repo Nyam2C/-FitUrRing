@@ -53,11 +53,13 @@ const etcRouter = require('./routers/etcRouter');
 const videoRouter = require('./routers/videoRouter');
 const habitRouter = require('./routers/habittrackerRouter');
 const routineRouter = require('./routers/routineRouter');
+const dietRouter = require('./routers/dietRouter');
 
 app.use('/api/user', userRouter);
 app.use('/api/video', videoRouter);
 app.use('/api/habitTracker', habitRouter);
 app.use('/api/routine', routineRouter);
+app.use('/api/diet', dietRouter);
 app.use('/api', etcRouter);
 
 app.listen(port, () => {

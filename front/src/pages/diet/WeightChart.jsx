@@ -1,6 +1,7 @@
 import { Line } from "react-chartjs-2";
 import React, { useState, useEffect } from 'react';
 import './WeightChart.css'
+import { getWeightHistory } from './api';
 
 import {
     Chart as ChartJS,
@@ -60,31 +61,17 @@ const options = {
         legend: {
             display: false,
         },
-    },
-    tooltip: {
-        callbacks: {
-            label: (context) => {
-                const label = context.dataset.label || '';
-                const value = context.raw;
-                return `${label}: ${value} kg`;
+        tooltip: {
+            callbacks: {
+                label: (context) => {
+                    const label = context.dataset.label || '';
+                    const value = context.raw;
+                    return `${label}: ${value} kg`;
+                },
             },
         },
     },
 };
-
-let diet = [
-    { weight: 54 },
-    { weight: 54 },
-    { weight: 54 },
-    { weight: 53 },
-    { weight: 53 },
-    { weight: 53 },
-    { weight: 52 },
-    { weight: 52 },
-    { weight: 51 },
-];
-
-
 
 function WeightChart() {
     const [chartData, setChartData] = useState({
@@ -98,7 +85,84 @@ function WeightChart() {
             },
         ],
     });
-    const [weight, setWeight] = useState(0);
+
+    const [chartOptions, setChartOptions] = useState(options);
+
+    useEffect(() => {
+        const fetchWeightHistory = async () => {
+            try {
+                const data = await getWeightHistory();
+                
+                if (!data || data.length === 0) {
+                    console.log('데이터가 없습니다');
+                    return;
+                }
+
+                const weights = data.map(item => item.weight);
+                
+                // null 값 처리 후 최대/최소값 계산
+                const validWeights = weights.filter(w => w !== null);
+                const minWeight = Math.min(...validWeights);
+                const maxWeight = Math.max(...validWeights);
+                
+                // 범위의 10% 계산
+                const range = maxWeight - minWeight;
+                const padding = range * 0.1;
+
+                // y축 범위 설정
+                setChartOptions(prev => ({
+                    ...prev,
+                    scales: {
+                        ...prev.scales,
+                        y: {
+                            ...prev.scales.y,
+                            min: Math.floor(minWeight - padding),
+                            max: Math.ceil(maxWeight + padding),
+                        }
+                    }
+                }));
+
+                // 기존의 차트 데이터 설정 로직
+                const labels = data.map(item => {
+                    const date = new Date(item.date);
+                    return `${date.getFullYear()}/${String(date.getMonth() + 1).padStart(2, '0')}/${String(date.getDate()).padStart(2, '0')}`;
+                });
+
+                // null 값을 이후 날짜의 가장 가까운 weight 값으로 채우기
+                for (let i = 0; i < weights.length; i++) {
+                    if (weights[i] === null) {
+                        let nextValue = null;
+                        for (let j = i + 1; j < weights.length; j++) {
+                            if (weights[j] !== null) {
+                                nextValue = weights[j];
+                                break;
+                            }
+                        }
+                        weights[i] = nextValue;
+                    }
+                }
+
+                // 차트 데이터 설정
+                setChartData(prevState => ({
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: "Weight",
+                            data: weights,
+                            backgroundColor: "#FFCA29",
+                            borderColor: "#FFCA29",
+                            tension: 0.4, // 선을 부드럽게 만듦
+                            pointRadius: 4, // 포인트 크기
+                        },
+                    ],
+                }));
+            } catch (error) {
+                console.error('체중 데이터 가져오기 실패:', error);
+            }
+        };
+
+        fetchWeightHistory();
+    }, []);
 
     const getTodayDate = (date) => {
         const today = new Date(date);
@@ -108,62 +172,10 @@ function WeightChart() {
         return `${year}-${month}-${day}`;
     };
 
-    useEffect(() => {
-        const toda = new Date();
-        for (let i = 0; i < 9; i++) {
-            diet[i].date = new Date();
-            diet[i].date.setDate(toda.getDate() - i);
-        }
-
-        if (diet && Array.isArray(diet)) {
-            let labels = Array(14).fill("");
-            let weights = Array(14).fill(null);
-            /*
-            const itemMap = new Map(diet.map((item, index) => [item.date.toISOString().split("T")[0], index]));
-            const tmp = new Date(diet[diet.length - 1].date);
-            for (let i = 13; i >= 0; i--) {
-                tmp.setDate(tmp.getDate() + 1);
-                const targetIndex = itemMap.get(tmp.toISOString().split("T")[0]) ?? -1;
-                if (targetIndex != -1) {
-                    labels[i] = getTodayDate(diet[targetIndex].date);
-                    weights[i] = diet[targetIndex].achievement.weight;
-                } else if (i < 13) {
-                    labels[i] = labels[i + 1];
-                    weights[i] = weights[i + 1];
-                }
-            }
-            */
-            const itemMap = new Map(diet.map((item, index) => [item.date.toISOString().split("T")[0], index]));
-            for (let i = 0; i < 14; i++) {
-                const tmp = new Date();
-                tmp.setDate(toda.getDate() - i);
-                  const targetIndex = itemMap.get(tmp.toISOString().split("T")[0]) ?? -1;
-                if (targetIndex != -1) {
-                    labels[i] = getTodayDate(diet[targetIndex].date);
-                    weights[i] = diet[targetIndex].weight;
-                } else if (i > 0) {
-                    labels[i] = labels[i - 1];
-                    weights[i] = weights[i - 1];
-                }
-            }
-            setChartData({
-                labels: labels,
-                datasets: [
-                    {
-                        label: "Weight",
-                        data: weights,
-                        backgroundColor: "#FFCA29",
-                        borderColor: "#FFCA29",
-                    },
-                ],
-            });
-        }
-    }, [diet]);
-
     return (
         <div className='WeightChart-container'>
             <div className="graph">
-                <Line options={options} data={chartData} />
+                <Line options={chartOptions} data={chartData} />
             </div>
         </div>
     );

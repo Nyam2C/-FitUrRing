@@ -91,6 +91,7 @@ const authMiddleware = {
 
             const user = await findUser(decoded, token);
             if (!user) {
+                console.log(decoded);
                 return next(createError(401, ERROR_MESSAGES.INVALID_SESSION));
             }
 

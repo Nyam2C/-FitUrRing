@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const { User, UserAchievement, UserDiet } = require('./models/user');
-const { Food100 } = require('./models/food100');
+const Food100 = require('./models/food100');
 const HabitTracker = require('./models/habittracker');
 const Muscle = require('./models/muscle');
 const Routine = require('./models/routine');

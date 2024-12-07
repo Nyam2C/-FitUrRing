@@ -16,43 +16,54 @@ function App() {
   useEffect(() => {
     const fetchDietData = async () => {
       try {
-        const startDate = new Date();
         const endDate = new Date();
-        endDate.setDate(startDate-13);
+        const startDate = new Date();
+        startDate.setDate(endDate.getDate() - 13);
 
         const data = await getDietData(null, startDate, endDate);
         setDiet(data);
         setUpdate(false);
       } catch (err) {
-        alert(err);
+        alert(err.message);
       }
     };
 
-    fetchDietData();
+    try {
+      fetchDietData();
+    } catch (err) {
+      console.error('Error fetching diet data:', err);
+    }
   }, [update]);
 
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const userData = await getUserData(['user_name', 'user_gender', 'user_birth']);
+        const userData = await getUserData();
+        if(!userData.user_weight||!userData.user_height){
+          alert("회원님의 키와 몸무게가 저장되어있지 않습니다. My Page에서 정보를 입력해주세요.");
+          window.location.href = "/mypage";
+        }
         setUser(userData);
       } catch (err) {
-        alert(err);
+        alert(err.message);
       }
     };
 
-    fetchUser();
+    try {
+      fetchUser();
+    } catch (err) {
+      console.error('Error fetching user data:', err);
+    }
   }, []);
 
   const handleButtonClick = (act) => {
     setActivity(act);
   };
 
-
   return (
     <div id='Diet-container'>
       <div id='SideBar'>
-        <BmrDisplay user={user} diet={diet} activity = {activity} />
+        <BmrDisplay user={user} diet={diet} activity={activity} />
         <WeightBar diet={diet} />
         <Checkactivity onButtonClick={handleButtonClick} />
       </div>

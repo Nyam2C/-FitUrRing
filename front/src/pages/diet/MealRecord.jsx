@@ -1,176 +1,118 @@
 import React, { useState, useEffect } from 'react';
 import './MealRecord.css'
-import { createDiet, deleteDiet } from './api';
+import { createDiet, deleteDiet, getFoodData } from './api';
 
-const recordedData = {
-    "2024-12-03": {
-        breakfast: [
-            { food: "계란", calories: 70, carbs: 1, protein: 6, fat: 5 },
-            { food: "밥", calories: 300, carbs: 68, protein: 6, fat: 0.5 }
-        ],
-        lunch: [
-            { food: "닭가슴살", calories: 120, carbs: 0, protein: 23, fat: 2 }
-        ],
-        dinner: [
-            { food: "사과", calories: 80, carbs: 21, protein: 0.5, fat: 0.3 }
-        ]
-    },
-    "2024-11-01": {
-        breakfast: [
-            { food: "토스트", calories: 150, carbs: 27, protein: 4, fat: 3 },
-            { food: "우유", calories: 100, carbs: 12, protein: 8, fat: 4 }
-        ],
-        lunch: [
-            { food: "삼겹살", calories: 400, carbs: 0, protein: 20, fat: 35 }
-        ],
-        dinner: [
-            { food: "샐러드", calories: 50, carbs: 5, protein: 1, fat: 0.5 }
-        ]
-    },
-    "2024-11-03": {
-        breakfast: [
-            { food: "시리얼", calories: 200, carbs: 45, protein: 6, fat: 2 }
-        ],
-        lunch: [
-            { food: "볶음밥", calories: 500, carbs: 60, protein: 10, fat: 20 }
-        ],
-        dinner: [
-            { food: "고구마", calories: 120, carbs: 30, protein: 1, fat: 0 }
-        ]
-    },
-    "2024-11-04": {
-        breakfast: [
-            { food: "베이글", calories: 250, carbs: 50, protein: 9, fat: 1 },
-            { food: "크림치즈", calories: 100, carbs: 2, protein: 2, fat: 10 }
-        ],
-        lunch: [
-            { food: "김밥", calories: 300, carbs: 40, protein: 8, fat: 5 }
-        ],
-        dinner: [
-            { food: "미역국", calories: 50, carbs: 4, protein: 2, fat: 1 }
-        ]
-    },
-    "2024-11-05": {
-        breakfast: [
-            { food: "오트밀", calories: 150, carbs: 27, protein: 5, fat: 3 },
-            { food: "바나나", calories: 90, carbs: 23, protein: 1, fat: 0.3 }
-        ],
-        lunch: [
-            { food: "라면", calories: 500, carbs: 80, protein: 10, fat: 15 }
-        ],
-        dinner: [
-            { food: "돼지고기", calories: 250, carbs: 0, protein: 18, fat: 20 }
-        ]
-    },
-    "2024-11-06": {
-        breakfast: [
-            { food: "빵", calories: 160, carbs: 30, protein: 4, fat: 3 }
-        ],
-        lunch: [
-            { food: "햄버거", calories: 600, carbs: 45, protein: 25, fat: 30 }
-        ],
-        dinner: [
-            { food: "오렌지", calories: 60, carbs: 15, protein: 1, fat: 0 }
-        ]
-    },
-    "2024-11-07": {
-        breakfast: [
-            { food: "커피", calories: 10, carbs: 0, protein: 0, fat: 0 },
-            { food: "도넛", calories: 250, carbs: 35, protein: 4, fat: 10 }
-        ],
-        lunch: [
-            { food: "스파게티", calories: 450, carbs: 60, protein: 12, fat: 15 }
-        ],
-        dinner: [
-            { food: "두부조림", calories: 100, carbs: 5, protein: 8, fat: 5 }
-        ]
-    },
-    "2024-11-09": {
-        breakfast: [
-            { food: "핫케이크", calories: 300, carbs: 40, protein: 5, fat: 10 }
-        ],
-        lunch: [
-            { food: "초밥", calories: 400, carbs: 50, protein: 10, fat: 5 }
-        ],
-        dinner: [
-            { food: "된장국", calories: 60, carbs: 6, protein: 3, fat: 1 }
-        ]
-    },
-    "2024-11-10": {
-        breakfast: [
-            { food: "토스트", calories: 180, carbs: 30, protein: 5, fat: 4 }
-        ],
-        lunch: [
-            { food: "볶음우동", calories: 450, carbs: 70, protein: 8, fat: 12 }
-        ],
-        dinner: [
-            { food: "야채샐러드", calories: 60, carbs: 10, protein: 2, fat: 1 }
-        ]
-    }
-};
-
-
-const foodOptions = [
-    { name: "계란", calories: 70, carbs: 1, protein: 6, fat: 5 },
-    { name: "밥", calories: 300, carbs: 68, protein: 6, fat: 0.5 },
-    { name: "닭가슴살", calories: 120, carbs: 0, protein: 23, fat: 2 },
-    { name: "사과", calories: 80, carbs: 21, protein: 0.5, fat: 0.3 },
-    { name: "고구마", calories: 86, carbs: 20, protein: 1.6, fat: 0.1 },
-    { name: "바나나", calories: 89, carbs: 23, protein: 1.1, fat: 0.3 },
-    { name: "오렌지", calories: 62, carbs: 15, protein: 1.2, fat: 0.2 },
-    { name: "소고기", calories: 250, carbs: 0, protein: 26, fat: 17 },
-    { name: "돼지고기", calories: 242, carbs: 0, protein: 27, fat: 14 },
-    { name: "고등어", calories: 189, carbs: 0, protein: 20, fat: 12 },
-    { name: "연어", calories: 206, carbs: 0, protein: 22, fat: 13 },
-    { name: "두부", calories: 76, carbs: 1.9, protein: 8, fat: 4.8 },
-    { name: "김치", calories: 33, carbs: 6.1, protein: 1.1, fat: 0.2 },
-    { name: "우유", calories: 42, carbs: 5, protein: 3.4, fat: 1 },
-    { name: "요거트", calories: 59, carbs: 3.6, protein: 10, fat: 0.4 },
-    { name: "치킨", calories: 239, carbs: 0, protein: 27, fat: 14 },
-    { name: "고추", calories: 40, carbs: 9, protein: 2, fat: 0.4 },
-    { name: "양파", calories: 40, carbs: 9, protein: 1.1, fat: 0.1 },
-    { name: "당근", calories: 41, carbs: 10, protein: 0.9, fat: 0.2 },
-    { name: "감자", calories: 77, carbs: 17, protein: 2, fat: 0.1 },
-    { name: "브로콜리", calories: 34, carbs: 7, protein: 2.8, fat: 0.4 },
-    { name: "호박", calories: 26, carbs: 6.5, protein: 1, fat: 0.1 },
-    { name: "치즈", calories: 402, carbs: 1.3, protein: 25, fat: 33 },
-    { name: "햄", calories: 145, carbs: 1.3, protein: 20, fat: 7 },
-    { name: "소시지", calories: 301, carbs: 2, protein: 11, fat: 28 },
-    { name: "초콜릿", calories: 546, carbs: 61, protein: 4.9, fat: 31 },
-    { name: "아몬드", calories: 576, carbs: 21, protein: 21, fat: 49 },
-    { name: "땅콩", calories: 567, carbs: 16, protein: 25, fat: 49 },
-    { name: "식빵", calories: 265, carbs: 49, protein: 9, fat: 3.2 },
-    { name: "파스타", calories: 131, carbs: 25, protein: 5, fat: 1.1 },
-];
-
-
-function MealRecord(diet) {
-    const [data, setData] = useState(null);
+function MealRecord({ diet }) {
+    const [data, setData] = useState({});
     const [selectedDate, setSelectedDate] = useState(null);
     const [selectedMeal, setSelectedMeal] = useState("breakfast");
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
     const [selectedFood, setSelectedFood] = useState(null);
     const [foodWeight, setFoodWeight] = useState(100);
+    const [dateList, setDateList] = useState([]);
+    const [foodData, setFoodData] = useState([]);
 
-    const handleSelectDate = (date) => setSelectedDate(date);
+    const handleSelectDate = (date) => {
+        setSelectedDate(date);
+        if (!data[date]) {
+            setData(prevData => ({
+                ...prevData,
+                [date]: {
+                    breakfast: [],
+                    lunch: [],
+                    dinner: []
+                }
+            }));
+        }
+    };
     const handleSelectMeal = (meal) => setSelectedMeal(meal);
 
     const getTodayDate = (date) => {
-        const today = new Date(date);
-        const year = today.getFullYear();
-        const month = String(today.getMonth() + 1).padStart(2, '0');
-        const day = String(today.getDate()).padStart(2, '0');
-        return `${year}-${month}-${day}`;
+        const kstDate = new Date(date);
+        kstDate.setHours(kstDate.getHours() + 9); // UTC+9
+        return kstDate.toISOString().split('T')[0];
+    };
+
+    const fetchFoodData = async (query = "") => {
+        try {
+            const foods = await getFoodData(query);
+            setFoodData(foods);
+        } catch (error) {
+            console.error("Error fetching food data:", error);
+        }
     };
 
     useEffect(() => {
-        if (diet && Array.isArray(diet)) {
-            const mealsData = diet.map(item => item.meals).flat();
-            setData(mealsData);
-        }
-    }, [diet]);
+        const generateDateList = () => {
+            const dates = [];
+            const today = new Date();
+            today.setHours(today.getHours() + 9); // KST로 설정
+            const initialData = {};
 
+            for (let i = 0; i < 14; i++) {
+                const date = new Date(today);
+                date.setDate(today.getDate() - i);
+                const formattedDate = date.toISOString().split('T')[0];
+                dates.push(formattedDate);
+                
+                if (!data[formattedDate]) {
+                    initialData[formattedDate] = {
+                        breakfast: [],
+                        lunch: [],
+                        dinner: []
+                    };
+                }
+            }
+            
+            setDateList(dates);
+            setData(prevData => ({
+                ...prevData,
+                ...initialData
+            }));
+        };
+
+        generateDateList();
+        fetchFoodData();
+    }, []);
+
+    useEffect(() => {
+        if (diet?.diets) {
+            const newData = {};
+            
+            diet.diets.forEach(dietItem => {
+                const formattedDate = new Date(dietItem.date).toISOString().split('T')[0];
+                
+                newData[formattedDate] = {
+                    breakfast: dietItem.meals.breakfast.map(meal => ({
+                        ...meal,
+                        food_id: meal.food_id,
+                        grams: meal.grams
+                    })) || [],
+                    lunch: dietItem.meals.lunch.map(meal => ({
+                        ...meal,
+                        food_id: meal.food_id,
+                        grams: meal.grams
+                    })) || [],
+                    dinner: dietItem.meals.dinner.map(meal => ({
+                        ...meal,
+                        food_id: meal.food_id,
+                        grams: meal.grams
+                    })) || []
+                };
+            });
+            
+            setData(prevData => ({
+                ...prevData,
+                ...newData
+            }));
+
+            if (diet.diets.length > 0 && !selectedDate) {
+                const firstDate = new Date(diet.diets[0].date).toISOString().split('T')[0];
+                setSelectedDate(firstDate);
+            }
+        }
+    }, [diet, foodData]);
 
     const handleAddFood = async () => {
         if (!selectedFood || foodWeight <= 0) {
@@ -179,11 +121,36 @@ function MealRecord(diet) {
         }
 
         try {
-            await createDiet(selectedDate, selectedMeal, selectedFood.food_id, foodWeight);
-            setIsModalOpen(false);
-            setSearchQuery("");
-            setFoodWeight(100);
-            setSelectedFood(null);
+            const response = await createDiet({
+                date: selectedDate,
+                mealtime: selectedMeal,
+                food_id: selectedFood.food_id,
+                grams: foodWeight
+            });
+
+            if (response) {
+                const newFoodItem = {
+                    food_id: selectedFood.food_id,
+                    grams: foodWeight,
+                    foodInfo: selectedFood
+                };
+
+                setData(prevData => ({
+                    ...prevData,
+                    [selectedDate]: {
+                        ...prevData[selectedDate],
+                        [selectedMeal]: [
+                            ...prevData[selectedDate][selectedMeal],
+                            newFoodItem
+                        ]
+                    }
+                }));
+
+                setIsModalOpen(false);
+                setSearchQuery("");
+                setFoodWeight(100);
+                setSelectedFood(null);
+            }
         } catch (err) {
             alert(err);
         }
@@ -191,39 +158,64 @@ function MealRecord(diet) {
 
     const handleDeleteFood = async (meal, index) => {
         try {
-            await deleteDiet(selectedDate, selectedMeal, selectedFood.food_id);
+            const foodToDelete = data[selectedDate][meal][index];
+            
+            const response = await deleteDiet({
+                date: selectedDate,
+                mealtime: meal,
+                food_id: foodToDelete.food_id
+            });
+
+            if (response.status === 'success') {
+                setData(prevData => ({
+                    ...prevData,
+                    [selectedDate]: {
+                        ...prevData[selectedDate],
+                        [meal]: prevData[selectedDate][meal].filter((_, i) => i !== index)
+                    }
+                }));
+            }
         } catch (err) {
-            alert(err);
+            console.error('Delete error:', err);
+            alert(err.message || '삭제 중 오류가 발생했습니다.');
         }
     };
 
     const calculateTotal = (meal, nutrient) => {
-        return data[selectedDate][meal].reduce((acc, item) => acc + item[nutrient], 0);
+        if (!selectedDate || !data[selectedDate] || !data[selectedDate][meal]) return 0;
+        
+        return data[selectedDate][meal].reduce((acc, item) => {
+            if (!item.foodInfo) return acc;
+            const value = nutrient === 'calories' ? item.foodInfo.energy_kcal : item.foodInfo[nutrient];
+            return acc + (value * item.grams / 100);
+        }, 0);
     };
 
     const calculateTotalSum = (nutrient) => {
-        let total = 0;
-        ["breakfast", "lunch", "dinner"].map((meal, index) => (
-            total += calculateTotal(meal, nutrient)
-        ))
-        return total;
+        if (!selectedDate) return 0;
+        
+        return ["breakfast", "lunch", "dinner"].reduce((total, meal) => {
+            return total + calculateTotal(meal, nutrient);
+        }, 0);
     };
 
-    const filteredFoods = foodOptions.filter((food) =>
-        food.name.includes(searchQuery)
+    const filteredFoods = foodData.filter(food =>
+        food.food_name.toLowerCase().includes(searchQuery.toLowerCase())
     );
 
-    // 음식 선택
     const handleSelectFood = (food) => {
         setSelectedFood(food);
     };
 
+    const handleSearchChange = (e) => {
+        setSearchQuery(e.target.value);
+    };
 
     return (
         <div className='MealRecord-container'>
             <div className='datelist' style={{ overflowY: 'scroll' }}>
                 <ul className='list'>
-                    {data && Object.keys(data).map((date) => (
+                    {dateList.map((date) => (
                         <li
                             key={date}
                             onClick={() => handleSelectDate(date)}
@@ -231,13 +223,13 @@ function MealRecord(diet) {
                                 backgroundColor: date === selectedDate ? '#eee' : 'transparent',
                             }}
                         >
-                            {getTodayDate(data.date)}
+                            {date}
                         </li>
                     ))}
                 </ul>
             </div>
             <div className='record'>
-                <span>{getTodayDate(selectedDate)} 식사 기록</span>
+                <span>{selectedDate ? `${selectedDate} 식사 기록` : '날짜를 선택하세요'}</span>
                 <table>
                     <thead>
                         <tr>
@@ -287,13 +279,33 @@ function MealRecord(diet) {
                                 </tr>
                             </thead>
                             <tbody>
-                                {data[selectedDate][selectedMeal].map((item, index) => (
+                                {data[selectedDate] && data[selectedDate][selectedMeal].map((item, index) => (
                                     <tr key={index}>
-                                        <td>{item.food}</td>
-                                        <td>{item.calories.toFixed(1)} kcal</td>
-                                        <td>{item.carbs.toFixed(1)} g</td>
-                                        <td>{item.protein.toFixed(1)} g</td>
-                                        <td>{item.fat.toFixed(1)} g</td>
+                                        <td>
+                                            {item.foodInfo 
+                                                ? `${item.foodInfo.food_name} (${item.grams}g)` 
+                                                : `음식 ID: ${item.food_id} (${item.grams}g)`}
+                                        </td>
+                                        <td>
+                                            {item.foodInfo 
+                                                ? (item.grams * item.foodInfo.energy_kcal / 100).toFixed(1) 
+                                                : '정보 없음'} kcal
+                                        </td>
+                                        <td>
+                                            {item.foodInfo 
+                                                ? (item.grams * item.foodInfo.carbs / 100).toFixed(1) 
+                                                : '정보 없음'} g
+                                        </td>
+                                        <td>
+                                            {item.foodInfo 
+                                                ? (item.grams * item.foodInfo.protein / 100).toFixed(1) 
+                                                : '정보 없음'} g
+                                        </td>
+                                        <td>
+                                            {item.foodInfo 
+                                                ? (item.grams * item.foodInfo.fat / 100).toFixed(1) 
+                                                : '정보 없음'} g
+                                        </td>
                                         <button onClick={() => handleDeleteFood(selectedMeal, index)}>삭제</button>
                                     </tr>
                                 ))}
@@ -310,26 +322,36 @@ function MealRecord(diet) {
                             <h4>음식 검색</h4>
                             <input
                                 type="text"
-                                placeholder="음식 이름"
+                                placeholder="음식 이름을 입력하세요"
                                 value={searchQuery}
-                                onChange={(e) => setSearchQuery(e.target.value)}
+                                onChange={handleSearchChange}
                             />
                             <ul className="list">
-                                {filteredFoods.map((food, index) => (
-                                    <li key={index} onClick={() => handleSelectFood(food)} style={{ cursor: 'pointer' }}>
-                                        {food.name}
+                                {filteredFoods.map((food) => (
+                                    <li 
+                                        key={food.food_id} 
+                                        onClick={() => handleSelectFood(food)} 
+                                        style={{ cursor: 'pointer' }}
+                                    >
+                                        {food.food_name} ({food.energy_kcal}kcal/100g)
                                     </li>
                                 ))}
                             </ul>
                             <div className='under'>
                                 {selectedFood && (
                                     <div>
-                                        <p>선택: {selectedFood.name}</p>
+                                        <p>선택한 음식: {selectedFood.food_name}</p>
+                                        <p>100g 당 영양성분:</p>
+                                        <p>칼로리: {selectedFood.energy_kcal}kcal</p>
+                                        <p>탄수화물: {selectedFood.carbs}g</p>
+                                        <p>단백질: {selectedFood.protein}g</p>
+                                        <p>지방: {selectedFood.fat}g</p>
                                         <input
                                             type="number"
-                                            placeholder="무게 (g)"
+                                            placeholder="섭취량 (g)"
                                             value={foodWeight}
                                             onChange={(e) => setFoodWeight(Number(e.target.value))}
+                                            min="0"
                                         /> g
                                     </div>
                                 )}
@@ -337,14 +359,18 @@ function MealRecord(diet) {
                                     {selectedFood && (
                                         <button onClick={handleAddFood}>추가</button>
                                     )}
-                                    <button onClick={() => setIsModalOpen(false)}>닫기</button>
+                                    <button onClick={() => {
+                                        setIsModalOpen(false);
+                                        setSearchQuery('');
+                                        setSelectedFood(null);
+                                        setFoodWeight(100);
+                                    }}>닫기</button>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             )}
-
         </div>
     );
 }
