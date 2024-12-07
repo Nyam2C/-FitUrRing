@@ -74,6 +74,7 @@ ul{
 }
 
 #videoLists{
+    border-top: solid 3px #B87EED;
     display: flex;
     flex-wrap: wrap;
     max-height: 25em; 

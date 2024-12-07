@@ -54,7 +54,7 @@ function VideoSelection({dispatch, setSelected}){
             setCurrentLevel(e.target.value);
             dispatch({
                 type: 'level',
-                level: e.target.value,
+                level: currentLevel,
             });
         }
     }
@@ -70,7 +70,7 @@ function VideoSelection({dispatch, setSelected}){
                         <input type="radio" value="advanced" name="level" onClick={handleLevel} checked={currentLevel === 'advanced'} ></input>
                     </label>
                     <label>하 
-                        <input type="radio" value="beginner" name="level" onClick={handleLevel} checked={currentLevel === 'beginner'} ></input>
+                        <input type="radio" value="beginner" name="level" onClick={handleLevel} checked={currentLevel === 'beginner'}></input>
                     </label>
                 </div>
                 <div id="timeSelection" className="col center padding">

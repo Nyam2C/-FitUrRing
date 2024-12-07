@@ -3,6 +3,7 @@ import React, { useState, useEffect, useReducer } from 'react';
 import VideoLists from '../components/workout/VideoLists';
 import VideoSelection from '../components/workout/VideoSelection';
 import Images from '../components/workout/Images';
+import explain from '../assets/explains.json';
 
 import { getEntireVideos, searchVideos} from '../api/workoutAPI';
 
@@ -13,8 +14,9 @@ function Explains({data, selected}){
     //p로 설명
     return (
         <div id="explains">
-            <h1>{selected}</h1>
-            {/* <p>{data[selected]}</p>   */}
+            <h1>{explain.find(item => item.id === selected)?.name}</h1>
+            <p className="content">{explain.find(item => item.id === selected)?.explains}</p>
+            <p className="source">{explain.find(item => item.id === selected)?.source}</p>  
         </div>
 
     );
