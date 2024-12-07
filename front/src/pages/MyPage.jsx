@@ -1,6 +1,6 @@
 import react, { useState, useEffect } from 'react';
 
-import {getUserData, changeUserData, userWithdraw} from '../api.js';
+import {getUserData, changeUserData, userWithdraw} from '../api/UserAPI.js';
 import Modal from '../components/common/Modal.jsx'; 
 
 function MyPage(){

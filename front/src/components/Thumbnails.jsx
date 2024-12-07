@@ -1,8 +1,8 @@
 import react from 'react';
 
-function Thumbnails({video_id, video_title}){
+function Thumbnails({video_id, video_title, mode}){
     return (
-        <img className="thumbnails" src={`https://img.youtube.com/vi/${video_id}/mqdefault.jpg`} alt={video_title}/>
+        <img className={`thumbnails-${mode}`} src={`https://img.youtube.com/vi/${video_id}/${mode}.jpg`} alt={video_title}/>
     )
 }
 
