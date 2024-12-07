@@ -9,7 +9,8 @@ function VideoSelection({dispatch, setSelected}){
     const [endMin, setEndMin] = useState(0);
     const [startSec, setStartSec] = useState(0);
     const [endSec, setSEndSec] = useState(0);
-    
+    const [currentLevel, setCurrentLevel] = useState(null);
+
     const tagRef = useRef([]);
     
     useEffect(() => {
@@ -47,10 +48,15 @@ function VideoSelection({dispatch, setSelected}){
         });
     }
     function handleLevel(e){
-        dispatch({
-            type: 'level',
-            level: e.target.value,
-        })
+        if(currentLevel === e.target.value){
+            setCurrentLevel(null);
+        } else {
+            setCurrentLevel(e.target.value);
+            dispatch({
+                type: 'level',
+                level: e.target.value,
+            });
+        }
     }
     function handleChange(e){
         if (e.target.name === 'startMin')   setStartMin(e.target.value?e.target.value:0);
@@ -61,7 +67,7 @@ function VideoSelection({dispatch, setSelected}){
                 <div className='col padding'>
                     <h3>난이도</h3>
                     <label>상
-                        <input type="radio" value="advanced" name="level" onChange={handleLevel}></input>
+                        <input type="radio" value="advanced" name="level" onChange={handleLevel} checked={currentLevel === 'advanced'} ></input>
                     </label>
                     <label>하 
                         <input type="radio" value="beginner" name="level" onChange={handleLevel}></input>
@@ -77,7 +83,7 @@ function VideoSelection({dispatch, setSelected}){
                         setStartMin(value === "" ? null : parseInt(value, 10));
                     }}></input> */}
                     <span> 분</span>
-                    <input type="text" name="start" onChange={(e) => setStartSec(parseInt(e.target.value))}></input>
+                    <input type="text" name="start" onChange={(e) => setStartSec(parseInt(e.target.value))} checked={currentLevel === 'beginner'} ></input>
                     <span> 초</span>
                     </span>
                     <span> ~
