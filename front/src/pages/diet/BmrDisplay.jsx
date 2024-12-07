@@ -2,7 +2,7 @@ import NutrientDisplay from './NutrientDisplay';
 import React, { useEffect, useState } from 'react';
 import './BmrDisplay.css';
 
-function BmrDisplay({ user, diet }) {
+function BmrDisplay({ user, diet, activity }) {
     const [bmr, setBmr] = useState(0);
     const [achievement, setAchievement] = useState([]);
     const [constants] = useState([1.2, 1.375, 1.555, 1.725, 1.9]);
@@ -41,13 +41,13 @@ function BmrDisplay({ user, diet }) {
                     </div>
                     <div className="calorie-box">
                         <p>총 대사량</p>
-                        <span>{Math.round(constants[achievement.in_current_week] * bmr)}</span>
+                        <span>{Math.round(constants[activity] * bmr)}</span>
                         <p>kcal</p>
 
                     </div>
                 </div>
             </div>
-            <NutrientDisplay user={user} bmr={Math.round(constants[achievement.in_current_week] * bmr)} />
+            <NutrientDisplay user={user} bmr={Math.round(constants[activity] * bmr)} />
         </React.Fragment>
     );
 }

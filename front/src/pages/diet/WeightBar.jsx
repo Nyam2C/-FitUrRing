@@ -15,8 +15,8 @@ function WeightBar({ diet }) {
                 if (element.achievement.weight) start_weight = element.achievement.weight;
                 if (goal_weight == -1 && element.achievement.goal_weight) goal_weight = element.achievement.goal_weight;
                 if (current_weight == -1 && element.achievement.weight) current_weight = element.achievement.weight
-                setPercentage(((start_weight - current_weight) / (start_weight - goal_weight) * 100));
             });
+            setPercentage(((start_weight - current_weight) / ((start_weight - goal_weight)+0.01) * 100));
             setGoalWeight(goal_weight);
             setStartWeight(start_weight);
         }
