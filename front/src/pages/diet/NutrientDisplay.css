@@ -1,0 +1,104 @@
+.NutrientDisplay-container {
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    padding: 0px;
+    gap: 15px;
+    margin-top: -35px;
+    margin-left: 10px;
+    width: 370px;
+    height: 130px;
+}
+
+.NutrientDisplay-container h1 {
+    font-weight: 700;
+    font-size: 25px;
+    margin-bottom: -5px;
+}
+
+.nutrient-goals {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 0px 30px;
+    gap: 40px;
+
+    width: 300px;
+    height: 90px;
+    background: #DFDFE4;
+    border-radius: 10px;
+
+}
+
+.side {
+    width: 100px;
+
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 11px;
+    line-height: 20px;
+    margin-left: -20px;
+    display: flex;
+    flex-direction: column;
+    color: #000000;
+
+}
+
+.side p {
+    margin: 0px;
+}
+
+.nutrients {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    padding: 0px;
+    gap: 0px;
+    width: 210px;
+    height: 37px;
+}
+
+.nutrients span {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0px;
+    margin-top: -20px;
+    margin-left: -7px;
+    width: 80px;
+    height: 36px;
+}
+
+.nutrients div div {
+    display: flex;
+    flex-direction: row;
+}
+
+.nutrients div {
+    margin-bottom: -3px;
+}
+
+.carbs {
+    color: #E29165;
+    font-size: 13px;
+    margin-bottom: -4px;
+}
+
+.protein {
+    color: #EA5858;
+    font-size: 13px;
+    margin-bottom: -4px;
+}
+
+.fat {
+    color: #e579de;
+    font-size: 13px;
+    margin-bottom: -4px;
+}
+
+.num {
+    font-size: 30px;
+    font-weight: 600;
+    margin-right: -28px;
+}

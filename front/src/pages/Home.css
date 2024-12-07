@@ -1,0 +1,45 @@
+.Home {
+    text-align: center;
+    position: relative;
+    width: 1325px;
+    height: 714px;
+}
+
+.hero {
+    margin-bottom: 4rem;
+}
+
+.hero h1 {
+    font-size: 55px;
+    font-weight: bold;
+    color: #B87EED;
+    margin: 0.5rem 0;
+    line-height: 0.6;
+}
+
+.hero h2 {
+    font-size: 55px;
+    font-weight: bold;
+    color: #8C7DFF;
+    /* 라벤더 색 */
+    margin: 0.5rem 0;
+}
+
+.hero p {
+    font-size: 20px;
+    color: #a4d57b;
+    /* 연한 초록색 */
+}
+
+.content-grid {
+    display: flex;
+    justify-content: center;
+    gap: 3rem;
+}
+
+.content-box {
+    width: 200px;
+    height: 200px;
+    background-color: #f5f5f5;
+    border-radius: 10px;
+}

@@ -8,6 +8,7 @@ import Footer from './components/common/Footer'
 import Sign from './pages/Sign';
 import MyPage from './pages/MyPage';
 import Routine from './pages/routine/Routine';
+import Diet from './pages/diet/Diet';
 
 import './App.css';
 
@@ -24,6 +25,7 @@ function App(){
                         <Route path="/sign"  element={<Sign />} />
                         <Route path="/mypage" element={<MyPage />} />
                         // <Route path="/routine"  element={<Routine />} />
+                        <Route path="/diet"  element={<Diet />} />
                     </Routes>
                 </div>
                 <Footer />
