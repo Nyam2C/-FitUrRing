@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./List.css";
 import truncateText from './truncateText';
-import routineAPI from '../../api/routineAPI';
+import {getUserRoutines, getRoutineVideos, deleteRoutine, createRoutine} from '../../api/routineAPI';
 
 function List({ onRoutineSelect, isActive }) {
   const [routines, setRoutines] = useState([]);
@@ -43,12 +43,12 @@ function List({ onRoutineSelect, isActive }) {
   // 루틴 데이터와 비디오 데이터 함께 가져오기
   const fetchRoutines = async () => {
     try {
-      const routineData = await routineAPI.getUserRoutines();
+      const routineData = await getUserRoutines();
       if (routineData) {
         // 각 루틴에 대해 비디오 정보 가져오기
         const routinesWithVideos = await Promise.all(
           routineData.map(async (routine) => {
-            const videos = await routineAPI.getRoutineVideos(routine.routine_name);
+            const videos = await getRoutineVideos(routine.routine_name);
             return {
               ...routine,
               exercises: videos.map(video => ({
@@ -88,7 +88,7 @@ function List({ onRoutineSelect, isActive }) {
 
   const handledelete = async (name) => {
     try {
-      await routineAPI.deleteRoutine(name);
+      await deleteRoutine(name);
       setIsModalOpen(false);
       await fetchRoutines(); // 삭제 후 목록 새로고침
     } catch (err) {
@@ -101,7 +101,7 @@ function List({ onRoutineSelect, isActive }) {
       const routineName = prompt("새로운 루틴의 이름을 입력하세요:");
       if (!routineName) return;
       
-      await routineAPI.createRoutine(routineName);
+      await createRoutine(routineName);
       await fetchRoutines();
     } catch (err) {
       console.error("루틴 추가 실패:", err);

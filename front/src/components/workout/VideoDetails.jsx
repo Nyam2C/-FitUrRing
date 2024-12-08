@@ -30,14 +30,20 @@ function VideoDetails({video, routines}) {
                     <span>{secToTime(video.video_length)}</span> 
                     <span><FontAwesomeIcon icon={faHeart} /> {video.video_likes}<br/></span>
                 </span>
-                <select name="routines" id="routines">
-                {routines.map((item) => (
+                {routines ? (
                     <>
-                    <option value={item}>{item}</option>
-                    </>
-                ))}
+                <select>
+                    {routines.map((item, index) => (
+                    <option key={index} value={item}>
+                        {item}
+                    </option>
+                    ))}
                 </select>
                 <button className="addbutton" onClick={addRoutine}>추가</button>
+                </>
+                ) : (
+                <label>추가할 루틴이 없습니다.</label>
+                )}
             </div>
         </div>
     );

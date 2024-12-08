@@ -21,15 +21,15 @@ async function fetchWithOptions(url, options) {
     }
 }
 
-// 개별 함수들을 export
-export const addExerciseRecord = async (record) => {
+// 개별 함수들을 
+ const addExerciseRecord = async (record) => {
     return await fetchWithOptions('/api/routine/records', {
         method: 'POST',
         body: JSON.stringify(record),
     });
 };
 
-export const getUserRoutines = async () => {
+ const getUserRoutines = async () => {
     try {
         const response = await fetchWithOptions('/api/routine', {
             method: 'GET',
@@ -49,7 +49,7 @@ export const getUserRoutines = async () => {
     }
 };
 
-export const getRoutineVideos = async (routineName) => {
+ const getRoutineVideos = async (routineName) => {
     try {
         const response = await fetchWithOptions(`/api/routine/videos?routine_name=${encodeURIComponent(routineName)}`, {
             method: 'GET',
@@ -67,21 +67,21 @@ export const getRoutineVideos = async (routineName) => {
     }
 };
 
-export const createRoutine = async (routineName) => {
+ const createRoutine = async (routineName) => {
     return await fetchWithOptions('/api/routine', {
         method: 'POST',
         body: JSON.stringify({ routine_name: routineName }),
     });
 };
 
-export const deleteRoutine = async (routineName) => {
+ const deleteRoutine = async (routineName) => {
     return await fetchWithOptions('/api/routine', {
         method: 'DELETE',
         body: JSON.stringify({ routine_name: routineName }),
     });
 }
 
-async function addRoutineVideo(data){
+ async function addRoutineVideo(data){
     try{
         const uri = `/api/routine/add`
         const response = await fetch(uri, {
@@ -102,4 +102,4 @@ async function addRoutineVideo(data){
 }
 
 
-export { addRoutineVideo, addExerciseRecord, getUserRoutines, getRoutineVideos, deleteRoutine };
+export { addRoutineVideo, addExerciseRecord, getUserRoutines, getRoutineVideos, createRoutine, deleteRoutine };
