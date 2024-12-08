@@ -83,6 +83,30 @@ button{
     font-size:medium;
 }
 
+
+.padding{
+    padding: 20px;
+}
+
+.flex{
+    display: flex;
+    width: 100vw;
+}
+
+.flex-grow-main{
+    flex-grow: 15;
+}
+
+.circle{
+    width: 3em;
+}
+
+input[value] {
+    color: black;
+    font-size:medium;
+    text-align: center;
+}
+
 #workout{
     display: grid;
     grid-template-columns: 1fr 3fr 6fr;

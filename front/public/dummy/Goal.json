@@ -1,0 +1,6 @@
+{
+    "goal_weekly": 3,
+    "goal_daily": [1, 1, 0, 0, 1, 0, 0],
+    "goal_daily_time": "30:00",
+    "goal_weight": 42
+}

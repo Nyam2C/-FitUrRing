@@ -4,6 +4,8 @@ import Header from './components/common/Header';
 import Home from './pages/Home';
 import Footer from './components/common/Footer'
 import Sign from './pages/Sign';
+import HabitTracker from './pages/HabitTracker';
+import Goal from './pages/Goal';
 import MyPage from './pages/MyPage';
 import Workout from './pages/Workout';
 import Routine from './pages/Routine';
@@ -21,6 +23,8 @@ function App(){
                     <Routes>
                         <Route exact path="/"  element={<Home />} />
                         <Route path="/sign"  element={<Sign />} />
+                        <Route path="/habitTracker" element={<HabitTracker />} />
+                        <Route path="/habitTracker/Goal" element={<Goal />} />
                         <Route path="/workout"  element={<Workout />} />
                         <Route path="/routine"  element={<Routine />} />
                         <Route path="/mypage" element={<MyPage />} />
