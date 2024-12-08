@@ -97,8 +97,9 @@ button{
     flex-grow: 15;
 }
 
-.circle{
+.circle-button{
     width: 3em;
+    min-width: 3em;
 }
 
 input[value] {

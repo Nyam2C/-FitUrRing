@@ -55,7 +55,7 @@ function UserStatus({userData, data}){
                 <div>일일 목표 시간: {data.goal_daily_time}</div>
             </div>
             <button>
-                <Link className="link large" to='/HabitTracker/Goal'>
+                <Link className="link large" id="setGoal" to='/HabitTracker/Goal'>
                 목표 설정
                 </Link>
             </button>

@@ -102,29 +102,29 @@ function Goal(){
             <form id="GoalForm" className='flex-grow-main' onSubmit={handleSubmit}>
                 <label id="title">목표 설정</label>
                 <label>목표 체중</label>
-                <input id="weight" type="number" name="goal_weight" onChange={handleWeightChange} value={weight}></input>
+                <input id="weight" type="number" className="round-input" name="goal_weight" onChange={handleWeightChange} value={weight}></input>
 
                 <div className="row" >
-                    <button id="Sun" className="circle" onClick={handleClick} 
+                    <button id="Sun" className="circle-button" onClick={handleClick} 
                     style={{backgroundColor:(sun)?'#333333':null}}> 일 </button>
-                    <button id="Mon" className="circle" onClick={handleClick}
+                    <button id="Mon" className="circle-button" onClick={handleClick}
                      style={{backgroundColor:(mon)?'#333333':null}}> 월 </button>
-                    <button id="Tue" className="circle" onClick={handleClick}
+                    <button id="Tue" className="circle-button" onClick={handleClick}
                      style={{backgroundColor:(tue)?'#333333':null}}> 화 </button>
-                    <button id="Wed" className="circle" onClick={handleClick}
+                    <button id="Wed" className="circle-button" onClick={handleClick}
                      style={{backgroundColor:(wed)?'#333333':null}}> 수 </button>
-                    <button id="Thu" className="circle" onClick={handleClick}
+                    <button id="Thu" className="circle-button" onClick={handleClick}
                      style={{backgroundColor:(thu)?'#333333':null}}> 목 </button>
-                    <button id="Fri" className="circle" onClick={handleClick}
+                    <button id="Fri" className="circle-button" onClick={handleClick}
                      style={{backgroundColor:(fri)?'#333333':null}}> 금 </button>
-                    <button id="Sat" className="circle" onClick={handleClick}
+                    <button id="Sat" className="circle-button" onClick={handleClick}
                      style={{backgroundColor:(sat)?'#333333':null}}> 토 </button>
                 </div>
                 <label>일일 목표 운동 시간</label>
-                <input  id="DailyTime" type="text" name="goal_daily_time" onChange={handleDTChange} value={dailyTime}></input>
+                <input  id="DailyTime" type="text" className="round-input" name="goal_daily_time" onChange={handleDTChange} value={dailyTime}></input>
                 
                 <label>주간 목표 횟수</label>
-                <input  id="weeklyCount" type="text" name="goal_weekly" value={weeklyCount}></input>
+                <input  id="weeklyCount" type="text" className="round-input" name="goal_weekly" value={weeklyCount}></input>
 
                 <button type="submit">저장</button>
             </form>
