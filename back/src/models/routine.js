@@ -30,5 +30,4 @@ const routineSchema = new mongoose.Schema(
 );
 
 const Routine = mongoose.model('Routine', routineSchema);
-
-module.exports = { Routine };
+module.exports = Routine;
