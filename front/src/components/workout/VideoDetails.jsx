@@ -34,14 +34,6 @@ function VideoDetails({video, routines}) {
                 {routines.map((item) => (
                     <>
                     <option value={item}>{item}</option>
-                    <option value="javascript">JavaScript</option>
-                    <option value="php">PHP</option>
-                    <option value="java">Java</option>
-                    <option value="golang">Golang</option>
-                    <option value="python">Python</option>
-                    <option value="c#">C#</option>
-                    <option value="C++">C++</option>
-                    <option value="erlang">Erlang</option>
                     </>
                 ))}
                 </select>

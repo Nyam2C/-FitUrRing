@@ -2,28 +2,9 @@ import react, {useEffect, useState} from 'react';
 import {Link} from 'react-router-dom';
 
 import '../index.css';
-import ExerciseBlock from './ExerciseBlock';
+import ExerciseBlock from '../common/ExerciseBlock';
 import { getGoal, getUserData } from '../../api/HabitTrackerAPI';
 
-
-
-const exerciseData = 
-    { 
-        date:'2024-11-01',
-        exercises: [{
-            video_title: 'workout1',
-            video_tag: 'head',
-            video_time: '10:49'
-        },
-        {
-            video_title: 'workout6',
-            video_tag: 'neck',
-            video_time: '22:49'
-        },],
-    };
-
-
-    
 function refineGoals(data){
     let result = '';
     for (let i=0; i<7; i++){
@@ -63,7 +44,7 @@ function UserStatus({userData, data}){
         <div>
             <div id="userInfo" className="infoList">
                 <div>{userData.user_name}</div>
-                <div>성별: {userData.user_gender}</div>
+                <div>성별: {userData.user_gender === 0?'남':'여'}</div>
                 <div>나이: {userData.user_age}</div>
             </div>
             <div className="infoList">

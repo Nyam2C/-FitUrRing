@@ -15,10 +15,13 @@ function handleClick(e, item, onClick) {
 }
 
 function Clickable({data, onClick}){
-    console.log(data);
+    let videos
+    if (data.exercises) videos = data.exercises;
+    else    videos = data;
+    console.log(videos);
     return (
         <>
-        {data.map((item) => (
+        {videos.map((item) => (
             <div>
                 <div id="clickBlock" className="block" onClick={(e) => onClick(item)}>
                     <Thumbnails video_id={item.video_id} video_title={item.video_title} mode="mqdefault"/>
@@ -39,11 +42,16 @@ function Clickable({data, onClick}){
 }
 
 function NonClickable({data}){
+    let videos
+    if (data.exercises) videos = data.exercises;
+    else    videos = data;
+    console.log(videos);
+
     return (
         <>
-        {data.map((item) => (
+        {videos.map((item) => (
             <div>
-                <div className="block">
+                <div className="block nonclickable">
                     {item.video_title}
                 </div>
             </div>

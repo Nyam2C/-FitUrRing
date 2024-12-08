@@ -1,4 +1,11 @@
 async function getGoal(){
+    const data = {
+        "goal_weekly": 3,
+        "goal_daily": [1, 1, 0, 0, 1, 0, 0],
+        "goal_daily_time": "30:00",
+        "goal_weight": 42
+    }
+    return data;
     try{
         const uri = `/api/habitTracker/goal`
         const response = await fetch(uri, {
@@ -15,9 +22,6 @@ async function getGoal(){
     } catch(err){
         console.log(err.message);
     }
-        // const uri = '/dummy/Goal.json'
-        // const response = await fetch(uri);
-
 };
 
 async function addGoal(goalData){
@@ -47,31 +51,16 @@ async function addGoal(goalData){
     }
 };
 
-// async function getUserData(){
-//     try{
-//         //const uri = `/api/user`
-//         //const response = await fetch(uri, {
-//         //     method: "GET",
-//         //     headers: {
-//         //         //JWT
-//         //         "Content-Type": "application/json",
-//         //     },
-//         // });
-//         const uri = '/dummy/User.json'
-//         const response = await fetch(uri);
-
-//         if (!response.ok){
-//             throw new Error('Network error', response.status);
-//         }
-//         const data = await response.json();
-//         return data;
-//     } catch(err) {
-//         console.log(err.message);
-//     }
-// };
-
 
 async function getUserData(){
+    const data = {
+        "user_id": "ajou1973",
+        "user_name": "김아주",
+        "user_gender": 0,
+        "user_age": 25,
+        "user_email": "ajou1973f@ajou.ac.kr"
+    }
+    return data;
     try{
         const uri = `/api/user/profile`
         const response = await fetch(uri, {
@@ -91,6 +80,149 @@ async function getUserData(){
 
 
 async function getMonthlyRecord(year, month) {
+    const data = [
+        {
+            "date": "2024-11-01",
+            "exercises": [
+                {
+                    "_id": "6747313adeab7ea33db954d3",
+                    "video_id": "v1xrOAONfAw",
+                    "video_title": "홈트 - 가슴운동 '단! 17분! 보고 따라만 하세요!' [ Home training - Chest ]",
+                    "video_description": "안녕하세요~! 배관장입니다! 홈트레이닝 가슴편! 단! 17분! 보고 따라만 하세요! 품태권도 김해진영점 경남 김해시 진영읍 본산 ...",
+                    "video_tag": "가슴 홈트레이닝 | Chest Home Training",
+                    "video_length": 1071,
+                    "video_likes": 14,
+                    "channel_title": "Men's Health UK",
+                    "__v": 0
+                },
+                {
+                    "_id": "6747313adeab7ea33db954d3",
+                    "video_id": "v1xrOAONfAw",
+                    "video_title": "홈트 - 가슴운동 '단! 17분! 보고 따라만 하세요!' [ Home training - Chest ]",
+                    "video_description": "안녕하세요~! 배관장입니다! 홈트레이닝 가슴편! 단! 17분! 보고 따라만 하세요! 품태권도 김해진영점 경남 김해시 진영읍 본산 ...",
+                    "video_tag": "가슴 홈트레이닝 | Chest Home Training",
+                    "video_length": 1071,
+                    "video_likes": 14,
+                    "channel_title": "Men's Health UK",
+                    "__v": 0
+                }
+            ]
+        },
+        {
+            "date": "2024-11-08",
+            "exercises": [
+                {
+                    "_id": "6747313adeab7ea33db954d3",
+                    "video_id": "v1xrOAONfAw",
+                    "video_title": "홈트 - 가슴운동 '단! 17분! 보고 따라만 하세요!' [ Home training - Chest ]",
+                    "video_description": "안녕하세요~! 배관장입니다! 홈트레이닝 가슴편! 단! 17분! 보고 따라만 하세요! 품태권도 김해진영점 경남 김해시 진영읍 본산 ...",
+                    "video_tag": "가슴 홈트레이닝 | Chest Home Training",
+                    "video_length": 1071,
+                    "video_likes": 14,
+                    "channel_title": "Men's Health UK",
+                    "__v": 0
+                }
+            ]
+        },
+        {
+            "date": "2024-11-11",
+            "exercises": [
+                {
+                    "_id": "6747313adeab7ea33db954d3",
+                    "video_id": "v1xrOAONfAw",
+                    "video_title": "홈트 - 가슴운동 '단! 17분! 보고 따라만 하세요!' [ Home training - Chest ]",
+                    "video_description": "안녕하세요~! 배관장입니다! 홈트레이닝 가슴편! 단! 17분! 보고 따라만 하세요! 품태권도 김해진영점 경남 김해시 진영읍 본산 ...",
+                    "video_tag": "가슴 홈트레이닝 | Chest Home Training",
+                    "video_length": 1071,
+                    "video_likes": 14,
+                    "channel_title": "Men's Health UK",
+                    "__v": 0
+                }
+            ]
+        },
+        {
+            "date": "2024-11-27",
+            "exercises": [
+                {
+                    "_id": "6747313adeab7ea33db954d3",
+                    "video_id": "v1xrOAONfAw",
+                    "video_title": "홈트 - 가슴운동 '단! 17분! 보고 따라만 하세요!' [ Home training - Chest ]",
+                    "video_description": "안녕하세요~! 배관장입니다! 홈트레이닝 가슴편! 단! 17분! 보고 따라만 하세요! 품태권도 김해진영점 경남 김해시 진영읍 본산 ...",
+                    "video_tag": "가슴 홈트레이닝 | Chest Home Training",
+                    "video_length": 1071,
+                    "video_likes": 14,
+                    "channel_title": "Men's Health UK",
+                    "__v": 0
+                }
+            ]
+        },
+        {
+            "date": "2024-12-02",
+            "exercises": [
+                {
+                    "_id": "6747313adeab7ea33db954d3",
+                    "video_id": "v1xrOAONfAw",
+                    "video_title": "홈트 - 가슴운동 '단! 17분! 보고 따라만 하세요!' [ Home training - Chest ]",
+                    "video_description": "안녕하세요~! 배관장입니다! 홈트레이닝 가슴편! 단! 17분! 보고 따라만 하세요! 품태권도 김해진영점 경남 김해시 진영읍 본산 ...",
+                    "video_tag": "가슴 홈트레이닝 | Chest Home Training",
+                    "video_length": 1071,
+                    "video_likes": 14,
+                    "channel_title": "Men's Health UK",
+                    "__v": 0
+                }
+            ]
+        },
+        {
+            "date": "2024-12-07",
+            "exercises": [
+                {
+                    "_id": "6747313adeab7ea33db954d3",
+                    "video_id": "v1xrOAONfAw",
+                    "video_title": "홈트 - 가슴운동 '단! 17분! 보고 따라만 하세요!' [ Home training - Chest ]",
+                    "video_description": "안녕하세요~! 배관장입니다! 홈트레이닝 가슴편! 단! 17분! 보고 따라만 하세요! 품태권도 김해진영점 경남 김해시 진영읍 본산 ...",
+                    "video_tag": "가슴 홈트레이닝 | Chest Home Training",
+                    "video_length": 1071,
+                    "video_likes": 14,
+                    "channel_title": "Men's Health UK",
+                    "__v": 0
+                }
+            ]
+        },
+        {
+            "date": "2024-12-27",
+            "exercises": [
+                {
+                    "_id": "6747313adeab7ea33db954d3",
+                    "video_id": "v1xrOAONfAw",
+                    "video_title": "홈트 - 가슴운동 '단! 17분! 보고 따라만 하세요!' [ Home training - Chest ]",
+                    "video_description": "안녕하세요~! 배관장입니다! 홈트레이닝 가슴편! 단! 17분! 보고 따라만 하세요! 품태권도 김해진영점 경남 김해시 진영읍 본산 ...",
+                    "video_tag": "가슴 홈트레이닝 | Chest Home Training",
+                    "video_length": 1071,
+                    "video_likes": 14,
+                    "channel_title": "Men's Health UK",
+                    "__v": 0
+                }
+            ]
+        },
+        {
+            "date": "2024-12-31",
+            "exercises": [
+                {
+                    "_id": "6747313adeab7ea33db954d3",
+                    "video_id": "v1xrOAONfAw",
+                    "video_title": "홈트 - 가슴운동 '단! 17분! 보고 따라만 하세요!' [ Home training - Chest ]",
+                    "video_description": "안녕하세요~! 배관장입니다! 홈트레이닝 가슴편! 단! 17분! 보고 따라만 하세요! 품태권도 김해진영점 경남 김해시 진영읍 본산 ...",
+                    "video_tag": "가슴 홈트레이닝 | Chest Home Training",
+                    "video_length": 1071,
+                    "video_likes": 14,
+                    "channel_title": "Men's Health UK",
+                    "__v": 0
+                }
+            ]
+        }    
+    ]
+    
+    return data;    
     try{
         const uri = `/api/habitTracker/records?period=${year}-${month}`;
         const response = await fetch(uri, {

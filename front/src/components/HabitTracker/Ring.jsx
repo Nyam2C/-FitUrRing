@@ -5,11 +5,15 @@ import '../index.css';
 function calculPercent(data, goal){
     let total = 0;
     for (let i=0; i<data.exercises.length; i++){
-            let time = data.exercises[i].video_time;
-            let min = parseInt(time.slice(0,time.indexOf(':')));
-            let sec = parseInt(time.slice(time.indexOf(':')+1));
-            total += (min*60+sec);
-        }
+        let time = data.exercises[i].video_length;
+        total += parseInt(time);
+    }
+    // for (let i=0; i<data.exercises.length; i++){
+    //         let time = data.exercises[i].video_time;
+    //         let min = parseInt(time.slice(0,time.indexOf(':')));
+    //         let sec = parseInt(time.slice(time.indexOf(':')+1));
+    //         total += (min*60+sec);
+    //     }
     const percent = (total/goal >= 1)? 1 : (total/goal).toFixed(2);
     return percent;
 }

@@ -314,3 +314,13 @@ input[type='date']{
     height: 1em;
     margin: 10px;
 }
+
+.nonclickable{
+    max-width: 10em;
+    height: 1.5em;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+    background-color: #f1efbd;
+    align-self: center;
+}

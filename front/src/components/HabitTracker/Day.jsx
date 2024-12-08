@@ -2,7 +2,7 @@ import react, { useState, useEffect } from 'react';
 
 import '../index.css';
 import Ring from './Ring';
-import ExerciseBlock from './ExerciseBlock';
+import ExerciseBlock from '../common/ExerciseBlock';
 import { getGoal } from '../../api/HabitTrackerAPI';
 
 function displayWhat(item, mode, goal, doit){

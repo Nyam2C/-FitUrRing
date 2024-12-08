@@ -54,12 +54,10 @@ async function deleteRoutine(routineName) {
 }
 
 async function addRoutineVideo(data){
-    //추후에 RoutineAPI로 옮기기
-
     try{
         const uri = `/api/routine/add`
         const response = await fetch(uri, {
-            method: "PUT",  //POST가 아니고??
+            method: "PUT",
             headers: {
                 "Authorization": `Bearer ${localStorage.getItem('accessToken')}`,
                 "Content-Type": "application/json",
