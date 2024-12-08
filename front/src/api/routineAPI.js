@@ -35,7 +35,6 @@ export const getUserRoutines = async () => {
             method: 'GET',
         });
         
-        // 빈 루틴도 표시할 수 있도록 변환
         return response.map(routine => ({
             _id: routine._id,
             user_id: routine.user_id,
@@ -79,27 +78,37 @@ export const deleteRoutine = async (routineName) => {
         method: 'DELETE',
         body: JSON.stringify({ routine_name: routineName }),
     });
-}
+};
 
-async function addRoutineVideo(data){
-    try{
-        const uri = `/api/routine/add`
-        const response = await fetch(uri, {
-            method: "PUT",
-            headers: {
-                "Authorization": `Bearer ${localStorage.getItem('accessToken')}`,
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(data),
-        });
-        const responseData = await response.json();
-        if(!responseData || !response.ok) 
-            throw new Error(responseData.message || '루틴을 불러오는데 실패했습니다.');
-        else return data;
-    } catch(err){
-        console.log(err.message);
-    }
-}
+export const addRoutineVideo = async (routineName, videoId) => {
+    return await fetchWithOptions('/api/routine/video', {
+        method: 'POST',
+        body: JSON.stringify({
+            routine_name: routineName,
+            video_id: videoId
+        }),
+    });
+};
 
+export const deleteRoutineVideo = async (routineName, videoId) => {
+    return await fetchWithOptions('/api/routine/video', {
+        method: 'DELETE',
+        body: JSON.stringify({
+            routine_name: routineName,
+            video_id: videoId
+        }),
+    });
+};
 
-export { addRoutineVideo, addExerciseRecord, getUserRoutines, getRoutineVideos, deleteRoutine };
+// 기본 export로 모든 함수를 객체로 내보내기
+const routineAPI = {
+    addExerciseRecord,
+    getUserRoutines,
+    getRoutineVideos,
+    createRoutine,
+    deleteRoutine,
+    addRoutineVideo,
+    deleteRoutineVideo
+};
+
+export default routineAPI;

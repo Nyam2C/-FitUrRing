@@ -1,4 +1,7 @@
 const mongoose = require('mongoose');
+const csv = require('csv-parser');
+const fs = require('fs');
+const path = require('path');
 const { User, UserAchievement, UserDiet } = require('./models/user');
 const Food100 = require('./models/food100');
 const HabitTracker = require('./models/habittracker');
@@ -116,17 +119,38 @@ const initDB = async () => {
             console.log('Routine 스키마가 생성되었습니다.');
         }
 
-        if (!mongoose.models.Video) {
-            const schema = Video;
-            schema.set('timestamps', timestampOptions.timestamps);
-            mongoose.model('Video', schema);
-            console.log('Video 스키마가 생성되었습니다.');
-        }
+        // Video 컬렉션 초기화
+        await Video.deleteMany();
+        console.log('Video 컬렉션이 초기화되었습니다.');
+
+        // CSV 파일에서 비디오 데이터 읽기
+        const videos = [];
+        await new Promise((resolve, reject) => {
+            fs.createReadStream(path.join(__dirname, 'models/local.videos.csv'))
+                .pipe(csv())
+                .on('data', (data) => {
+                    videos.push({
+                        video_id: data.video_id,
+                        video_title: data.video_title,
+                        video_description: data.video_description,
+                        video_tag: data.video_tag,
+                        video_length: parseInt(data.video_length),
+                        video_likes: parseInt(data.video_likes),
+                        channel_title: data.channel_title
+                    });
+                })
+                .on('end', resolve)
+                .on('error', reject);
+        });
+
+        // 비디오 데이터 삽입
+        await Video.insertMany(videos);
+        console.log(`${videos.length}개의 비디오 데이터가 성공적으로 추가되었습니다.`);
 
         console.log('모든 스키마 확인이 완료되었습니다.');
 
     } catch (error) {
-        console.error('스키마 초기화 중 오류 ���생:', error);
+        console.error('스키마 초기화 중 오류 발생:', error);
         throw error;
     }
 };
