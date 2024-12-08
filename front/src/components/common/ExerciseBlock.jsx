@@ -1,14 +1,13 @@
 import react, {useState} from 'react';
 
-import VideoDetails from './workout/VideoDetails';
-import Modal from '../components/common/Modal';
-import secToTime from './workout/secToTime';
+import VideoDetails from '../workout/VideoDetails';
+import Modal from './Modal';
+import secToTime from '../workout/secToTime';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart } from "@fortawesome/free-regular-svg-icons";
+import Thumbnails from '../common/Thumbnails';
 
-
-import './index.css';  
-import Thumbnails from './Thumbnails';
+import '../index.css';  
 
 function handleClick(e, item, onClick) {
     console.log(e); // 클릭 이벤트 로그

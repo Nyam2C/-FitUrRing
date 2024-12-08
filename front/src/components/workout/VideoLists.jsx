@@ -1,7 +1,6 @@
 import react, {useEffect, useState, useRef } from 'react';
-import ExerciseBlock from '../ExerciseBlock';
-
-import { searchVideos } from '../../api/workoutAPI';
+import ExerciseBlock from '../common/ExerciseBlock';
+import {getUserRoutines} from '../../api/routineAPI';
 
 function timeToSecond(time){
     console.log(time);
@@ -28,6 +27,7 @@ function VideoLists({data, filter, onShowMore, setShowModal}){
     }}
 
     function filteringVideos(data, filter){
+        console.log(data);
         return data.filter(video => {
             const filterTag = filter.video_tag.length?filter.video_tag.some(tag => {
                 return (video.video_tag.toUpperCase().indexOf(tag.toUpperCase()) !== -1 ?true:false);

@@ -1,9 +1,10 @@
 import React from 'react';
 
-import Thumbnails from '../Thumbnails';
+import Thumbnails from '../common/Thumbnails';
 import secToTime from './secToTime';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart } from "@fortawesome/free-regular-svg-icons";
+import {addRoutineVideo} from '../../api/routineAPI';
 
 function VideoDetails({video, routines}) {
     async function addRoutine(e){

@@ -6,7 +6,7 @@ import Footer from './components/common/Footer'
 import Sign from './pages/Sign';
 import MyPage from './pages/MyPage';
 import Workout from './pages/Workout';
-import Routine from './pages/routine/Routine';
+import Routine from './pages/Routine';
 
 import './App.css';
 
