@@ -89,14 +89,23 @@ function List({ onRoutineSelect, isActive }) {
 
   const handleAddRoutine = async () => {
     try {
-      const routineName = prompt("새로운 루틴의 이름을 입력하세요:");
-      if (!routineName) return;
-      
-      await createRoutine(routineName);
-      await fetchRoutines();
+        const routineName = prompt("새로운 루틴의 이름을 입력하세요:");
+        if (!routineName) {
+            return; // 사용자가 취소하거나 빈 문자열 입력 시
+        }
+        
+        // 특수문자나 공백만 있는 경우 체크
+        if (!/\S/.test(routineName)) {
+            alert("유효한 루틴 이름을 입력해주세요.");
+            return;
+        }
+
+        await createRoutine(routineName);
+        alert("루틴이 성공적으로 생성되었습니다.");
+        await fetchRoutines(); // 목록 새로고침
     } catch (err) {
-      console.error("루틴 추가 실패:", err);
-      alert("루틴 추가에 실패했습니다.");
+        console.error("루틴 추가 실패:", err);
+        alert(err.message || "루틴 추가에 실패했습니다.");
     }
   };
 

@@ -35,7 +35,7 @@ async function fetchWithOptions(url, options) {
             method: 'GET',
         });
         
-        // 빈 루틴도 표시할 수 있도록 ��환
+        // 빈 루틴도 표시할 수 있도록 환
         return response.map(routine => ({
             _id: routine._id,
             user_id: routine.user_id,
@@ -74,10 +74,37 @@ async function fetchWithOptions(url, options) {
 };
 
  const createRoutine = async (routineName) => {
-    return await fetchWithOptions('/api/routine', {
-        method: 'POST',
-        body: JSON.stringify({ routine_name: routineName }),
-    });
+    try {
+        // 입력값 검증
+        if (!routineName || typeof routineName !== 'string') {
+            throw new Error('유효한 루틴 이름을 입력해주세요.');
+        }
+
+        const response = await fetch('/api/routine', {
+            method: 'POST',
+            headers: {
+                "Authorization": `Bearer ${localStorage.getItem('accessToken')}`,
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ routine_name: routineName.trim() })
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json().catch(() => ({}));
+            throw new Error(errorData.message || '루틴 생성에 실패했습니다.');
+        }
+
+        // 텍스트 응답도 처리할 수 있도록 수정
+        const responseText = await response.text();
+        try {
+            return JSON.parse(responseText);
+        } catch {
+            return { message: responseText };
+        }
+    } catch (error) {
+        console.error("루틴 생성 중 오류:", error.message);
+        throw error;
+    }
 };
 
  const deleteRoutine = async (routineName) => {
