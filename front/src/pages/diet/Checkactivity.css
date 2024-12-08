@@ -1,0 +1,17 @@
+#activity-container {
+    align-items: center;
+    width: 370px;
+    height: 75px;
+    margin: -10px;
+    margin-left: 5px;
+}
+
+#activity-container button {
+    width: 40px;
+    height: 40px;
+    margin: 15px;
+    border-radius: 4px;
+    font-weight: 600;
+    border: 0.1px solid #eee;
+    cursor: pointer;
+}

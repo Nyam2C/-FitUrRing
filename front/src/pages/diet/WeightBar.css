@@ -1,0 +1,86 @@
+.WeightBar-container {
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    padding: 0px;
+    gap: 15px;
+    margin-top: -35px;
+    margin-left: 10px;
+
+    width: 370px;
+    height: 130px;
+}
+
+.WeightBar-container h3 {
+    font-weight: 700;
+    font-size: 25px;
+    margin-bottom: -5px;
+}
+
+.weight-bar {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 0px;
+
+    width: 360px;
+    height: 65px;
+    background: #DFDFE4;
+    border-radius: 10px;
+
+}
+
+.bar {
+
+    height: 15px;
+    width: 300px;
+    border-radius: 10px;
+    background-color: #8C7DFF;
+}
+
+.bar-progress {
+    height: 100%;
+    height: 15px;
+    width: 10px;
+    background-color: #B87EED;
+    border-radius: 10px;
+}
+
+.suchi {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0px;
+    gap: 240px;
+    font-size: 13px;
+    font-weight: 600;
+    width: 300px;
+    height: 20px;
+
+}
+
+.per {
+    width: 300px;
+    height: 20px;
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 13px;
+    line-height: 20px;
+    align-items: right;
+    text-align: right;
+    color: #000000;
+}
+
+.suchi input {
+    width: 50px;
+    text-align: right;
+    padding: 2px 5px;
+    margin-right: 5px;
+}
+
+.suchi span {
+    cursor: pointer;
+}

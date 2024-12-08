@@ -60,9 +60,9 @@ function Video({
      */
     const handleVideoClick = (exercise) => {
         window.open(exercise.link, "_blank", "noopener,noreferrer");
-        if (!isActive) onVideoClick(exercise);
+        onVideoClick(exercise);
     };
-
+    
     return (
         <DragDropContext onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
             <Droppable droppableId="video-list">

@@ -9,6 +9,7 @@ import Goal from './pages/Goal';
 import MyPage from './pages/MyPage';
 import Workout from './pages/Workout';
 import Routine from './pages/Routine';
+import Diet from './pages/diet/Diet';
 
 import './App.css';
 
@@ -28,6 +29,7 @@ function App(){
                         <Route path="/workout"  element={<Workout />} />
                         <Route path="/routine"  element={<Routine />} />
                         <Route path="/mypage" element={<MyPage />} />
+                        <Route path="/diet"  element={<Diet />} />
                     </Routes>
                 </div>
                 <Footer />

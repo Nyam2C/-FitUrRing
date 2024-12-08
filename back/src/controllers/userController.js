@@ -7,48 +7,44 @@ const emailService = require('../utils/emailService');
 const SALT_ROUNDS=12;
 
 const getAchievement = async (user_id, date = null) => {
-    try{
-        let matchStage={ $match: { user_id: user_id } };
+    try {
+        // 가장 최근 데이터 찾기
+        const latestAchievement = await UserAchievement.findOne(
+            { user_id },
+            { achievements: { $slice: -1 } }
+        );
 
-        if(date){
-            const startOfDay=new Date(date);
-            startOfDay.setHours(0, 0, 0, 0);
-            const endOfDay=new Date(date);
-            endOfDay.setHours(23, 59, 59, 999);
+        if (date) {
+            const targetDate = new Date(date);
+            targetDate.setUTCHours(0, 0, 0, 0);
 
-            matchStage = {
-                $match: {
-                    user_id: user_id,
+            // 해당 날짜의 데이터 찾기
+            const achievement = await UserAchievement.findOne(
+                { 
+                    user_id,
                     'achievements.date': {
-                        $gte: startOfDay,
-                        $lte: endOfDay
+                        $eq: targetDate
                     }
+                },
+                {
+                    'achievements.$': 1
                 }
-            };
+            );
+
+            if (achievement && achievement.achievements.length > 0) {
+                return achievement.achievements[0];
+            }
+
+            // 해당 날짜의 데이터가 없으면, 그 이전의 가장 최근 데이터 사용
+            if (latestAchievement && latestAchievement.achievements.length > 0) {
+                const latestDate = new Date(latestAchievement.achievements[0].date);
+                if (targetDate >= latestDate) {
+                    return latestAchievement.achievements[0];
+                }
+            }
         }
 
-        const achievement=await UserAchievement.aggregate([
-            matchStage,
-            { $unwind: '$achievements' },
-            // 날짜가 주어진 경우 해당 날짜의 데이터만, 아닌 경우 가장 최근 데이터
-            date ? 
-                { $match: { 
-                    'achievements.date': {
-                        $gte: new Date(date).setHours(0, 0, 0, 0),
-                        $lte: new Date(date).setHours(23, 59, 59, 999)
-                    }
-                }} :
-                { $sort: { 'achievements.date': -1 } },
-            { $limit: 1 },
-            { $project: { 
-                user_height: '$achievements.user_height',
-                user_weight: '$achievements.user_weight',
-                goal_weight: '$achievements.goal_weight',
-                date: '$achievements.date'
-            }}
-        ]);
-
-        return achievement[0] || {
+        return {
             user_height: null,
             user_weight: null,
             goal_weight: null,
@@ -182,7 +178,7 @@ const userController = {
                         }
                     },
                     process.env.JWT_ACCESS_SECRET,
-                    { expiresIn: '1h' }
+                    { expiresIn: '1d' }
                     );
 
                     existingSession.token_pair.access_token = accessToken;
@@ -410,129 +406,146 @@ const userController = {
         }
     },
     getProfile: async (req, res) => {
-        try{
-            const user_id=req.user.user_id;
-            const user=await User.findOne({ user_id: user_id });
-            const achievement=await getAchievement(user_id);
+        try {
+            const user = await User.findOne({ user_id: req.user.user_id });
+            if (!user) {
+                return res.status(404).json({ message: '사용자를 찾을 수 없습니다.' });
+            }
 
-            res.json({
-                success: true,
-                message: '프로필 조회가 완료되었습니다',
+            // 가장 최근의 achievement 데이터 조회
+            const latestAchievement = await UserAchievement.findOne(
+                { user_id: req.user.user_id },
+                { achievements: { $slice: -1 } }
+            );
+
+            const profileData = {
                 user_id: user.user_id,
                 user_name: user.user_name,
-                user_gender: user.user_gender === "female" ? 1 : 0,
+                user_gender: user.user_gender,
+                user_birth: user.user_birth,
                 user_email: user.user_email,
-                user_birth: user.user_birth.toLocaleDateString('ko-KR',{
-                    year: 'numeric',
-                    month: '2-digit',
-                    day: '2-digit',
-                }),
-                user_height: achievement.user_height ?? null,
-                user_weight: achievement.user_weight ?? null,
-                user_created_at: user.user_created_at.toLocaleDateString('ko-KR',{
-                    year: 'numeric',
-                    month: '2-digit',
-                    day: '2-digit',
-                    hour: '2-digit',
-                    minute: '2-digit',
-                    second: '2-digit',
-                    hour12: false
-                })
-            });
-        }catch(error){
-            res.status(500).json({
-                success: false,
-                message: '프로필 조회 중 오류가 발생했습니다'
-            });
+                user_created_at: user.user_created_at,
+                user_height: latestAchievement?.achievements[0]?.user_height || null,
+                user_weight: latestAchievement?.achievements[0]?.user_weight || null
+            };
+
+            res.json(profileData);
+        } catch (error) {
+            console.error('Error in getProfile:', error);
+            res.status(500).json({ message: '프로필 조회 중 오류가 발생했습니다.' });
         }
     },
     updateProfile: async (req, res) => {
-        try{
-            const user_id=req.user.user_id;
-            const updates=req.body;
-            
-            const { user_height, user_weight }=updates;
-            delete updates.user_height;
-            delete updates.user_weight;
+        try {
+            const { user_name, user_password, user_email, user_height, user_weight } = req.body;
+            const user = await User.findOne({ user_id: req.user.user_id });
 
-            if(Object.keys(updates).length > 0){
-                if(updates.user_password) updates.user_password = await userController.hashPassword(updates.user_password);
-                if('user_gender' in updates) updates.user_gender = updates.user_gender === 0 ? "male" : "female";
-                await User.findOneAndUpdate(
-                    { user_id: user_id },
-                    { $set: updates },
-                    { runValidators: true }
-                );
+            if (!user) {
+                return res.status(404).json({ message: '사용자를 찾을 수 없습니다.' });
             }
 
-            const today=new Date();
-            today.setHours(0, 0, 0, 0);
+            // 기본 사용자 정보 업데이트
+            if (user_name) user.user_name = user_name;
+            if (user_password) user.user_password = await userController.hashPassword(user_password);
+            if (user_email) user.user_email = user_email;
 
-            const userAchievement=await UserAchievement.findOne({ user_id });
+            await user.save();
 
-            if(userAchievement){
-                const todayAchievement=userAchievement.achievements.find(
-                    a => isSameDay(a.date, today)
+            // height나 weight가 변경된 경우에만 achievement 업데이트
+            if (user_height !== undefined || user_weight !== undefined) {
+                const today = new Date();
+                today.setHours(today.getHours() + 9); // KST로 변환
+                today.setHours(0, 0, 0, 0); // 시간 초기화
+
+                let userAchievement = await UserAchievement.findOne({ user_id: req.user.user_id });
+                
+                if (!userAchievement) {
+                    userAchievement = new UserAchievement({
+                        user_id: req.user.user_id,
+                        achievements: []
+                    });
+                }
+
+                // 오늘 날짜의 achievement가 있는지 확인
+                const todayAchievement = userAchievement.achievements.find(
+                    a => isSameDay(new Date(a.date), today)
                 );
 
-                if(todayAchievement){
-                    if(user_height !== undefined) todayAchievement.user_height=user_height;
-                    if(user_weight !== undefined) todayAchievement.user_weight=user_weight;
-                }else{
+                if (todayAchievement) {
+                    // 오늘 데이터가 있으면 업데이트
+                    if (user_height !== undefined) todayAchievement.user_height = user_height;
+                    if (user_weight !== undefined) todayAchievement.user_weight = user_weight;
+                } else {
+                    // 오늘 데이터가 없으면 새로 추가
+                    const lastAchievement = userAchievement.achievements[userAchievement.achievements.length - 1] || {};
                     userAchievement.achievements.push({
                         date: today,
-                        user_height: user_height,
-                        user_weight: user_weight
+                        user_height: user_height !== undefined ? user_height : lastAchievement.user_height,
+                        user_weight: user_weight !== undefined ? user_weight : lastAchievement.user_weight,
+                        goal_weight: lastAchievement.goal_weight
                     });
                 }
 
                 await userAchievement.save();
-            }else{
-                const newAchievement=new UserAchievement({
-                    user_id,
-                    achievements: [{
-                        date: today,
-                        user_height: user_height,
-                        user_weight: user_weight,
-                    }]
-                });
-                await newAchievement.save();
             }
 
-            const achievement=await getAchievement(user_id);
-            const user=await User.findOne({ user_id: user_id });
+            // 업데이트된 프로필 정보 조회
+            const updatedProfile = await userController.getProfile(req, {
+                json: (data) => data,
+                status: () => ({ json: (data) => data })
+            });
 
             res.json({
                 success: true,
-                message: '프로필이 업데이트되었습니다',
-                user_id: user.user_id,
-                user_name: user.user_name,
-                user_gender: user.user_gender === "female" ? 1 : 0,
-                user_email: user.user_email,
-                user_birth: user.user_birth.toLocaleDateString('ko-KR').split('T')[0],
-                user_height: achievement.user_height ?? null,
-                user_weight: achievement.user_weight ?? null,
-                user_created_at: user.user_created_at.toLocaleDateString('ko-KR',{
-                    year: 'numeric',
-                    month: '2-digit',
-                    day: '2-digit',
-                    hour: '2-digit',
-                    minute: '2-digit',
-                    second: '2-digit',
-                    hour12: false
-                })
+                message: '프로필이 성공적으로 업데이트되었습니다.',
+                data: updatedProfile
             });
-        }catch(error){
-            if(error.name === 'ValidationError'){
-                return res.status(400).json({
-                    success: false,
-                    message: '입력값이 유효하지 않습니다',
-                    errors: Object.values(error.errors).map(err => err.message)
+        } catch (error) {
+            console.error('Error in updateProfile:', error);
+            res.status(500).json({ message: '프로필 업데이트 중 오류가 발생했습니다.' });
+        }
+    },
+    getWeightHistory: async (req, res) => {
+        try {
+            const user_id = req.user.user_id;
+            
+            // 현재 날짜 KST 기준으로 설정
+            const endDate = new Date();
+            endDate.setHours(endDate.getHours() + 9); // KST로 변환
+            endDate.setHours(23, 59, 59, 999); // 해당 날짜의 마지막 시간으로 설정
+            
+            const startDate = new Date(endDate);
+            startDate.setDate(endDate.getDate() - 13);
+            startDate.setHours(0, 0, 0, 0); // 시작 날짜의 시작 시간으로 설정
+            
+            const weightHistory = [];
+            
+            for (let i = 0; i <= 13; i++) {
+                const currentDate = new Date(endDate);
+                currentDate.setDate(endDate.getDate() - i);
+                // 각 날짜의 시작 시간으로 설정 (getAchievement 함수에서 사용)
+                currentDate.setHours(0, 0, 0, 0);
+                
+                const achievement = await getAchievement(user_id, currentDate);
+                
+                weightHistory.push({
+                    date: currentDate,
+                    weight: achievement.user_weight
                 });
             }
+
+            // 날짜 오름차순으로 정렬
+            weightHistory.sort((a, b) => new Date(a.date) - new Date(b.date));
+
+            res.json({
+                success: true,
+                data: weightHistory
+            });
+        } catch (error) {
+            console.error('Error fetching weight history:', error);
             res.status(500).json({
                 success: false,
-                message: '프로필 업데이트 중 오류가 발생했습니다'
+                message: '체중 기록을 가져오는 중 오류가 발생했습니다'
             });
         }
     }

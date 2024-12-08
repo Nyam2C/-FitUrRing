@@ -1,12 +1,17 @@
 const mongoose = require('mongoose');
 
-const dateOnly=function(date) {
+// KST로 날짜 변환하는 유틸리티 함수
+const convertToKST = (date) => {
+    if (!date) return date;
+    const kstDate = new Date(date);
+    kstDate.setHours(kstDate.getHours() + 9);
+    return kstDate;
+};
+
+const dateOnly = function(date) {
     if(date){
-        if (typeof date === 'string') {
-            const [year, month, day] = date.split('-').map(Number);
-            return new Date(year, month - 1, day);
-        }
-        return new Date(date.getFullYear(), date.getMonth(), date.getDate());
+        const kstDate = convertToKST(date);
+        return new Date(kstDate.getFullYear(), kstDate.getMonth(), kstDate.getDate());
     }
     return date;
 };
@@ -161,7 +166,18 @@ const userAchievementSchema = new mongoose.Schema({
         date: {
             type: Date,
             required: true,
-            set: dateOnly
+            set: function(date) {
+                if(date){
+                    // KST로 변환하고 시간을 00:00:00으로 설정
+                    const kstDate = convertToKST(date);
+                    kstDate.setHours(0, 0, 0, 0);
+                    return kstDate;
+                }
+                return date;
+            },
+            get: function(date) {
+                return convertToKST(date);
+            }
         },
         user_height: {
             type: Number,
@@ -195,18 +211,8 @@ const userDietSchema = new mongoose.Schema({
             required: true,
             set: dateOnly
         },
-        meals: [{
-            diet_id: {
-                type: String,
-                required: true,
-                unique: true
-            },
-            mealtime: {
-                type: String,
-                enum: ['breakfast', 'lunch', 'dinner', 'snack'],
-                required: true
-            },
-            foods: [{
+        meals: {
+            breakfast: [{
                 food_id: {
                     type: String,
                     required: true,
@@ -216,19 +222,46 @@ const userDietSchema = new mongoose.Schema({
                     type: Number,
                     required: true,
                     min: 0
-                }
+                },
+                _id: false
+            }],
+            lunch: [{
+                food_id: {
+                    type: String,
+                    required: true,
+                    ref: 'Food100'
+                },
+                grams: {
+                    type: Number,
+                    required: true,
+                    min: 0
+                },
+                _id: false
+            }],
+            dinner: [{
+                food_id: {
+                    type: String,
+                    required: true,
+                    ref: 'Food100'
+                },
+                grams: {
+                    type: Number,
+                    required: true,
+                    min: 0
+                },
+                _id: false
             }]
-        }]
+        }
     }]
 }, {
     timestamps: true
 });
 
-// 인덱스 추가
+// 복합 인덱스 수정
+userDietSchema.index({ user_id: 1, 'diets.date': 1 }, { unique: true });
+
+// 인덱스 가
 userAchievementSchema.index({ user_id: 1, 'achievements.date': 1 });
-userDietSchema.index({ user_id: 1, 'diets.date': 1 });
-userDietSchema.index({ 'diets.meals.diet_id': 1 }, { unique: true });
-userDietSchema.index({ 'diets.date': 1, 'diets.meals.mealtime': 1 }, { unique: true });
 
 // 모델 생성
 const User = mongoose.model('User', userSchema);

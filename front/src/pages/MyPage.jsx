@@ -88,6 +88,17 @@ function MyPage(){
             }
         }
     }
+    // 날짜 포맷팅 함수 추가
+    const formatBirthDate = (dateString) => {
+        const date = new Date(dateString);
+        return `${date.getFullYear()}년 ${String(date.getMonth() + 1).padStart(2, '0')}월 ${String(date.getDate()).padStart(2, '0')}일`;
+    };
+
+    const formatCreatedAt = (dateString) => {
+        const date = new Date(dateString);
+        return `${date.getFullYear()}년 ${String(date.getMonth() + 1).padStart(2, '0')}월 ${String(date.getDate()).padStart(2, '0')}일 ${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}:${String(date.getSeconds()).padStart(2, '0')}`;
+    };
+
     if (!user && !window.localStorage.getItem('accessToken'))    
         return (<h2>표시할 사항이 없습니다.</h2>);
 
@@ -139,7 +150,7 @@ function MyPage(){
                     </tr>
                     <tr>
                         <th>생년월일</th>
-                        <td>{`${user.user_birth}`}</td>
+                        <td>{formatBirthDate(user.user_birth)}</td>
                     </tr>
                     <tr>
                         <th>이메일</th>
@@ -159,7 +170,7 @@ function MyPage(){
                     </tr>
                     <tr>
                         <th>가입일시</th>
-                        <td>{`${user.user_created_at}`}</td>
+                        <td>{formatCreatedAt(user.user_created_at)}</td>
                     </tr>
                     <tr>
                         <th></th>
@@ -188,7 +199,7 @@ function MyPage(){
                             ✕
                         </button>
                         <form onSubmit={handleWithdraw}>
-                            <h2 className="modal-title">회원 탈퇴</h2>
+                            <h2 className="modal-title">회원 탈��</h2>
                             <div>
                                 <label>비밀번호를 입력해주세요</label>
                                 <input 

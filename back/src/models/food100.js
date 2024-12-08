@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const food100Schema = new mongoose.Schema({
     food_id: {
-        type: String,
+        type: Number,
         required: true,
         unique: true
     },
@@ -13,7 +13,7 @@ const food100Schema = new mongoose.Schema({
     energy_kcal: {
         type: Number
     },
-    carbohydrate: {
+    carbs: {
         type: Number
     },
     protein: {
@@ -21,21 +21,6 @@ const food100Schema = new mongoose.Schema({
     },
     fat: {
         type: Number
-    },
-    dietary_fiber: {
-        type: Number
-    },
-    sugar: {
-        type: Number
-    },
-    salt: {
-        type: Number
-    },
-    vitamin: {
-        type: String
-    },
-    mineral: {
-        type: String
     }
 }, {
     timestamps: true
