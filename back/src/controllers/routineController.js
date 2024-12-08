@@ -1,13 +1,6 @@
-const express = require('express');
-const router = express.Router();
 const minutesToSeconds = require('../utils/timeconvert');
-
-//운동 영상 구조
-const Video = require('../models/video');
-//루틴 구조
 const Routine = require('../models/routine');
-// 기록할 DB 구조
-const Record = require('../models/records');
+const Video = require('../models/video');
 
 const routineController = {
     recordRoutine: async (req, res) => {
@@ -30,33 +23,30 @@ const routineController = {
     getRoutine: async (req, res) => {
         try {
             const userRoutine = await Routine.find({
-                user_id: req.user.user_id,
-            }).populate('routine_exercises.video');
+                user_id: req.user.user_id
+            }).populate('routine_exercises.video').exec();
+
             if (userRoutine.length === 0) {
-                // 아무런 루틴도 없다면 null 로 채워진 루틴 하나를 return
-                const dummyRoutine = [
-                    {
-                        routine_id: null,
-                        routine_name: null,
-                        routine_exercises: [
-                            {
-                                video: {
-                                    video_id: null,
-                                    video_time: null,
-                                    video_tag: null,
-                                },
-                            },
-                        ],
-                    },
-                ];
+                const dummyRoutine = [{
+                    routine_id: null,
+                    routine_name: null,
+                    routine_exercises: [{
+                        video: {
+                            video_id: null,
+                            video_time: null,
+                            video_tag: null,
+                        },
+                    }],
+                }];
                 return res.json(dummyRoutine);
             }
+
             return res.status(200).json(userRoutine);
         } catch (error) {
-            console.error(error);
+            console.error('Routine Error:', error);
             res.status(500).json({
                 message: 'Failed to get user routine',
-                error: error.message,
+                error: error.message
             });
         }
     },
@@ -157,6 +147,32 @@ const routineController = {
             console.error(error);
             res.status(500).json({
                 message: 'Failed to delete video from routines',
+                error: error.message,
+            });
+        }
+    },
+    getRoutineVideos: async (req, res) => {
+        const routine_name = req.query.routine_name;  // GET 요청의 쿼리 파라미터
+        try {
+            const routine = await Routine.findOne({
+                user_id: req.user.user_id,
+                routine_name,
+            }).populate('routine_exercises.video');
+
+            if (!routine) {
+                return res.status(404).json({ message: 'Routine not Found' });
+            }
+
+            // video 정보만 추출하여 반환
+            const videos = routine.routine_exercises
+                .map(exercise => exercise.video)
+                .filter(video => video); // null/undefined 필터링
+
+            res.status(200).json(videos);
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({
+                message: 'Failed to get routine videos',
                 error: error.message,
             });
         }
