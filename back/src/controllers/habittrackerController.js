@@ -2,6 +2,7 @@ const { minutesToSeconds, secondsToMinutes } = require('../utils/timeconvert');
 
 //habittracker구조
 const HabitTracker = require('../models/habittracker');
+const Records = require('../models/records');
 //goal_weight는 habit tracker schema 안에 존재하도록
 
 const habittrackerController = {
@@ -68,6 +69,7 @@ const habittrackerController = {
 
             res.status(200).json(habitTrackergoal);
         } catch (error) {
+            console.error(error);
             res.status(500).json({
                 message: 'Failed to get habitTracker goals',
                 error: error.message,
@@ -75,18 +77,19 @@ const habittrackerController = {
         }
     },
     getEveryRecords: async (req, res) => {
-        const { period } = req.query.period;
+        const { period } = req.query;
         try {
             //정규식
             const regex = new RegExp(`^${period}`);
 
             //해당 월에 해당하는 운동 기록들을 가져옴
-            const monthlyRecords = Record.find({
+            const monthlyRecords = await Records.find({
                 user_id: req.user.user_id, //미들웨어에 있는 user_id
                 date: { $regex: regex },
-            });
+            }).exec();
             res.status(200).json(monthlyRecords);
         } catch (error) {
+            console.error('GetEveryRecords Error:', error);
             res.status(500).json({
                 message: 'Failed to get habitTracker monthly records',
                 error: error.message,

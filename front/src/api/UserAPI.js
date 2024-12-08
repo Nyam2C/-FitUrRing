@@ -162,4 +162,62 @@ async function userWithdraw(password) {
     }
 }
 
-export {userLogin, userSignUp, getUserData, changeUserData, userLogout, userWithdraw};
+async function refreshAccessToken() {
+    try {
+        const response = await fetch('/api/auth/refresh', {
+            method: 'POST',
+            credentials: 'include',  // refreshToken 쿠키 전송을 위해 필요
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error('토큰 갱신 실패');
+        }
+
+        const data = await response.json();
+        localStorage.setItem('accessToken', data.accessToken);
+        return data.accessToken;
+    } catch (error) {
+        console.error('토큰 갱신 중 에러:', error);
+        throw error;
+    }
+}
+
+async function getProfile() {
+    try {
+        let response = await fetch('/api/user/profile', {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
+                'Content-Type': 'application/json'
+            }
+        });
+
+        // 401 에러 발생 시 토큰 갱신 시도
+        if (response.status === 401) {
+            const newAccessToken = await refreshAccessToken();
+            
+            // 새로운 토큰으로 다시 요청
+            response = await fetch('/api/user/profile', {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${newAccessToken}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+        }
+
+        if (!response.ok) {
+            throw new Error('프로필 조회 실패');
+        }
+
+        return await response.json();
+    } catch (error) {
+        console.error('프로필 조회 중 에러:', error);
+        throw error;
+    }
+}
+
+export {userLogin, userSignUp, getUserData, changeUserData, userLogout, userWithdraw, getProfile, refreshAccessToken};

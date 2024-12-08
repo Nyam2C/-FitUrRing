@@ -35,4 +35,4 @@ const habitTrackerSchema = new mongoose.Schema(
 
 const HabitTracker = mongoose.model('HabitTracker', habitTrackerSchema);
 
-module.exports = { HabitTracker };
+module.exports = HabitTracker;

@@ -15,6 +15,7 @@ async function addExerciseRecord(record) {
     return await fetchWithOptions('/routine/records', {
         method: 'POST',
         headers: {
+            "Authorization": `Bearer ${localStorage.getItem('accessToken')}`,
             'Content-Type': 'application/json',
         },
         body: JSON.stringify(record),
@@ -25,6 +26,7 @@ async function getUserRoutines() {
     return await fetchWithOptions('/routine', {
         method: 'GET',
         headers: {
+            "Authorization": `Bearer ${localStorage.getItem('accessToken')}`,
             'Content-Type': 'application/json',
         },
     });
@@ -34,6 +36,7 @@ async function getRoutineVideos(routineName) {
     return await fetchWithOptions(`/routine/videos?routine_name=${routineName}`, {
         method: 'GET',
         headers: {
+            "Authorization": `Bearer ${localStorage.getItem('accessToken')}`,
             'Content-Type': 'application/json',
         },
     });
@@ -43,6 +46,7 @@ async function deleteRoutine(routineName) {
     return await fetchWithOptions('/routine', {
         method: 'DELETE',
         headers: {
+            "Authorization": `Bearer ${localStorage.getItem('accessToken')}`,
             'Content-Type': 'application/json',
         },
         body: JSON.stringify({ routine_name: routineName }),
