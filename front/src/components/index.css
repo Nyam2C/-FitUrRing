@@ -35,6 +35,28 @@ ul{
     list-style-type: none;
 }
 
+  
+.grid {
+    display: grid;
+    padding: 7px;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+}
+
+.nonclickable {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.8;
+    border-radius: 7px;
+    border-color: #DFDFE4;
+    color: black;
+    background-color: palegoldenrod;
+    margin: 5px;
+    text-align: center;
+}
+  
+.center{
+    display: flex;
+
 .col{
     display: flex;
     flex-direction: column;
@@ -44,6 +66,76 @@ ul{
     justify-content: center;
     align-items: center;
 }
+
+.DateCell{
+    min-height: 13vh;
+    background-color: rgb(43, 43, 43);
+    border-color:aqua;
+    border: 10px;
+}
+
+.row{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.title{
+    color: #FFFFFF;
+}
+
+.leftSide{
+    left:0;
+}
+
+/* .absolute-left{
+    position: absolute;
+    left: 0;
+    top: 7em;
+    display: flex;
+} */
+
+.rightSide{
+    right:0;
+}
+
+.sidebar{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    top: 7rem;
+    background-color: #242834;
+    min-height: calc(100vh - 7rem - 7rem);
+    overflow: hidden;
+}
+
+.flex-right{
+    display: flex;
+    justify-content: flex-end;
+}
+
+.flex-grow-side{
+    flex-grow: 1;
+}
+
+.side{
+    width: 15%;
+}
+
+.infoList{
+    line-height: 1.8;
+    background-color:#151515;
+    margin-bottom: 1em;
+}
+
+.doit{
+    background-color: #fffbb441;
+}
+
+#clickBlock{
+    width: 15em;
 
 #videoSelection{
     background-color: #CFFF5E;
