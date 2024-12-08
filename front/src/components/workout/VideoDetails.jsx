@@ -9,13 +9,17 @@ import {addRoutineVideo} from '../../api/routineAPI';
 function VideoDetails({video, routines}) {
     async function addRoutine(e){
         const data = {
-            routine_name : e.target.value,
-            video_id : video.video_id
+            routine_name: e.target.value,
+            video_id: video.video_id
         }
         try{ 
-            const response = await addRoutineVideo(data); 
+            const response = await addRoutineVideo(data);
+            if (response) {
+                alert("루틴에 성공적으로 추가되었습니다.");
+            }
         } catch(err) {
-            alert(err.message);
+            console.error("루틴 추가 실패:", err);
+            alert(err.message || "루틴 추가에 실패했습니다.");
         } 
     }
     

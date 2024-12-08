@@ -35,7 +35,7 @@ async function fetchWithOptions(url, options) {
             method: 'GET',
         });
         
-        // 빈 루틴도 표시할 수 있도록 변환
+        // 빈 루틴도 표시할 수 있도록 ��환
         return response.map(routine => ({
             _id: routine._id,
             user_id: routine.user_id,
@@ -50,6 +50,12 @@ async function fetchWithOptions(url, options) {
 };
 
  const getRoutineVideos = async (routineName) => {
+    // routineName이 null이거나 undefined인 경우 빈 배열 반환
+    if (!routineName) {
+        console.log("루틴 이름이 제공되지 않았습니다.");
+        return [];
+    }
+
     try {
         const response = await fetchWithOptions(`/api/routine/videos?routine_name=${encodeURIComponent(routineName)}`, {
             method: 'GET',
@@ -81,7 +87,7 @@ async function fetchWithOptions(url, options) {
     });
 }
 
- async function addRoutineVideo(data){
+async function addRoutineVideo(data){
     try{
         const uri = `/api/routine/add`
         const response = await fetch(uri, {
@@ -93,11 +99,13 @@ async function fetchWithOptions(url, options) {
             body: JSON.stringify(data),
         });
         const responseData = await response.json();
-        if(!responseData || !response.ok) 
+        if(!response.ok) {
             throw new Error(responseData.message || '루틴을 불러오는데 실패했습니다.');
-        else return data;
+        }
+        return responseData; // 성공 시 응답 데이터 반환
     } catch(err){
-        console.log(err.message);
+        console.error("루틴 추가 중 오류:", err.message);
+        throw err; // 에러를 상위로 전파
     }
 }
 

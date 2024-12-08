@@ -43,27 +43,11 @@ function List({ onRoutineSelect, isActive }) {
   // 루틴 데이터와 비디오 데이터 함께 가져오기
   const fetchRoutines = async () => {
     try {
-      const routineData = await getUserRoutines();
-      if (routineData) {
-        // 각 루틴에 대해 비디오 정보 가져오기
-        const routinesWithVideos = await Promise.all(
-          routineData.map(async (routine) => {
-            const videos = await getRoutineVideos(routine.routine_name);
-            return {
-              ...routine,
-              exercises: videos.map(video => ({
-                title: video.video_title,
-                duration: video.video_time,
-                link: video.video_url,
-                thumbnail: video.video_thumbnail
-              }))
-            };
-          })
-        );
-        setRoutines(routinesWithVideos);
-      }
-    } catch (err) {
-      console.error("루틴 데이터 가져오기 실패:", err);
+      const data = await getUserRoutines();
+      setRoutines(data || []); // 데이터가 없는 경우 빈 배열 설정
+    } catch (error) {
+      console.error("루틴 목록 가져오기 실패:", error);
+      setRoutines([]); // 에러 발생 시 빈 배열로 설정
     }
   };
 
@@ -71,14 +55,21 @@ function List({ onRoutineSelect, isActive }) {
     fetchRoutines();
   }, []);
 
-  const handleRoutineClick = (routine) => {
-    if (!modify) {
+  const handleRoutineClick = async (routine) => {
+    if (!modify && routine) {
+      try {
+        const videos = await getRoutineVideos(routine.routine_name);
         const formattedRoutine = {
-            name: routine.routine_name,
-            exercises: []
+          name: routine.routine_name,
+          exercises: videos
         };
         setSelectedRoutine(formattedRoutine);
         onRoutineSelect(formattedRoutine);
+      } catch (error) {
+        console.error("루틴 비디오 가져오기 실패:", error);
+        // 에러 발생 시 사용자에게 알림
+        alert("루틴 정보를 가져오는데 실패했습니다.");
+      }
     }
   };
 
@@ -120,9 +111,13 @@ function List({ onRoutineSelect, isActive }) {
           <div id="list-content">
             <ul>
               {routines && routines.length > 0 ? (
-                routines.map((routine) => (
-                  <li key={routine._id} onClick={() => handleRoutineClick(routine)}>
-                    <span>{truncateText(routine.routine_name, 10)}</span>
+                routines.map((routine, index) => (
+                  <li
+                    key={index}
+                    onClick={() => handleRoutineClick(routine)}
+                    className={selectedRoutine?.name === routine.routine_name ? 'pick' : ''}
+                  >
+                    <span>{truncateText(routine.routine_name || '')}</span>
                     {modify && (
                       <button onClick={(e) => {
                         e.stopPropagation();
