@@ -82,14 +82,13 @@ function Workout(){
             case 'tag': {
                     const newFilter = {...filter, video_tag: action.tag};
                     console.log(newFilter);
-                    return newFilter;
+                    return newFilter;   
             }
             case 'time': {
                 const newFilter = {...filter, video_time_from: action.start, video_time_to: action.end};
                 return newFilter;
             }
             case 'level':{
-                //레벨 다시 눌렀을때 없어질 수 있어야함...
                 const newFilter = {...filter, video_level: action.level};
                 return newFilter;
             }

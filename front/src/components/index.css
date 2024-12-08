@@ -150,7 +150,7 @@ ul{
 }
 
 #timeSelection input{
-    width: 2em;
+    width: 2.5em;
 }
 
 #videoSelection h3{
@@ -163,6 +163,7 @@ ul{
 
 #searchResults{
     background-color: #FFFFFF;
+    bottom: 0;
 }
 
 #videoLists{
@@ -243,17 +244,14 @@ input[type='date']{
     font-size: large;
     font-weight: bold;
 }
-input[type='radio']{
+#radio[type='radio']{
     min-width: 1rem;
     width: 2em;
     height: 2em;
     margin: 1em;
 }
 
-input[type='radio']:checked {
-    -webkit-appearance: none; 
-    -moz-appearance: none; 
-    appearance: none;
+#radio[type='radio']:checked {
     background-color: #B87EED; 
     border: 0.3em solid #FFFFFF; 
 }
@@ -308,5 +306,11 @@ input[type='radio']:checked {
     border:none;
     border-radius: 10em;
     background-color: lightgray;
+    margin: 10px;
+}
+
+#level{
+    width: 1em;
+    height: 1em;
     margin: 10px;
 }

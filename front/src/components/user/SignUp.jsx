@@ -61,9 +61,9 @@ function SignUp(){
                         onChange={(e) => setEmail(e.target.value)}></input>
                 <div className='inputbox'>
                     <label>남</label>
-                    <input type="radio" name="gender" value={"male"} onChange={(e) => setGender(e.target.value)}></input>
+                    <input id="radio" type="radio" name="gender" value={"male"} onChange={(e) => setGender(e.target.value)}></input>
                     <label>여</label>
-                    <input type="radio" name="gender" value={"female"} onChange={(e) => setGender(e.target.value)}></input>
+                    <input id="radio" type="radio" name="gender" value={"female"} onChange={(e) => setGender(e.target.value)}></input>
                 </div>
                 <div className='inputbox'>
                     <label>생년월일</label>

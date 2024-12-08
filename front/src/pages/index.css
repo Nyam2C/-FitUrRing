@@ -175,7 +175,7 @@ input::placeholder{
 #explains{
     margin: 10px;
     padding: 10px;
-    max-height: 15em; 
+    height: 15em;
     overflow-y: scroll; 
 }
 

@@ -22,7 +22,6 @@ function VideoDetails({video, routines}) {
     return (
         <div className='videoDetails'>
         <Thumbnails video_id={video.video_id} video_title={video.video_title} mode="maxresdefault" />
-            {/*머있어야되지,, 일단  드롭다운 메뉴에서 루틴 선택하기 루틴에 추가하는 API부르기*/}
             <div className='left-align'>
                 <h2>{video.video_title}</h2>
                 <span className='details'>{video.channel_title}</span>

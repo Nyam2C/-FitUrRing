@@ -111,7 +111,7 @@ function SideBar({side, day, records, onDetail}){
         goal_weekly: null,
         goal_daily: [null, null, null, null, null, null, null],
         goal_daily_time: '00:00',
-        goal_weight: null,}
+        goal_weight: 0,}
     );
     const [user, setUser] = useState({
         user_id: null,

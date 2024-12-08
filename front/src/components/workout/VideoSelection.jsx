@@ -67,32 +67,32 @@ function VideoSelection({dispatch, setSelected}){
 
     return (
         <div id="videoSelection" className="col center">
-                <div className='col padding'>
+                <div className='col'>
                     <h3>난이도</h3>
                     <label>상
-                        <input type="radio" value="advanced" name="level" onClick={handleLevel} checked={currentLevel === 'advanced'} ></input>
+                        <input id="level" type="radio" value="advanced" name="level" onClick={handleLevel} checked={currentLevel === 'advanced'} ></input>
                     </label>
                     <label>하 
-                        <input type="radio" value="beginner" name="level" onClick={handleLevel} checked={currentLevel === 'beginner'}></input>
+                        <input id="level" type="radio" value="beginner" name="level" onClick={handleLevel} checked={currentLevel === 'beginner'}></input>
                     </label>
                 </div>
-                <div id="timeSelection" className="col center padding">
+                <div id="timeSelection" className="col center">
                     <h3>시간</h3>
                     <span> 
-                    <input type="number" name="startMin" onChange={handleChange} min={0}></input>
+                    <input type="number" name="startMin" onChange={(e) => setStartMin(parseInt(e.target.value))} min={0} defaultValue={0}></input>
                     {/* <input type="number" name="start"  value={startMin !== null ? startMin : ""}
                     onChange={(e) => {
                         const value = e.target.value;
                         setStartMin(value === "" ? null : parseInt(value, 10));
                     }}></input> */}
                     <span> 분</span>
-                    <input type="number" name="start" onChange={(e) => e.target.value === 0 ? setStartSec(null) : setStartSec(e.target.value)} min={0}></input>
+                    <input type="number" name="start" onChange={(e) => setStartSec(parseInt(e.target.value))} min={0} defaultValue={0}></input>
                     <span> 초</span>
                     </span>
                     <span> ~
-                    <input type="number" name="end" onChange={(e) => e.target.value === 1440 ? setEndMin(null) : setEndMin(e.target.value)} min={0}></input>
+                    <input type="number" name="end" onChange={(e) => setEndMin(parseInt(e.target.value))} min={0} defaultValue={1440}></input>
                     <span> 분 </span>
-                    <input type="number" name="start" onChange={(e) => e.target.value === 0 ? setEndSec(null) : e.target.value} min={0}></input>
+                    <input type="number" name="start" onChange={(e) => setEndSec(parseInt(e.target.value))} min={0} defaultValue={0}></input>
                     <span> 초</span>
                     </span>
                     <p>{warning}</p>
