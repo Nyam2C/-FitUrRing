@@ -76,20 +76,20 @@ function VideoSelection({dispatch, setSelected}){
                 <div id="timeSelection" className="col center padding">
                     <h3>시간</h3>
                     <span> 
-                    <input type="text" name="startMin" onChange={handleChange}></input>
-                    {/* <input type="text" name="start"  value={startMin !== null ? startMin : ""}
+                    <input type="number" name="startMin" onChange={handleChange} min={0} defaultValue={0}></input>
+                    {/* <input type="number" name="start"  value={startMin !== null ? startMin : ""}
                     onChange={(e) => {
                         const value = e.target.value;
                         setStartMin(value === "" ? null : parseInt(value, 10));
-                    }}></input> */}
+                    }} min={0} defaultValue={0}></input> */}
                     <span> 분</span>
-                    <input type="text" name="start" onChange={(e) => setStartSec(parseInt(e.target.value))}></input>
+                    <input type="number" name="start" onChange={(e) => setStartSec(parseInt(e.target.value))} min={0} defaultValue={0}></input>
                     <span> 초</span>
                     </span>
                     <span> ~
-                    <input type="text" name="end" onChange={(e) => setEndMin(parseInt(e.target.value))}></input>
+                    <input type="number" name="end" onChange={(e) => setEndMin(parseInt(e.target.value))} min={0} defaultValue={1440}></input>
                     <span> 분 </span>
-                    <input type="text" name="start" onChange={(e) => setSEndSec(parseInt(e.target.value))}></input>
+                    <input type="number" name="start" onChange={(e) => setSEndSec(parseInt(e.target.value))} min={0} defaultValue={0}></input>
                     <span> 초</span>
                     </span>
                     <p>{warning}</p>

@@ -9,9 +9,6 @@ import { getEntireVideos, searchVideos} from '../api/workoutAPI';
 
 
 function Explains({data, selected}){
-    //conditional Rendering -> handleClick에서 들어온 input의 처리결과 띄우기
-    //h1으로 제목
-    //p로 설명
     return (
         <div id="explains">
             <h1>{explain.find(item => item.id === selected)?.name}</h1>

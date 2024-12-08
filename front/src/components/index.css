@@ -208,3 +208,13 @@ input[type='radio']:checked {
 .addbutton{
     align-self: center;
 }
+
+.round-input{
+    width: 28vw;
+    min-width: 20rem;
+    height: 4.5vh;
+    border:none;
+    border-radius: 10em;
+    background-color: lightgray;
+    margin: 10px;
+}
