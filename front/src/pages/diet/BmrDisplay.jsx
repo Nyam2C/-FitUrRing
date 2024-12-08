@@ -1,33 +1,48 @@
 import NutrientDisplay from './NutrientDisplay';
 import React, { useEffect, useState } from 'react';
+import { getUserData } from './api';
 import './BmrDisplay.css';
 
 function BmrDisplay({ user, diet, activity }) {
     const [bmr, setBmr] = useState(0);
-    const [achievement, setAchievement] = useState([]);
+    const [userInfo, setUserInfo] = useState([]);
     const [constants] = useState([1.2, 1.375, 1.555, 1.725, 1.9]);
 
     useEffect(() => {
-        for (let i = 0; i < diet.length; i++) {
-            if (diet[i]) {
-                setAchievement(diet[i].achievement);
-                break; 
+        const fetchUserInfo = async () => {
+            try{
+                const data=await getUserData();
+                setUserInfo(data);
+            }catch(error){
+                console.error('Error fetching user info:', error);
             }
-        }
-    },[diet]);
+        };
+        fetchUserInfo();
+    }, []);
 
     const calculateBmr = () => {
-        if (user.user_gender === 1) {
-            return 66.47 + (13.75 * achievement.weight) + (5 * achievement.height) - (6.76 * user.user_birth);
+        if (!userInfo.user_gender || !userInfo.user_weight || 
+            !userInfo.user_height || !userInfo.user_birth) {
+            return 0;
+        }
+        
+        const today = new Date();
+        const birthYear = new Date(userInfo.user_birth).getFullYear();
+        const age = today.getFullYear() - birthYear;
+        
+        if (userInfo.user_gender === 1) {
+            return 66.47 + (13.75 * userInfo.user_weight) + (5 * userInfo.user_height) - (6.76 * age);
         } else {
-            return 655.1 + (9.56 * achievement.weight) + (1.85 * achievement.height) - (4.68 * user.user_birth);
+            return 655.1 + (9.56 * userInfo.user_weight) + (1.85 * userInfo.user_height) - (4.68 * age);
         }
     };
 
     useEffect(() => {
         const calculatedBmr = calculateBmr();
-        setBmr(Math.round(calculatedBmr));
-    });
+        if (!isNaN(calculatedBmr)) {
+            setBmr(Math.round(calculatedBmr));
+        }
+    }, [userInfo]);
 
     return (
         <React.Fragment>
