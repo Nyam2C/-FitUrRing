@@ -111,6 +111,7 @@ function MyPage(){
                             <input 
                                 type={showPassword ? "text" : "password"} 
                                 name="user_password" 
+                                className="round-input"
                                 onChange={(e) => setNewPW(e.target.value)} 
                                 value={newPW}
                             />
@@ -129,6 +130,7 @@ function MyPage(){
                             <input 
                                 type={showPassword ? "text" : "password"} 
                                 name="confirm_password" 
+                                className="round-input"
                                 onChange={handleConfirm}
                             />
                             <br/>
@@ -141,7 +143,7 @@ function MyPage(){
                     </tr>
                     <tr>
                         <th>이메일</th>
-                        <td><input type="text" name="user_email" onChange={(e) => setUser({...user, user_email: e.target.value})} value={user.user_email}></input></td>
+                        <td><input type="text" name="user_email" className="round-input" onChange={(e) => setUser({...user, user_email: e.target.value})} value={user.user_email}></input></td>
                     </tr>
                     <tr>
                         <th>성별</th>
@@ -149,11 +151,11 @@ function MyPage(){
                     </tr>
                     <tr>
                         <th>키</th>
-                        <td><input type="number" name="user_height" onChange={(e) => setUser({...user, user_height: e.target.value})} value={user.user_height}></input></td>
+                        <td><input type="number" className="round-input" name="user_height" onChange={(e) => setUser({...user, user_height: e.target.value})} value={user.user_height}></input></td>
                     </tr>
                     <tr>
                         <th>몸무게</th>
-                        <td><input type="number" name="user_weight" onChange={(e) => setUser({...user, user_weight: e.target.value})} value={user.user_weight}></input></td>
+                        <td><input type="number" className="round-input" name="user_weight" onChange={(e) => setUser({...user, user_weight: e.target.value})} value={user.user_weight}></input></td>
                     </tr>
                     <tr>
                         <th>가입일시</th>
@@ -192,12 +194,13 @@ function MyPage(){
                                 <input 
                                     type={showPassword ? "text" : "password"} 
                                     onChange={(e) => setNewPW(e.target.value)}
-                                    className="modal-input"
+                                    className="round-input modal-input"
                                 />
                             </div>
                             <div className="modal-checkbox-container">
                                 <input 
                                     type="checkbox" 
+                                    className="round-input"
                                     id="showPasswordCheckbox"
                                     checked={showPassword}
                                     onChange={() => setShowPassword(!showPassword)}

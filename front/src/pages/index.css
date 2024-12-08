@@ -27,7 +27,7 @@ aside{
 } */
 
 #title{
-    font-size: 3em;
+    font-size: 2.5em;
     font-weight: 900;
     padding: 0 0 2vw 0 ;
 }
@@ -61,7 +61,7 @@ form {
     margin: 10px;
 }
 
-input{
+.round-input{
     width: 28vw;
     min-width: 20rem;
     height: 4.5vh;

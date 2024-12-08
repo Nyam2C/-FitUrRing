@@ -5,10 +5,10 @@ import SelectBtn from './SelectBtn';
 function VideoSelection({dispatch, setSelected}){
     const [warning, setWarning] = useState();
 
-    const [startMin, setStartMin] = useState(0);
-    const [endMin, setEndMin] = useState(0);
-    const [startSec, setStartSec] = useState(0);
-    const [endSec, setSEndSec] = useState(0);
+    const [startMin, setStartMin] = useState(null);
+    const [endMin, setEndMin] = useState(null);
+    const [startSec, setStartSec] = useState(null);
+    const [endSec, setEndSec] = useState(null);
     const [currentLevel, setCurrentLevel] = useState(null);
 
     const tagRef = useRef([]);
@@ -59,7 +59,10 @@ function VideoSelection({dispatch, setSelected}){
         }
     }
     function handleChange(e){
-        if (e.target.name === 'startMin')   setStartMin(e.target.value?e.target.value:0);
+        if (e.target.name === 'startMin')   setStartMin(e.target.value?e.target.value:null);
+        if (e.target.name === 'startSec')   setStartMin(e.target.value?e.target.value:null);
+        if (e.target.name === 'endMin')   setStartMin(e.target.value?e.target.value:1440);
+        if (e.target.name === 'endSec')   setStartMin(e.target.value?e.target.value:null);
     }
 
     return (
@@ -76,20 +79,20 @@ function VideoSelection({dispatch, setSelected}){
                 <div id="timeSelection" className="col center padding">
                     <h3>시간</h3>
                     <span> 
-                    <input type="text" name="startMin" onChange={handleChange}></input>
-                    {/* <input type="text" name="start"  value={startMin !== null ? startMin : ""}
+                    <input type="number" name="startMin" onChange={handleChange} min={0}></input>
+                    {/* <input type="number" name="start"  value={startMin !== null ? startMin : ""}
                     onChange={(e) => {
                         const value = e.target.value;
                         setStartMin(value === "" ? null : parseInt(value, 10));
                     }}></input> */}
                     <span> 분</span>
-                    <input type="text" name="start" onChange={(e) => setStartSec(parseInt(e.target.value))}></input>
+                    <input type="number" name="start" onChange={(e) => e.target.value === 0 ? setStartSec(null) : setStartSec(e.target.value)} min={0}></input>
                     <span> 초</span>
                     </span>
                     <span> ~
-                    <input type="text" name="end" onChange={(e) => setEndMin(parseInt(e.target.value))}></input>
+                    <input type="number" name="end" onChange={(e) => e.target.value === 1440 ? setEndMin(null) : setEndMin(e.target.value)} min={0}></input>
                     <span> 분 </span>
-                    <input type="text" name="start" onChange={(e) => setSEndSec(parseInt(e.target.value))}></input>
+                    <input type="number" name="start" onChange={(e) => e.target.value === 0 ? setEndSec(null) : e.target.value} min={0}></input>
                     <span> 초</span>
                     </span>
                     <p>{warning}</p>

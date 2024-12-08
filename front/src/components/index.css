@@ -53,9 +53,6 @@ ul{
     margin: 5px;
     text-align: center;
 }
-  
-.center{
-    display: flex;
 
 .col{
     display: flex;
@@ -63,6 +60,7 @@ ul{
 }
 
 .center{
+    display: flex;
     justify-content: center;
     align-items: center;
 }
@@ -135,7 +133,9 @@ ul{
 }
 
 #clickBlock{
-    width: 15em;
+    width: 25em;
+    max-height: 8.5em;
+}
 
 #videoSelection{
     background-color: #CFFF5E;
@@ -299,4 +299,14 @@ input[type='radio']:checked {
 
 .addbutton{
     align-self: center;
+}
+
+.round-input{
+    width: 28vw;
+    min-width: 20rem;
+    height: 4.5vh;
+    border:none;
+    border-radius: 10em;
+    background-color: lightgray;
+    margin: 10px;
 }

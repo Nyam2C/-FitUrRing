@@ -48,16 +48,16 @@ function SignUp(){
         <>
             <form id="signUpForm" className='leftmove' onSubmit={handleSignUp}>
                 <label id="title">Sign Up</label>
-                <input required type="text" name="name" placeholder='성함' value={userName}
+                <input required type="text" name="name" placeholder='성함' value={userName} className="round-input" 
                         onChange={(e) => setUserName(e.target.value)}></input>
-                <input required type="text" name="id" placeholder='ID' value={userId}
+                <input required type="text" name="id" placeholder='ID' value={userId} className="round-input" 
                         onChange={(e) => setUserId(e.target.value)} ></input>
-                <input required type="password" name="pw" placeholder='PW' value={password}
+                <input required type="password" name="pw" placeholder='PW' value={password} className="round-input" 
                         onChange={(e) => setPassword(e.target.value)}></input>
-                <input required type="password" name="pwConfirm" placeholder='PW를 한번 더 입력해주세요' 
+                <input required type="password" name="pwConfirm" placeholder='PW를 한번 더 입력해주세요' className="round-input" 
                         onChange={handleConfirm}></input>
                 <p style={{color: 'red'}}>{warning}</p>
-                <input required type="email" name="email" placeholder='이메일' value={email}
+                <input required type="email" name="email" placeholder='이메일' value={email} className="round-input" 
                         onChange={(e) => setEmail(e.target.value)}></input>
                 <div className='inputbox'>
                     <label>남</label>
@@ -67,7 +67,7 @@ function SignUp(){
                 </div>
                 <div className='inputbox'>
                     <label>생년월일</label>
-                    <input type="date" placeholder="생년월일" name="birthdate" value={birthdate} onChange={(e) => setBirthdate(e.target.value)}></input>
+                    <input type="date" placeholder="생년월일" name="birthdate" value={birthdate} className="round-input" onChange={(e) => setBirthdate(e.target.value)}></input>
                 </div>
                 {/* <div style={{display: "flex", width: "30em", justifyContent: "center"}}>
                     <input id="age" type="number" name="age" placeholder='나이'></input>

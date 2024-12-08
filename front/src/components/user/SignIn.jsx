@@ -27,8 +27,8 @@ function SignIn(){
     return (
         <form id="signInForm" className="rightmove" onSubmit={handleSignIn}>
             <label id="title">Sign In</label>
-            <input type="text" name="id" placeholder='ID' onChange={(e) => setUserId(e.target.value)} value={userId}></input>
-            <input type="password" name="pw" placeholder='PW'onChange={(e) => setPassword(e.target.value)} value={password}></input>
+            <input type="text" name="id" placeholder='ID' className="round-input" onChange={(e) => setUserId(e.target.value)} value={userId}></input>
+            <input type="password" name="pw" placeholder='PW'className="round-input" onChange={(e) => setPassword(e.target.value)} value={password}></input>
             <button type="submit">sign in</button>
         </form>
     );
