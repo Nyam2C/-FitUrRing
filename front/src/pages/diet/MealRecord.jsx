@@ -160,24 +160,22 @@ function MealRecord({ diet }) {
         try {
             const foodToDelete = data[selectedDate][meal][index];
             
-            const response = await deleteDiet({
+            await deleteDiet({
                 date: selectedDate,
                 mealtime: meal,
                 food_id: foodToDelete.food_id
             });
 
-            if (response.status === 'success') {
-                setData(prevData => ({
-                    ...prevData,
-                    [selectedDate]: {
-                        ...prevData[selectedDate],
-                        [meal]: prevData[selectedDate][meal].filter((_, i) => i !== index)
-                    }
-                }));
-            }
+            setData(prevData => ({
+                ...prevData,
+                [selectedDate]: {
+                    ...prevData[selectedDate],
+                    [meal]: prevData[selectedDate][meal].filter((_, i) => i !== index)
+                }
+            }));
         } catch (err) {
             console.error('Delete error:', err);
-            alert(err.message || '삭제 중 오류가 발생했습니다.');
+            alert('삭제 중 오류가 발생했습니다.');
         }
     };
 

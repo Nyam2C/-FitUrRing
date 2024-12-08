@@ -188,7 +188,7 @@ const dietController = {
             );
 
             if (existingFoodIndex !== -1) {
-                // 이�� 존재하는 음식이면 그램수 업데이트
+                // 이미 존재하는 음식이면 그램수 업데이트
                 targetDiet.meals[mealtime][existingFoodIndex].grams = grams;
             } else {
                 // 새로운 음식 추가
@@ -231,14 +231,6 @@ const dietController = {
                 });
             }
 
-            // mealtime 유효성 검사
-            if (!['breakfast', 'lunch', 'dinner'].includes(mealtime)) {
-                return res.status(400).json({
-                    status: 'error',
-                    message: '잘못된 식사 시간입니다.'
-                });
-            }
-
             // 해당 날짜의 사용자 식단 찾기
             const userDiet = await UserDiet.findOne({
                 user_id,
@@ -254,7 +246,7 @@ const dietController = {
 
             // 해당 날짜의 diet 찾기
             const dietIndex = userDiet.diets.findIndex(
-                diet => diet.date.getTime() === new Date(date).getTime()
+                diet => diet.date.toISOString().split('T')[0] === new Date(date).toISOString().split('T')[0]
             );
 
             if (dietIndex === -1) {
@@ -267,7 +259,7 @@ const dietController = {
             // 해당 음식 찾기 및 삭제
             const targetDiet = userDiet.diets[dietIndex];
             const foodIndex = targetDiet.meals[mealtime].findIndex(
-                meal => meal.food_id === food_id
+                meal => meal.food_id.toString() === food_id.toString()
             );
 
             if (foodIndex === -1) {
@@ -280,7 +272,7 @@ const dietController = {
             // 음식 삭제
             targetDiet.meals[mealtime].splice(foodIndex, 1);
 
-            // 해당 식사 시간 음식이 모두 비었고, 다른 식사 시간도 비어있다면 해당 날짜 전체 삭제
+            // 해당 식사 시간의 음식이 모두 비었고, 다른 식사 시간도 비어있다면 해당 날짜 전체 삭제
             if (targetDiet.meals[mealtime].length === 0 &&
                 targetDiet.meals.breakfast.length === 0 &&
                 targetDiet.meals.lunch.length === 0 &&
@@ -297,12 +289,7 @@ const dietController = {
 
             res.json({
                 status: 'success',
-                message: '식단이 삭제되었습니다.',
-                data: {
-                    date,
-                    mealtime,
-                    food_id
-                }
+                message: '식단이 삭제되었습니다.'
             });
 
         } catch (error) {

@@ -101,17 +101,17 @@ const createDiet = async ({ date, mealtime, food_id, grams }) => {
 };
 
 const deleteDiet = async ({ date, mealtime, food_id }) => {
-    return await fetchWithOptions(URL, {
+    return await fetchWithOptions(`${URL}/`, {
         method: 'DELETE',
         headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
         },
         body: JSON.stringify({ 
-            date: date,
-            mealtime: mealtime,
-            food_id: food_id 
-        }),
+            date, 
+            mealtime, 
+            food_id: Number(food_id)
+        })
     });
 };
 
