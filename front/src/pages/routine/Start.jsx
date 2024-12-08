@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './Start.css';
 
-function Start({ ButtonClick, isActive, hasRoutine }) {
+function Start({ ButtonClick, isActive, hasRoutine, endSignal }) {
     const [isModalOpen, setIsModalOpen] = useState(false); // 모달 여부
     const [countdown, setCountdown] = useState(null); // 카운트다운 상태
 
@@ -31,7 +31,7 @@ function Start({ ButtonClick, isActive, hasRoutine }) {
         운동 시작 전이면 모달 표시
     */
     const handleStartClick = () => {
-        if (!isActive) setIsModalOpen(true);
+        if (!isActive&&!endSignal) setIsModalOpen(true);
     };
 
     /*
@@ -57,7 +57,7 @@ function Start({ ButtonClick, isActive, hasRoutine }) {
         취소 클릭 시 모달 종료
     */
     const handleCancel = () => {
-        setIsModalOpen(false); 
+        setIsModalOpen(false);
     };
 
     return (
